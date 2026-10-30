@@ -1,0 +1,181 @@
+.container.week_cal {
+  max-width: 1700px;
+  //min-width: 1200px;
+}
+#week_cals {
+  width: 100%;
+  li.green{
+    background-color: #EEFFEE;
+  }
+  li.red{
+    background-color: #FFEEEE;
+  }
+  li.blue{
+    background-color: #EEFCFF;
+  }
+  li.yellow{
+    background-color: #FFFFEE;
+  }
+  table.index{
+    border: solid 1px #DDD;
+    max-width: 1200px;
+    min-width: 700px;
+    font-size: 110%;
+    tr{
+      th{
+        border: solid 1px #DDD;
+        font-size: 80%;
+        text-align: center;
+        padding: 0.2em 0.5em;
+      }
+      td{
+        border: solid 1px #DDD;
+        padding: 0.3em 0.5em;
+        font-size: 70%;
+      }
+      td.num {
+        text-align: right;
+      }
+      td.mid {
+        text-align: center;
+      }
+      td.editable {
+        background: lightyellow;
+      }
+    }
+    tr:nth-child(odd) td {
+      background: #EEE;
+    }
+    tr:nth-child(odd) td.editable {
+      background: #FED;
+    }
+  }
+  .search-form-container {
+    min-width: 1410px;
+    background-color: #f8f9fa;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-size: 0.6rem;
+    form {
+      white-space: nowrap;
+    }
+
+    .form-label {
+      font-size: 0.7rem; // inputより少しだけ大きく
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .form-control-sm {
+      font-size: 0.6rem !important; // 非常に小さいため注意
+      padding: 0.1rem 0.25rem;
+      height: auto;
+    }
+  }
+  table.show{
+    border: solid 1px #DDD;
+    width: 100%;
+    font-size: 110%;
+    margin-bottom:1em;
+    tbody tr:nth-of-type(odd) > td {
+      background: #EEE;
+    }
+    tbody tr:nth-of-type(even) > td {
+      background: #FFF;
+    }
+    tr{
+      th{
+        border: solid 1px #DDD;
+        font-size: 80%;
+        text-align: center;
+        padding: 0;
+      }
+      th.th20{
+        max-width: 20px;
+      }
+      td{
+        border: solid 1px #DDD;
+        font-size: 70%;
+        height: 2em;
+        padding: 0.5em;
+        line-height: 1.5em;
+      }
+      td.td20 {
+        max-width: 20px;
+        font-size: 110%;
+        text-align: center;
+        padding: 0;
+        line-height: 1em;
+      }
+      td.num {
+        text-align: right;
+      }
+      td.mid {
+        text-align: center;
+      }
+    }
+  }
+  table.job-table {
+    tr {
+      th:not(:first-child) {
+        min-width: 230px;
+
+      }
+    }
+    td {
+      ul {
+        li {
+          max-width: 260px;
+          .info05 , .info07 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+          }
+          .under_l {
+            border-bottom: solid 1px #DDD;
+          }
+        }
+      }
+
+    }
+  }
+  /* 親要素：Flexコンテナ */
+  .inline-summary {
+    display: flex; /* 横並びにする */
+    flex-wrap: nowrap; /* 画面幅が狭い時に折り返す */
+    align-items: baseline; /* テキストのベースラインを揃える */
+    justify-content: space-between;
+
+    font-family: sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #FFF;
+  }
+
+  /* 「見出し＋値」のグループ */
+  .summary-pair {
+    display: flex;
+    align-items: baseline;
+    gap: 8px; /* 見出しと値の間のスペース */
+  }
+
+  /* 見出し（ラベル） */
+  .label {
+    font-size: 0.9em;
+    color: #555;
+  }
+
+  /* 値 */
+  .value {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #111;
+  }
+}

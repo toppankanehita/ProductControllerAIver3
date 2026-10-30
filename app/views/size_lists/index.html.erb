@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Size Lists</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Weight</th>
+      <th>Kind</th>
+      <th>Han</th>
+      <th>Weight per m</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @size_lists.each do |size_list| %>
+      <tr>
+        <td><%= size_list.weight %></td>
+        <td><%= size_list.kind %></td>
+        <td><%= size_list.han %></td>
+        <td><%= size_list.weight_per_m %></td>
+        <td><%= link_to 'Show', size_list %></td>
+        <td><%= link_to 'Edit', edit_size_list_path(size_list) %></td>
+        <td><%= link_to 'Destroy', size_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Size List', new_size_list_path %>

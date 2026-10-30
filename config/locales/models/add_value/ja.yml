@@ -1,0 +1,13 @@
+ja:
+  activerecord:
+    models:
+      add_value: 追加情報
+    attributes:
+      add_value:
+        paper_name: 用紙名
+        ren: 連量
+        men: 面付け数
+        han: 版
+        ktanka: kg単価
+        mtanka: 枚単価
+        me: 目

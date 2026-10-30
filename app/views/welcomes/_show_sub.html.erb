@@ -1,0 +1,34 @@
+
+<tr>
+  <% info = job.info %>
+  <td>
+    <span class="badge bg-primary"><%= title %></span><br>
+    <%= job.den_id %>
+  </td>
+  <td><%= info.textInfo07 %></td>
+  <td><%= info.numInfo06 %> &#10005; <%= info.numInfo07 %></td>
+  <td><%= info.numInfo01 %> <%= info.textInfo29 %></td>
+  <td><%= info.numInfo04 %> &#10005; <%= info.numInfo05 %></td>
+  <td><%= info.textInfo11 %></td>
+<% slips = Slip.where("job_id = ?",job.id) %>
+<% slips.each do |slip| %>
+
+    <% impositions = Imposition.where("slip_id = ?",slip.id) %>
+    <% impositions.each do |imposition| %>
+      <td>
+        印刷機<%= imposition.machine %><br>
+        <%= hiduke_helper(slip.created_at) %>
+      </td>
+      <td>台数<%= imposition.dai %></td>
+      <td>面付<%= imposition.num %></td>
+      <td>アキ<%= imposition.aki %></td>
+      <td>クワエ<%= imposition.kuwae %></td>
+    <% end %>
+<% end %>
+</tr>
+
+<% if info.textInfo21.present? %>
+  <% preid = info.textInfo21[0, 10] %>
+  <% prejob = Job.find_by("den_id = ?",preid) %>
+  <%= render "show_sub", job: prejob ,title: "#{num}回前",num: num +  1 %>
+<% end %>

@@ -1,0 +1,322 @@
+<% arari_cal_wap(@job) %>
+<% info = @job.info %>
+<style type="text/css">
+    <!--
+    #jobinfo {
+        .job {
+            margin: -5.8em 0 -8em -8.5em;
+            transform: scale(0.8);
+            width: 1010px;
+        }
+    }
+    -->
+</style>
+<div id="jobinfo" style="  display:flex;flex-flow: column;max-width: 800px;margin: 0 1em 0 0 ;">
+
+  <%= render partial: "jobc" %>
+  <% thumbs = Thumb.where(den_code: @job.den_id ) %>
+  <style type="text/css">
+      <!--
+      div.thumbs{
+          display: flex;
+          flex-flow: wrap;
+          border: solid 1px #DDD;
+          margin-top:0.5em;
+          background-color: #FFF;
+        div.thumb{
+            display: flex;
+            flex-flow: column;
+            padding: 0.2em;
+            img{
+                border: solid 1px #DDD;
+            }
+        }
+        span{
+            font-size: 80%
+        }
+      }
+      -->
+  </style>
+  <div class="thumbs">
+    <%= puts thumbs.count %>
+    <% thumbs.each do |thumb| %>
+      <div class="thumb">
+        <span><%= thumb.work_date %>　<%= thumb.thumb_name %></span>
+        <img src="<%= thumb.url %>" alt="">
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+<div id="jobinfo" style="min-width: 800px;font-size:80%; display: inline-block">
+<%#= link_to "元", show_org_job_path(@job) %>
+  <table class="show">
+    <tr>
+      <th>受注No</th>
+      <td><%= link_to @job.den_id,"http://130.1.15.54:3000/jobs/show/#{@job.id}", target: "_blank" %>
+        <%= @job.name %><%= @job.change_no %> <%= @job.id %></td>
+      <th>担当営業</th><td><%= info.textInfo01 %>　[印刷日] <%= info.dateInfo03 %></td>
+      <th width="200px">備考</th>
+    </tr>
+    <tr>
+      <th>印刷方法</th><td><%= info.textInfo02 %></td>
+      <% @print_kind = info.textInfo02 %>
+      <% kind = Kind.find_by("code = ?",info.textInfo03 ) %>
+      <th>種類</th><td><%= info.textInfo03 %> <%= kind.blank? ? "" : kind.name %></td>
+      <td rowspan="8" style="vertical-align: top; font-size: 0.7em"><%= info.textInfo28 %></td>
+    </tr>
+    <tr>
+      <th>顧客名</th><td colspan="3"><%= info.textInfo04 %> <%= info.textInfo05 %></td>
+    </tr>
+    <tr>
+      <th>品名</th><td colspan="3"><b><%= info.textInfo07 %></b></td>
+    </tr>
+    <tr>
+      <th>用紙</th><td colspan="3"><%= info.textInfo11 %></td>
+    </tr>
+    <tr>
+      <th>印刷枚数</th><td><%= num_hepler(info) %></td>
+      <th>色数</th><td><%= color_helper(info.numInfo16 , info.numInfo04 ,info.numInfo05, info.numInfo17, info.textInfo02) %></td>
+    </tr>
+
+    <tr>
+      <th>仕上りサイズ</th><td><%= info.textInfo20 %> <%= size_helper( info.numInfo06 , info.numInfo07) %></td>
+      <th>展開サイズ</th><td><%= size_helper( info.numInfo14 , info.numInfo15) %></td>
+    </tr>
+    <tr>
+      <% kakoArry = kako_list(@job) %>
+      <th>加工</th>
+      <td colspan="3">
+        <% kakoArry.each do |kako| %>
+          <%= "【#{kako[0]}】#{kako[1]}  " %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th>冊子</th><td><%= book_helper( info.numInfo08 , info.numInfo09 , info.textInfo41 ) %></td>
+      <th>配達方法</th><td><%= info.textInfo18 %>【納品日】<%= info.dateInfo05 %></td>
+    </tr>
+  </table>
+  <table class="show" style="font-size: 80%; margin-bottom: 0.5em">
+      <%= form_with(model: @add_datum, id: "add_datum_form") do |form| %>
+        <%= form.hidden_field :job_id ,value: @job.id %>
+
+      <input type="hidden" name="i" value="<%= params[:i] %>" >
+      <input type="hidden" name="ii" value="<%= @ii %>" >
+      <input type="hidden" name="p" value="<%= params[:p] %>" >
+      <tr>
+        <th class="add">売上</th>
+        <th class="add">製版</th>
+        <th class="add">POD</th>
+        <th class="add">加工費</th>
+        <th class="add">制作費</th>
+        <th class="add">外注費</th>
+        <th class="add">発送費</th>
+        <th class="add">アセンブリ</th>
+        <th class="add">色校枚数</th>
+        <th class="add">合算する「親」受注No</th>
+        <th class="add">仮想売上</th>
+        <td rowspan="2" class="actions" style="padding-top: 0.5em">
+          <%= form.submit id: "add_datum_submit" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field mid"><%= form.text_field :sales_price ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :ctp ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :pod ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :kako ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :dtp ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :out_cost ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :delivery ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :assembly ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :iroko_num ,size: 3 %></td>
+        <td class="mid"><%= form.text_field :parent_code ,size: 12 %></td>
+        <td class="field mid"><%= form.text_field :vprice ,size: 8 %></td>
+      </tr>
+      <% end %>
+  </table>
+  <script>
+
+  </script>
+
+
+  <table class="show">
+  <tr>
+    <th class="sekisan">用紙（積算）</th><th class="sekisan">連量</th>
+    <th class="sekisan">取数</th><th class="sekisan">台数</th><th class="sekisan">k単価</th>
+    <th class="sekisan">枚単価</th><th class="sekisan">実数</th><th class="sekisan">予備込</th>
+    <th class="sekisan">用紙価格</th><th class="sekisan">用紙原価</th>
+  </tr>
+  <% @specs.each do |spec| %>
+    <tr>
+      <td class="mid"><%= spec.t01 %></td>
+      <td class="num"><%= spec.f01 %></td>
+      <td class="num"><%= spec.n05 %></td>
+      <td class="num"><%= spec.n06 %></td>
+      <td class="num"><%= spec.f03 %></td>
+      <td class="num"><%= spec.f04 %></td>
+      <td class="num"><%= numformat1( spec.n01 ) %></td>
+      <td class="num"><%= numformat1( spec.n02 ) %></td>
+      <td class="num"><%= numformat1( spec.n03 ) %></td>
+      <td class="num"><%= numformat1( spec.n04 ) %>
+    </tr>
+  <% end %>
+</table>
+
+<table class="show">
+  <tr>
+    <th class="sekisan">印刷積算内容</th><th class="sekisan">総部数</th><th class="sekisan">面付</th><th class="sekisan">通数</th><th class="sekisan">色数</th>
+    <th class="sekisan">台数</th><th class="sekisan">台単価</th><th class="sekisan">掛率</th><th class="sekisan">通単価</th><th class="sekisan">金額</th>
+  </tr>
+  <% @print_specs.each do |p_spec| %>
+    <tr>
+      <th>PrintSpec</th>
+      <td class="num"><%= numformat1(p_spec.n01) %></td>
+      <td class="num"><%= p_spec.n02 %></td>
+      <td class="num"><%= numformat1(p_spec.n03) %></td>
+      <td class="mid"><%= "#{p_spec.n04} x #{p_spec.n05}" %></td>
+      <td class="num"><%= p_spec.n06 %></td>
+      <td class="num"><%= p_spec.dai_tanka %></td>
+      <td class="num"><%= p_spec.kakeritu %></td>
+      <td class="num"><%= p_spec.tosi_tanka %></td>
+      <td class="num"><%= numformat1(p_spec.price) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<table class="show">
+  <% @print_plans.each do |print_plan| %>
+    </tr>
+    <th>選択印刷機</th><td class="mid"><%= machine_name[print_plan.machine] %></td>
+    <th>作業予定日</th><td class="mid"><%= print_plan.work_date %></td>
+    <th>印刷指示</th><td class="mid"><%= print_plan.memo %></td>
+    </tr>
+  <% end %>
+</table>
+
+<table class="show">
+  <% @print_reports.each do |print_report| %>
+    </tr>
+    <% time2 = Reporttime.find_by(reportitem_id: print_report ) %>
+    <% time2 = time2.blank? ? Reporttime.new(total_count: 0) : time2 %>
+    <th>印刷日報より</th><td class="mid"><%= machine_name[print_report.machine] %></td>
+    <th>印刷日</th><td class="mid"><%= print_report.work_date %></td>
+    <th>差し替え</th><td class="mid"><%= print_report.sasikae.to_i %></td>
+    <th>損紙</th><td class="mid"><%= print_report.sonsi.to_i %></td>
+    <th>印刷時間</th><td class="mid"><%= print_time_int(time2.total_count) %></td>
+    </tr>
+  <% end %>
+</table>
+
+  <div style="display: flex; flex-flow: row;margin-top: 0.3em; box-sizing: border-box">
+    <% fname_fag = 0 %>
+    <table class="show" style="max-width: 500px; box-sizing: border-box">
+      <% fname = "" %>
+      <% @slips.each do |slip| %>
+        <tr>
+          <th>刷版情報</th><th>出力日</th><th>刷版数</th><th>ヤレ数</th>
+          <%# if slip.txtInfo04 == "プリント対応" %>
+            <th style="width: 60px">4C</th><th style="width: 60px">1C</th><th style="width: 40px">SP</th>
+          <%# end %>
+        </tr>
+        <tr>
+          <% yare = slip.numInfo04.to_i + slip.numInfo05.to_i + slip.numInfo06.to_i %>
+          <td class="mid"><%= slip.txtInfo04 %></td>
+          <td class="mid"><%= hiduke3_helper(slip.dateInfo02) %></td>
+
+          <td class="mid"><%= slip.numInfo03 %></td>
+          <td class="mid"><%= yare %></td>
+          <%# if slip.txtInfo04 == "プリント対応" %>
+            <td class="mid"><%= slip.color_print %></td>
+            <td class="mid"><%= slip.mono_print %></td>
+            <td class="mid"><%= slip.sp_print %></td>
+          <%# end %>
+        </tr>
+        <% imps = Imposition.where(slip_id: slip) %>
+
+        <% if imps.count > 0 %>
+          <tr>
+            <th class="imp">機種</th><th class="imp">台数</th><th class="imp">面付数</th><th class="imp">クワエ</th>
+            <%# if slip.txtInfo04 == "プリント対応" %>
+              <th class="imp"></th><th class="imp"></th><th class="imp"></th>
+            <%# end %>
+          </tr>
+        <% end %>
+
+        <% imps.each do |imp| %>
+          <% mentuke = imp.num.blank? ? 1 : imp.num %>
+          <% if imp.machine == "XL106" || imp.machine == "SM74" %>
+            <% @mentuke = mentuke %>
+          <% elsif @job.info.textInfo02 == "プリント出力" && imp.machine == "プリント" then %>
+            <% if slip.color_print > 0 || slip.mono_print > 0 || slip.sp_print > 0 %>
+              <% @mentuke = mentuke %>
+            <% end %>
+          <% end %>
+          <tr>
+            <td class="mid"><%= imp.machine %></td>
+            <td class="mid"><%= imp.dai %></td>
+            <td class="mid"><%= mentuke %></td>
+            <td class="mid"><%= imp.kuwae %></td>
+            <%# if slip.txtInfo04 == "プリント対応" %>
+              <td></td> <td></td> <td></td>
+            <%# end %>
+          </tr>
+        <% end %>
+        <% fnames = slip.fnames %>
+        <% fnames.each do |f_name| %>
+          <% fname_fag = 1 %>
+          <% if fname.blank? %>
+            <% fname = "#{f_name.name}<br>" %>
+          <% else %>
+            <% fname = fname + "#{f_name.name}<br>" %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+<table class="show">
+  <tr>
+    <th>印刷実績</th><th>品名 （HeidelBelgサーバより）</th>
+    <th></th><th>印刷時間</th><th>印刷枚数</th><th>損紙</th>
+    <% @press_datas.each do |press_data| %>
+      <tr>
+        <td class="mid"><%= press_data.machine %></td>
+        <td><%= press_data.product_name %></td>
+        <td><%= press_data.paper_no %></td>
+        <td class="mid"><%= time_int(press_data.work_time) %></td>
+        <td class="num"><%= numformat1(press_data.n01) %></td>
+        <td class="num"><%= numformat1(press_data.n02) %></td>
+      </tr>
+    <% end %>
+  </tr>
+</table>
+
+<% if @outsource_orders.present? %>
+  <table class="show" style="margin-top: 0.4em;">
+    <tr>
+      <th class="sekisan">外注依頼書履歴</th>
+      <th class="sekisan">発行日</th>
+      <th class="sekisan">発注日</th>
+      <th class="sekisan">依頼先</th>
+      <th class="sekisan">発注件名</th>
+      <th class="sekisan">納期</th>
+      <th class="sekisan">受注金額</th>
+      <th class="sekisan">発注金額</th>
+    </tr>
+    <% @outsource_orders.each_with_index do |order, idx| %>
+      <tr style="<%= idx == 0 ? 'background-color:#fffde7;font-weight:bold;' : 'color:#666;' %>">
+        <td class="mid"><%= idx == 0 ? "★最新 (#{@gaicyuArr[3] == '外注依頼書' ? '原価採用' : '積算書優先'})" : "履歴#{idx}" %></td>
+        <td class="mid"><%= order.issue_date %></td>
+        <td class="mid"><%= order.order_date %></td>
+        <td class="mid"><%= order.supplier_name %></td>
+        <td><%= order.subject %></td>
+        <td class="mid"><%= order.delivery_date %></td>
+        <td class="num"><%= numformat1(order.received_amount.to_i) %></td>
+        <td class="num"><%= numformat1(order.order_amount.to_i) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+ </div>
+

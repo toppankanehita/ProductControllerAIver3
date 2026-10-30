@@ -1,0 +1,67 @@
+<%= render partial: 'search_twork' %>
+
+<table class="index">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th style="min-width: 80px;">納品日</th>
+      <th style="min-width: 180px;">顧客名</th>
+      <th style="min-width: 180px;">商品名</th>
+      <th>見積書№</th>
+      <th>数量</th>
+      <th>請求金額</th>
+      <th style="min-width: 100px;">協力先1</th>
+      <th>費用1</th>
+      <th style="min-width: 100px;">協力先2</th>
+      <th>費用2</th>
+      <th style="min-width: 100px;">協力先3</th>
+      <th>費用3</th>
+      <th>原価合計</th>
+      <th>粗利</th>
+      <th>得意先コード</th>
+      <th style="min-width: 80px;">受注No</th>
+      <th style="min-width: 100px;">備考</th>
+      <th style="min-width: 60px;">担当者</th>
+      <th>外注費</th>
+      <th>仕入高</th>
+      <th style="min-width: 60px;">デザイン<br>時間</th>
+      <th style="min-width: 80px;">デザイン<br>費用</th>
+      <th>対象月</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tworks.each do |twork| %>
+      <tr>
+        <td style="text-align: center;"><%= twork.no %></td>
+        <td><%= twork.delivery_date %></td>
+        <td><%= twork.tinfo05 %></td>
+        <td><%= twork.tinfo07 %></td>
+        <td style="text-align: center;"><%= twork.quote_no %></td>
+        <td><%= twork.quantity %></td>
+        <td style="text-align: right;"><%= numformat1(twork.billing_amount) %></td>
+        <td><%= twork.contractor1 %></td>
+        <td style="text-align: right;"><%= numformat1(twork.cost1) %></td>
+        <td><%= twork.contractor2 %></td>
+        <td style="text-align: right;"><%= numformat1(twork.cost2) %></td>
+        <td><%= twork.contractor3 %></td>
+        <td style="text-align: right;"><%= numformat1(twork.cost3) %></td>
+        <td style="text-align: right;"><%= numformat1(twork.total_cost) %></td>
+        <td style="text-align: right;"><%= numformat1(twork.profit) %></td>
+        <td><%= twork.customer_code %></td>
+        <td style="text-align: center;"><%= twork.den_code %></td>
+        <td><%= twork.remarks %></td>
+        <td style="text-align: center;"><%= twork.staff %></td>
+        <td style="text-align: right;"><%= numformat1(twork.outsourcing_cost) %></td>
+        <td style="text-align: right;"><%= numformat1(twork.purchase_cost) %></td>
+        <td style="text-align: right;"><%= numformat1(twork.work_time) %></td>
+        <td style="text-align: right;"><%= numformat1(twork.work_cost) %></td>
+        <td><%= twork.target_month %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Twork', new_twork_path %>

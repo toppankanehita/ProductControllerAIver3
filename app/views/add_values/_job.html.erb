@@ -1,0 +1,95 @@
+
+<% info = job.info %>
+<% add_datum = AddDatum.find_by(job_id: job.id) %>
+
+<% child_helper(job) %>
+<% child_plus_helper(job) %>
+
+<%# value = AddValue.new(job_id: job.id) %>
+<% sales = Sale.find_by(job_id: job.id) %>
+<!--    <tr <%#= parent_helper(add_datum) %>>-->
+<tr id="job_<%= job&.id %>" data-job-id="<%= job&.id %>" data-den-code="<%= job&.den_id %>" style="border-top: solid 2px #999;">
+  <td class="num" rowspan="2"><%= link_to i, job_path(id: job,job_id: job), class: 'js-open-job-dialog', data: { url: job_path(id: job, i: i, p: params[:page],job_id: job), job_id: job.id } %></td>
+
+  <td rowspan="2"><a href="#" class="me-2 js-open-addvalues" data-job-id="<%= job.id %>" data-den-id="<%= job.den_id %>"><%= job.den_id %></a><br><%= textInfo02_helper(info.textInfo02) %></td>
+  <td rowspan="2"><%= job.info.textInfo05 %> <br><%= job.info.textInfo07 %></td>
+  <td class="num" rowspan="2"><%= num_hepler2(info) %></td>
+  <td class="mid" rowspan="2"><%= hiduke3_helper(job.info.dateInfo03) %> <br><%= hiduke3_helper(job.info.dateInfo05) %> <br><%= hiduke3_helper(sales.present? ? hiduke5_helper(sales.t03) : "") %> </td>
+  <td class="mid" rowspan="2"><%= book_helper3( info.numInfo08 , info.numInfo09 ) %></td>
+  <td rowspan="2">
+    <%= info&.textInfo11 %><br>
+    <div class="in_size">
+      <span><b><%= info&.textInfo20 %></b></span><%= size_helper3(info.numInfo06, info.numInfo07) %>
+      <% if info.numInfo14.to_i > 0 || info.numInfo15.to_i > 0 %>
+        <br><span>展開:</span><%= size_helper3(info.numInfo14, info.numInfo15) %>
+      <% end %>
+    </div>
+  </td>
+
+  <td class="num" rowspan="2">
+    <span>納品枚数:</span><%= numformat1(@papers[16]) %><br>
+    <span>実数:</span><%= numformat1(@papers[7]) %><br>
+    <span>予備：</span><%= numformat1(@papers[8]) %>
+  </td>
+
+  <td class="mid" rowspan="2">
+    <%= @press_info[:special] %><br>
+    <%= @press_info[:upo] %><br>
+    <%= @press_info[:kaleido] %>
+  </td>
+
+  <td class="num" rowspan="2">
+    <span>色数:</span><%= @press_info[:color] %><br>
+    <span>面付:</span><%= numformat1(@papers[14]) %><br>
+    <span>差替:</span><%= numformat1(@papers[12]) %>
+  </td>
+
+  <td class="num" rowspan="2">
+    <span>機種:</span><%= @press_info[:sm74].blank? && @press_info[:xl106].blank? ? "-" : macnine_helper(@press_info[:sm74],@press_info[:xl106]) %><br>
+    <span>連量:</span><%= @papers[11] %><br>
+    <span>重量:</span><%= @papers[9] == 0.0 ? "-" :  "#{format("%8.1f", @papers[9])} kg" %>
+  </td>
+
+  <td style="text-align: right;height: 50%"><%= numformat1(@papers[13]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[0]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[1]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[2]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[3]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[4]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[5]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[6]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[7]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[8]) %></td>
+  <td style="text-align: right"><%= numformat1(@mitumori_array[9]) %></td>
+  <td style="text-align: right" rowspan="2">
+    <%= numformat1(@cal_sums[1].to_i) %>
+  </td>
+  <td style="text-align: right" rowspan="2">
+<!--    <span>売上:</span><%#= numformat1(value_total_sale) %><br>-->
+    <span>売上:</span><%= numformat1(@sale_sum) %><br>
+    <span>費用:</span><%= numformat1(@tmp_hiyou_sum) %><br>
+<!--    <span>粗利:</span><%#= numformat1(value_total_sale - @tmp_hiyou_sum) %>-->
+    <span>粗利:</span><%= numformat1(@sale_sum - @tmp_hiyou_sum) %>
+  </td>
+
+  <td rowspan="2">
+    <%= info.salesname %>
+    <div class="js-parent-code-cell" data-job-id="<%= job.id %>">
+      <%= render partial: 'add_values/parent_code_cell', locals: { job: job, add_datum: add_datum } %>
+    </div>
+  </td>
+</tr>
+<tr>
+  <td style="text-align: right;height: 50%"><%= numformat1(@papers[15]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[0]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[1]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[2]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[3]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[4]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[5]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[6]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[7]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[8]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[9]) %></td>
+<!--  <td class="" style="text-align: center;font-size: 110%;"><a href="javascript:arrangeModal('<%#= job.id %>');">面付け</a></td>-->
+</tr>

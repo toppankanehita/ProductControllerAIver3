@@ -1,0 +1,7 @@
+
+// app/views/add_values/create.js.erb
+// 先頭に挿入し、軽くハイライト
+var $row = $('<%= j render(partial: "add_values/row", locals: { value: @value, job: @job, info: @info, idx: 0, offset: 0, idv: 0}) %>');
+$("#add_papers tbody").prepend($row);
+$row.addClass('table-success');
+setTimeout(function(){ $row.removeClass('table-success'); }, 1500);

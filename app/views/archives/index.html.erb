@@ -1,0 +1,55 @@
+<%= render partial: 'search_index' %>
+
+<p id="notice"><%= notice %></p>
+
+<table class="index">
+  <thead>
+    <tr style="border-bottom: 2px #999 solid">
+      <th colspan="4"></th>
+
+      <th>印刷日</th>
+      <th>納品日</th>
+      <th>売上日</th>
+      <th></th>
+<!--      <th>サイズ</th>-->
+<!--      <th>色数</th>-->
+<!--      <th>特色</th>-->
+<!--      <th>ユポ</th>-->
+<!--      <th>カレイド</th>-->
+<!--      <th>用紙</th>-->
+<!--      <th>印刷枚数</th>-->
+<!--      <th>実数</th>-->
+<!--      <th>予備</th>-->
+<!--      <th></th>-->
+<!--      <th>連量</th>-->
+<!--      <th>差替数</th>-->
+<!--      <th>k単価</th>-->
+<!--      <th>枚単価</th>-->
+<!--      <th>総重量</th>-->
+      <th>用紙</th>
+      <th>印刷</th>
+      <th>製版</th>
+      <th>POD</th>
+      <th>加工</th>
+      <th>制作</th>
+      <th>外注</th>
+      <th>アセンブリ</th>
+      <th>配送</th>
+      <th>営業管理費</th>
+      <th colspan="2">集計</th>
+<!--      <th>Job</th>-->
+<!--      <th colspan="3"></th>-->
+    </tr>
+  </thead>
+
+  <% i = 1 %>
+  <% ii = (@archives.limit_value * ((params[:page].blank? ? 1 : params[:page].to_i) - 1))  %>
+  <% @archives.each do |archive| %>
+    <% job = Job.find_by(id: archive.job_id) %>
+    <%= render partial: 'archive_rows', locals: {  i: i,ii: ii, job: job, archive: archive } %>
+  <% end %>
+</table>
+<div id="mask" class="hidden"></div>
+<div id="modal" class="hidden modal-dialog-fluid"></div>
+
+<%= javascript_pack_tag 'jobs/add_datum' %>

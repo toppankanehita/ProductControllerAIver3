@@ -1,0 +1,71 @@
+
+  <div class="d-flex flex-wrap align-items-center under_l top" style="font-size: 80%">
+    <a href="#" class="me-2 js-open-addvalues" data-job-id="<%= job.id %>" data-den-id="<%= job.den_id %>"><%= job.den_id %></a>
+    <span class="size"><%= info&.textInfo20.to_s %></span>
+    <span><%= list_mark_helper(info) %></span>
+    <span class="<%= cal_color_helper(info) %>"><%= textInfo02_helper(info&.textInfo02.to_s) %></span>
+  </div>
+  <div class="info05 under_l"><%= shortname(info&.textInfo05.to_s) %></div>
+  <div class="info07 under_l"><%= info&.textInfo07.to_s %></div>
+  <div style="font-size: 80%"><%= info&.textInfo11.to_s %></div>
+  <% values = touroku_helper(job)  %>
+
+  <% parent_code = AddDatum.find_by("job_id = ? AND parent_code IS NOT NULL", job.id)&.parent_code %>
+  <% if values[0].to_i > 0 && parent_code.blank? %>
+    <div class="inline-summary">
+      <div class="summary-pair">
+        <span class="label">総枚数</span>
+        <span class="value"><%= numformat1(values[0]) %></span>
+      </div>
+      <div class="summary-pair">
+        <span class="label">用紙価格</span>
+        <span class="value"><%= numformat1(values[1]) %></span>
+      </div>
+    </div>
+  <% elsif parent_code.present? %>
+    <div class="inline-summary">
+      <div class="summary-pair">
+        <span class="label">親伝票</span>
+        <span class="value"><%= parent_code %></span>
+      </div>
+    </div>
+  <% end %>
+
+  <style>
+    .top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        a {
+            font-size: 120%;
+        }
+        span {
+            border-radius: 4px;
+            padding: 0 0.5em;
+            line-height: 1.5em;
+        }
+        span.size {
+            background-color: #666;
+            color: #FFF;
+            font-weight: bold;
+        }
+        span.blue {
+            background-color: #4682b4;
+            color: #FFF;
+            font-weight: bold;
+        }
+        span.red {
+            background-color: #db7093;
+            color: #FFF;
+            font-weight: bold;
+        }
+        span.green {
+            background-color: #008080;
+            color: #FFF;
+            font-weight: bold;
+        }
+        .info07 {
+            font-weight: bold;
+        }
+    }
+  </style>

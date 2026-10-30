@@ -1,0 +1,16 @@
+<%= form_with(
+      model: add_datum,
+      url: update_parent_code_add_data_path(job_id: add_datum.job_id),
+      method: :patch,
+      data: { turbolinks: false, turbo: false },
+      html: { id: "parent_code_form", "data-turbolinks" => "false", "data-turbo" => "false" }
+    ) do |form| %>
+  <div class="mb-3">
+    <%= form.label :parent_code, '親コード', class: 'form-label' %>
+    <%= form.text_field :parent_code, class: 'form-control', value: add_datum.parent_code %>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+    <%= form.submit '保存', class: 'btn btn-primary' %>
+  </div>
+<% end %>

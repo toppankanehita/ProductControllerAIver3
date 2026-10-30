@@ -1,0 +1,47 @@
+<h1>データ再集計</h1>
+<meta http-equiv="Refresh" content="1200">
+<div style="width: 400px;margin: 3em auto; text-align: center;">
+  <h1>次回再集計まで<br></br>残り時間:</h1>
+  <p id="countdown" style="font-size: 2em; font-weight: bold;">20:00</p>
+  <br>
+  対象レコード数 :<%= numformat1(@job_count)  %> 件
+</div>
+
+
+<script>
+    // content="1200"からリロードまでの秒数を取得
+    let remainingSeconds = 1200;
+    const countdownElement = document.getElementById('countdown');
+
+    // 秒を「分:秒」形式の文字列に変換する関数
+    function formatTime(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        // 常に2桁表示にする（例: 5 -> 05）
+        const displayMinutes = String(minutes).padStart(2, '0');
+        const displaySeconds = String(seconds).padStart(2, '0');
+
+        return `${displayMinutes}:${displaySeconds}`;
+    }
+
+    // 1秒ごとに実行される関数
+    function updateCountdown() {
+        if (remainingSeconds >= 0) {
+            // 残り時間を表示を更新
+            countdownElement.textContent = formatTime(remainingSeconds);
+            // 残り時間を1秒減らす
+            remainingSeconds--;
+        }
+
+        // remainingSecondsが-1になると、<meta refresh>でリロードされるので、
+        // 0秒で止めておくのも良いですが、今回は単純化のためそのまま続けます。
+    }
+
+    // 初回実行
+    updateCountdown();
+
+    // 1000ミリ秒（1秒）ごとに updateCountdown 関数を実行
+    // このタイマーが残り時間をリアルタイムで更新します
+    setInterval(updateCountdown, 1000);
+</script>

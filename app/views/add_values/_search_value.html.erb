@@ -1,0 +1,65 @@
+<div id="search_value" class="search-form-container">
+  <%= search_form_for @q, url: add_values_search_add_values_path, method: :get do |f| %>
+    <div class="d-flex flex-row flex-wrap align-items-center justify-content-start">
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width:10%">
+        <%= label_tag 'q_info[den_id_start]', '受注番号', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[den_id_start]', params.dig(:q_info, :den_id_start), class: 'form-control form-control-sm', style: 'width: 8em;',placeholder: '250000-000' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 13%">
+        <%= label_tag 'q_info[info_textInfo05_cont]', '顧客名', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[info_textInfo05_cont]', params.dig(:q_info, :info_textInfo05_cont), class: 'form-control form-control-sm', style: 'width: 13em;' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 13%">
+        <%= label_tag 'q_info[info_textInfo07_cont]', '案件名', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[info_textInfo07_cont]', params.dig(:q_info, :info_textInfo07_cont), class: 'form-control form-control-sm', style: 'width: 13em;' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 11%">
+        <%= label_tag 'q_info[info_textInfo02_cont]', '印刷方法', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[info_textInfo02_cont]', params.dig(:q_info, :info_textInfo02_cont), list: 'print_method_list', class: 'form-control form-control-sm', style: 'width: 7em;', placeholder: '選択または入力' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 9%">
+        <%= label_tag 'q_info[info_textInfo11_cont]', '用紙', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[info_textInfo11_cont]', params.dig(:q_info, :info_textInfo28_cont), class: 'form-control form-control-sm', style: 'width: 7em;' %>
+        <%= tag.datalist id: 'print_method_list' do %>
+          <%= tag.option 'オフ輪' %>
+          <%= tag.option 'オフセット' %>
+          <%= tag.option 'プリント' %>
+          <%= tag.option 'その他' %>
+        <% end %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 15%">
+        <%= label_tag 'q_info[info_dateInfo05_gteq]', '納品日', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[info_dateInfo05_gteq]', params.dig(:q_info, :info_dateInfo05_gteq), class: 'form-control form-control-sm', style: 'width: 7em;', type: 'date' %>
+        <%= label_tag 'q_info[info_dateInfo05_lteq]', '〜', class: 'form-label mb-0 ms-1 me-1' %>
+        <%= text_field_tag 'q_info[info_dateInfo05_lteq]', params.dig(:q_info, :info_dateInfo05_lteq), class: 'form-control form-control-sm', style: 'width: 7em;', type: 'date' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 15%">
+        <%= label_tag 'q_info[info_dateInfo03_gteq]', '印刷日', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[info_dateInfo03_gteq]', params.dig(:q_info, :info_dateInfo03_gteq), class: 'form-control form-control-sm', style: 'width: 7em;', type: 'date' %>
+        <%= label_tag 'q_info[info_dateInfo03_lteq]', '〜', class: 'form-label mb-0 ms-1 me-1' %>
+        <%= text_field_tag 'q_info[info_dateInfo03_lteq]', params.dig(:q_info, :info_dateInfo03_lteq), class: 'form-control form-control-sm', style: 'width: 7em;', type: 'date' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 7%">
+        <%= label_tag 'q_info[info_salesname_cont]', '担当', class: 'form-label mb-0 me-2' %>
+        <%= text_field_tag 'q_info[info_salesname_cont]', params.dig(:q_info, :info_salesname_cont), class: 'form-control form-control-sm', style: 'width: 5em;' %>
+      </div>
+
+
+
+      <%= hidden_field_tag 'q_info[info_cansel_eq]', '0' %>
+      <%= hidden_field_tag 'q_info[info_hold_eq]', '0' %>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 7%">
+        <%= f.submit '検索', class: 'btn btn-sm btn-primary me-2' %>
+        <div class="nav_total mb-0"><%= @add_values.total_count %>件</div>
+      </div>
+    </div>
+  <% end %>
+</div>

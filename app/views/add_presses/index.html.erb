@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Add Presses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Machine</th>
+      <th>Han</th>
+      <th>Iro</th>
+      <th>Dai</th>
+      <th>Kake</th>
+      <th>Daitanka</th>
+      <th>Tanka</th>
+      <th>Dai price</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @add_presses.each do |add_press| %>
+      <tr>
+        <td><%= add_press.machine %></td>
+        <td><%= add_press.han %></td>
+        <td><%= add_press.iro %></td>
+        <td><%= add_press.dai %></td>
+        <td><%= add_press.kake %></td>
+        <td><%= add_press.daitanka %></td>
+        <td><%= add_press.tanka %></td>
+        <td><%= add_press.dai_price %></td>
+        <td><%= link_to 'Show', add_press %></td>
+        <td><%= link_to 'Edit', edit_add_press_path(add_press) %></td>
+        <td><%= link_to 'Destroy', add_press, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Add Press', new_add_press_path %>

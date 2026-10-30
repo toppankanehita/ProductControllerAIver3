@@ -1,0 +1,57 @@
+<%= form_with(model: press_data) do |form| %>
+  <% if press_data.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(press_data.errors.count, "error") %> prohibited this press_data from being saved:</h2>
+
+      <ul>
+        <% press_data.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :den_code %>
+    <%= form.text_field :den_code %>
+  </div>
+
+  <div class="field">
+    <%= form.label :product_name %>
+    <%= form.text_field :product_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paper_no %>
+    <%= form.text_field :paper_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.datetime_select :start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_time %>
+    <%= form.number_field :work_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :n01 %>
+    <%= form.number_field :n01 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :n02 %>
+    <%= form.number_field :n02 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :machine %>
+    <%= form.text_field :machine %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Target month:</strong>
+  <%= @debit.target_month %>
+</p>
+
+<p>
+  <strong>Den code:</strong>
+  <%= @debit.den_code %>
+</p>
+
+<p>
+  <strong>Job:</strong>
+  <%= @debit.job_id %>
+</p>
+
+<p>
+  <strong>Siwake:</strong>
+  <%= @debit.siwake %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @debit.name %>
+</p>
+
+<p>
+  <strong>Out cost:</strong>
+  <%= @debit.out_cost %>
+</p>
+
+<p>
+  <strong>In cost:</strong>
+  <%= @debit.in_cost %>
+</p>
+
+<%= link_to 'Edit', edit_debit_path(@debit) %> |
+<%= link_to 'Back', debits_path %>

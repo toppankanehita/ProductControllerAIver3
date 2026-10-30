@@ -1,0 +1,7 @@
+<%= turbo_stream.replace dom_id(@archive, :rows) do %>
+  <% i = 1 %>
+  <% per_page = (@per_page || 10) %>
+  <% ii = (per_page * ((params[:page].blank? ? 1 : params[:page].to_i) - 1)) %>
+  <% job = Job.find_by(id: @archive.job_id) %>
+  <%= render partial: 'archive_rows', locals: { i: i, ii: ii, job: job, archive: @archive } %>
+<% end %>

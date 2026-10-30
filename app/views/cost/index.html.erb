@@ -1,0 +1,45 @@
+
+<table class="a_index" id="add_values_index">
+  <thead>
+    <tr>
+      <th>対象月</th><th>製造仕入高</th><th>賃金手当</th><th>賞与手当</th><th>雑給</th>
+      <th>オフ輪用紙<br>金額合計</th><th>枚葉用紙<br>金額合計</th><th>オフ輪<br>賦課指数</th><th>オフセット<br>賦課指数</th>
+      <th>CTP<br>刷版費合計</th><th>POD<br>出力費合計</th>
+      <th>製造<br>労務費合計</th><th>制作<br>労務費合計</th><th>デザイン<br>労務費合計</th><th>アセンブリ<br>雑給合計</th>
+      <th>全外注<br>売上合計</th><th>売上高</th><th>製造原価</th><th>一般管理費</th><th>受注No有売上</th><th>オフ輪減額</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @costs.each do |cost| %>
+
+    <tr>
+      <td><%= cost.target_month %></td>
+      <td style="text-align: right"><%= numformat1(cost.cost01) %></td>
+      <td style="text-align: right"><%= numformat1(cost.cost02) %></td>
+      <td style="text-align: right"><%= numformat1(cost.cost03) %></td>
+      <td style="text-align: right"><%= numformat1(cost.cost04) %></td>
+
+      <td style="text-align: right"><%= numformat1(cost.all_paper_web) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_paper_sheet) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_press_web) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_press_sheet) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_ctp_plate + cost.all_ctp_sheet) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_pod_cost) %></td>
+
+      <td style="text-align: right"><%= numformat1(cost.all_roumu_product) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_roumu_create) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_roumu_design + cost.cost20.to_i) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_assembly) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_outsourcing) %></td>
+
+      <td style="text-align: right"><%= numformat1(cost.all_sales) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_cost) %></td>
+      <td style="text-align: right"><%= numformat1(cost.sales_cost) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_slip_sales) %></td>
+      <td style="text-align: right"><%= numformat1(cost.all_web_minus) %></td>
+      <td><%= link_to "集計",cal_cost_cost_index_path(id: cost),data: { confirm: "#{cost.target_month}データを集計しますか？" } %></td>
+    </tr>
+  <% end %>
+  <tbody>
+</table>
+

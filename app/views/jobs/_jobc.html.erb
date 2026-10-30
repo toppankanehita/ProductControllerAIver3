@@ -1,0 +1,522 @@
+
+<div id="<%= dom_id @job %>" class="job" style="">
+  <div class="infowrap" style="background-color: #FFF">
+    <div class="data_wap">
+      <div class="data_wap d0101">
+        <div class="midasi_inner">受注番号</div>
+        <div class="data_innner">
+          <%# @uploadfile %>
+          <%# @job.blank? ? "" :  link_to(@job.den_id,"http://130.1.15.54:3000/jobs/show/#{@job.id}", target: "_blank") %>
+          <%# fixed = Uploadfile.find_by("job_id = ? and life = ?",@job.id ,1 ) %>
+          <% uploadfiles = Uploadfile.where("job_id = ? and life = ?",@job.id ,1 ) %>
+          <% puts "--mount_chk_helper--" %>
+          <% m = mount_chk_helper %>
+          <% uploadfiles.each_with_index do |fixed,i| %>
+            <% if fixed.present?  %>
+              <% if m %>
+                <%= link_to "積算書#{i + 1}", download_path(fixed), data: { confirm: "積算書登録をダウンロードします。" },style: "margin: 0;" %>
+              <% else %>
+                <%= link_to "積算書", "http://130.1.15.99:4000/uploadfiles/#{fixed.id}?user_id=23&account=tpnadmin&session=e507c5cd4784179ccc0d8581c21efc20", target: "_blank", rel: "noopener", data: { confirm: "積算書登録を開きます。" }, style: "margin: 0;" %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="data_wap d0102">
+        <div class="midasi_inner">顧客名</div>
+        <div class="data_innner"><%= @job.blank? ? "" : @job.info.textInfo05 %></div>
+      </div>
+      <div class="data_wap d0103">
+        <div class="midasi_inner">品名</div>
+        <div class="data_innner"><%= @job.blank? ? "" : @job.info.textInfo07 %></div>
+      </div>
+      <div class="data_wap d0104">
+        <div class="midasi_inner">サイズ</div>
+        <div class="data_innner">
+          <% if @job.present? %>
+            <%= @job.info.textInfo20 %><br>
+            <%= @job.info.numInfo06 %> × <%= @job.info.numInfo07 %>
+          <% end %>
+        </div>
+      </div>
+      <div class="data_wap d0105">
+        <div class="midasi_inner">色数</div>
+        <div class="data_innner">
+          <% if @job.present? %>
+            <%= @job.info.numInfo04 %> × <%= @job.info.numInfo05 %>
+          <% end %>
+        </div>
+      </div>
+      <div class="data_wap d0106">
+        <div class="midasi_inner">頁数</div>
+        <div class="data_innner">
+          表紙：<%= @job.blank? ? "" : numformat1(@job.info.numInfo08) %><br>
+          本文：<%= @job.blank? ? "" : numformat1(@job.info.numInfo09) %>
+        </div>
+      </div>
+      <div class="data_wap d0107">
+        <div class="midasi_inner">数量</div>
+        <div class="data_innner"><%= @job.blank? ? "" : numformat1(@job.info.numInfo01) %></div>
+      </div>
+      <div class="data_wap d0108">
+        <div class="midasi_inner">印刷方法</div>
+        <div class="data_innner"><%= @job.blank? ? "" : @job.info.textInfo02 %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap color0" style="margin-top:15px">
+    <div class="data_wap">
+      <div class="data_wap d0201">
+        <div class="midasi_inner">用紙</div>
+        <div class="data_innner"><%= @papers[3] %></div>
+      </div>
+      <div class="data_wap d0202">
+        <div class="midasi_inner">斤量（kg）</div>
+        <div class="data_innner"><%= @papers[4]%></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">取数</div>
+        <div class="data_innner"><%= @papers[5] %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">台数</div>
+        <div class="data_innner"><%= @papers[6] %></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner">実数</div>
+        <div class="data_innner"><%= numformat1(@papers[7]) %></div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner">予備数</div>
+        <div class="data_innner"><%= numformat1(@papers[8]) %></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">総量</div>
+        <div class="data_innner"><%= numformat1(@papers[9]) %></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@papers[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@papers[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@papers[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colora">
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">製版</div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">版種類</div>
+        <div class="data_innner"><%= @ctpArr[9] %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">版単価</div>
+        <div class="data_innner"><%= @ctpArr[4] %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">面付け数</div>
+        <div class="data_innner"><%= @ctpArr[10] %><span>面</span> <%= @ctpArr[11] %><span>台</span></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner">ヤレ版</div>
+        <div class="data_innner"><%= numformat1(@ctpArr[5] + @ctpArr[6] + @ctpArr[7]) %>枚</div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner">出力時間</div>
+        <div class="data_innner"><%= second_time(@ctpArr[3]) %></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">総量</div>
+        <div class="data_innner"><%= @ctpArr[8] %><span>枚</span></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@ctpArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@ctpArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@ctpArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colorb">
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">印刷</div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">印刷日</div>
+        <div class="data_innner"><%= @pressArr[3] %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">機種</div>
+        <div class="data_innner"><%= machine_name[@pressArr[4]] %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">担当者数</div>
+        <div class="data_innner"><%= @pressArr[5] %>人</div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner">実数</div>
+        <div class="data_innner"><%= numformat1(@jisu) %></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner">ヤレ枚数</div>
+        <div class="data_innner"><%= numformat1(@pressArr[6]) %></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">印刷時間</div>
+        <div class="data_innner"><%= second_time(@pressArr[7]) %></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@pressArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@pressArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@pressArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colorc">
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">POD</div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">出力日</div>
+        <div class="data_innner"><%= @podArr[3] %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">出力時間</div>
+        <div class="data_innner"><%= time_int(@podArr[4]) %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">カラー出力数</div>
+        <div class="data_innner"><%= numformat1(@podArr[6]) %></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner">モノクロ出力数</div>
+        <div class="data_innner"><%= numformat1(@podArr[7]) %></div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner">SPカラー出力数</div>
+        <div class="data_innner"><%= numformat1(@podArr[8] ) %></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">POD合計</div>
+        <div class="data_innner"><%= numformat1(@podArr[6] + @podArr[7] + @podArr[8] ) %></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@podArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@podArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@podArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colord">
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">加工</div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">作業日</div>
+        <div class="data_innner"><%= @kakoArr[3] %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">担当者数</div>
+        <div class="data_innner"><%= @kakoArr[4] %> 人</div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">加工時間</div>
+        <div class="data_innner"><%= time_int(@kakoArr[5]) %></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner">断裁担当者数</div>
+        <div class="data_innner"><%= @kakoArr[6] %> 人</div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner">断裁時間</div>
+        <div class="data_innner"><%= time_int(@kakoArr[7]) %></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">加工合計</div>
+        <div class="data_innner"><%= time_int(@kakoArr[8]) %></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@kakoArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@kakoArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@kakoArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colore">
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">制作＆下版</div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">校了日</div>
+        <div class="data_innner"><%= @job.info.dateInfo04 %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">制作担当</div>
+        <div class="data_innner"><%= @seisakuArr[3] %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">CPR担当</div>
+        <div class="data_innner"><%= @seisakuArr[5] %></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner">制作合計</div>
+        <div class="data_innner"><%= time_int(@seisakuArr[4]) %></div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner">CPR合計</div>
+        <div class="data_innner"><%= time_int(@seisakuArr[6]) %></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">色調出力</div>
+        <div class="data_innner"><%= numformat1(@seisakuArr[7]) %></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@seisakuArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@seisakuArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@seisakuArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colorf">
+    <% latest_outsource = @gaicyuArr[4] %>
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">協力会社</div>
+        <div class="data_innner">（外注）<%= @gaicyuArr[3].present? ? "<br><span style='font-size:80%;color:#1565c0;'>[#{@gaicyuArr[3]}]</span>".html_safe : "" %></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">依頼先</div>
+        <div class="data_innner" style="font-size:80%;"><%= latest_outsource&.supplier_name %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">最新日付</div>
+        <div class="data_innner" style="font-size:80%;"><%= latest_outsource&.effective_date %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">依頼書金額</div>
+        <div class="data_innner"><%= latest_outsource ? numformat1(latest_outsource.order_amount.to_i) : "" %></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner"></div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner"></div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner"></div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@gaicyuArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@gaicyuArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@gaicyuArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colorg">
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">アセンブリ</div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">作業者数</div>
+        <div class="data_innner"><%= numformat1(@assemblyArr[3]) %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">延べ時間</div>
+        <div class="data_innner"><%= time_int(@assemblyArr[4]) %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner"></div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner"></div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner"></div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner"></div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@assemblyArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@assemblyArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@assemblyArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colorh">
+    <div class="data_wap">
+      <div class="data_wap d0301">
+        <div class="midasi_inner">配送</div>
+        <div class="data_innner"></div>
+      </div>
+      <div class="data_wap d0302">
+        <div class="midasi_inner">納品日</div>
+        <div class="data_innner"><%= @job.info.dateInfo05 %></div>
+      </div>
+      <div class="data_wap d0203">
+        <div class="midasi_inner">発送先1</div>
+        <div class="data_innner"><%= @hassoArr[3] %></div>
+      </div>
+      <div class="data_wap d0204">
+        <div class="midasi_inner">発送先2</div>
+        <div class="data_innner"><%= @hassoArr[4] %></div>
+      </div>
+      <div class="data_wap d0205">
+        <div class="midasi_inner">発送先3</div>
+        <div class="data_innner"><%= @hassoArr[5] %></div>
+      </div>
+      <div class="data_wap d0206">
+        <div class="midasi_inner">発送先4</div>
+        <div class="data_innner"><%= @hassoArr[6] %></div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">発送先5</div>
+        <div class="data_innner"><%= @hassoArr[7] %></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@hassoArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@hassoArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@hassoArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap colori">
+    <div class="data_wap">
+      <div class="data_wap d0401">
+        <div class="midasi_inner">営業経費</div>
+        <div class="data_innner" style="font-size: 95%; line-height: 1.3em">（非生産部門管理費）<br>※営業・生産管理・生産技術・営業庶務・総務（必要書類作成・出力・郵送費等）</div>
+      </div>
+      <div class="data_wap d0207">
+        <div class="midasi_inner">%</div>
+        <div class="data_innner"><%= @keihiArr[3] %></div>
+      </div>
+      <div class="data_wap d0208">
+        <div class="midasi_inner">営業積算額</div>
+        <div class="data_innner"><%= numformat1(@keihiArr[0]) %></div>
+      </div>
+      <div class="data_wap d0209">
+        <div class="midasi_inner">原価</div>
+        <div class="data_innner"><%= numformat1(@keihiArr[1]) %></div>
+      </div>
+      <div class="data_wap d0210">
+        <div class="midasi_inner">差額</div>
+        <div class="data_innner"><%= numformat1(@keihiArr[2]) %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infowrap summary">
+    <div class="data_wap d0208">
+      <div class="midasi_inner">売上額</div>
+      <div class="data_innner sum"><%= numformat1(@cal_sums[0].to_i) %></div>
+    </div>
+    <div class="data_wap d0208">
+      <div class="midasi_inner">見積額</div>
+      <div class="data_innner sum"><%= numformat1(@cal_sums[1].to_i) %></div>
+    </div>
+    <div class="data_wap d0208">
+      <div class="midasi_inner">営業積算額</div>
+      <div class="data_innner sum"><%= numformat1(@cal_sums[2].to_i) %></div>
+    </div>
+    <div class="data_wap d0209">
+      <div class="midasi_inner">原価</div>
+      <div class="data_innner sum"><%= numformat1(@cal_sums[3].to_i) %></div>
+    </div>
+    <div class="data_wap d0210">
+      <div class="midasi_inner">売上-原価</div>
+      <div class="data_innner sum"><%= numformat1(@cal_sums[4].to_i)  %></div>
+    </div>
+  </div>
+
+</div>

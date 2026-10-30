@@ -1,0 +1,16 @@
+<%# 親コードセルの差し替え用テンプレート %>
+<%# 引数: job:, add_datum: %>
+<% childs_job_id = AddDatum.where(parent_code: @job.den_id).pluck(:job_id) %>
+<% if childs_job_id.count > 0  %>
+  合算 <br>
+  <% childs_job_id.each do |job_id| %>
+    <% pJob = Job.find_by(id: job_id) %>
+    <%= pJob.den_id %><br>
+  <% end %>
+<% else %>
+  <% if add_datum&.parent_code.blank? %>
+    <%= link_to '親コードを登録', '#', class: 'js-open-parent-code-modal', data: { 'job-id': job.id } %>
+  <% else %>
+    親コード<br><%= link_to add_datum&.parent_code, '#', class: 'js-open-parent-code-modal', data: { 'job-id': job.id } %>
+  <% end %>
+<% end %>

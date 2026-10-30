@@ -1,0 +1,2 @@
+import"react";import e from"react-dom";import t from"prop-types";import{jsx as n,jsxs as r}from"react/jsx-runtime";var i=e=>r(`div`,{children:[`Hello `,e.name,`!`]});i.defaultProps={name:`David`},i.propTypes={name:t.string},document.addEventListener(`DOMContentLoaded`,()=>{e.render(n(i,{name:`React`}),document.body.appendChild(document.createElement(`div`)))});
+//# sourceMappingURL=hello_react-BM4UiSy7.js.map

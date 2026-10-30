@@ -1,0 +1,17 @@
+<h1>伝票複製履歴</h1>
+<table>
+  <tr>
+    <th></th>
+    <th>品名: </th>
+    <th>サイズ: </th>
+    <th>印刷枚数:</th>
+    <th>色数: </th>
+    <th>用紙: </th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% info = @job.info.blank? ? Info.new(textInfo07: "未登録") : @job.info %>
+  <tr colspan="8">得意先名: <%= info.textInfo05 %></tr>
+  <%= render "show_sub", job: @job ,title: "今回JOB",num:  1 %>
+</table>
+<%= link_to "戻る", root_path %>

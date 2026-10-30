@@ -1,0 +1,147 @@
+<%= form_with(model: twork) do |form| %>
+  <% if twork.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(twork.errors.count, "error") %> prohibited this twork from being saved:</h2>
+
+      <ul>
+        <% twork.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :no %>
+    <%= form.number_field :no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :delivery_number %>
+    <%= form.text_field :delivery_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :delivery_date %>
+    <%= form.date_select :delivery_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tinfo05 %>
+    <%= form.text_field :tinfo05 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tinfo07 %>
+    <%= form.text_field :tinfo07 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :quote_number %>
+    <%= form.text_field :quote_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :quantity %>
+    <%= form.text_field :quantity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :unit_price %>
+    <%= form.number_field :unit_price %>
+  </div>
+
+  <div class="field">
+    <%= form.label :billing_amount %>
+    <%= form.number_field :billing_amount %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost1 %>
+    <%= form.number_field :cost1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost2 %>
+    <%= form.number_field :cost2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost3 %>
+    <%= form.number_field :cost3 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :total_cost %>
+    <%= form.number_field :total_cost %>
+  </div>
+
+  <div class="field">
+    <%= form.label :profit %>
+    <%= form.number_field :profit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :profit_margin %>
+    <%= form.text_field :profit_margin %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contractor1 %>
+    <%= form.text_field :contractor1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contractor2 %>
+    <%= form.text_field :contractor2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contractor3 %>
+    <%= form.text_field :contractor3 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :customer_code %>
+    <%= form.text_field :customer_code %>
+  </div>
+
+  <div class="field">
+    <%= form.label :remarks %>
+    <%= form.text_area :remarks %>
+  </div>
+
+  <div class="field">
+    <%= form.label :staff %>
+    <%= form.text_field :staff %>
+  </div>
+
+  <div class="field">
+    <%= form.label :den_code %>
+    <%= form.text_field :den_code %>
+  </div>
+
+  <div class="field">
+    <%= form.label :outsourcing_cost %>
+    <%= form.number_field :outsourcing_cost %>
+  </div>
+
+  <div class="field">
+    <%= form.label :purchase_cost %>
+    <%= form.number_field :purchase_cost %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_time %>
+    <%= form.text_field :work_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_cost %>
+    <%= form.number_field :work_cost %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,127 @@
+<!-- app/views/add_values/_row.html.erb -->
+
+<tr id="add_value_<%= value.id %>" data-job-id="<%= job&.id %>" data-den-code="<%= job&.den_id %>">
+  <% i = (offset || 0) + (idx || 0) + 1 %>
+  <% ii = i + (params[:page].to_i * 15) %>
+  <td class="mid"><%= link_to i, job_path(id: job,i: ii,p: params[:page]), class: 'js-open-job-dialog', data: { url: job_path(id: job, i: ii, p: params[:page]), job_id: job.id } %></td>
+  <td class="nodialog" class="" id="press_method"><%= info.present? ? textInfo02_helper(info.textInfo02) : '' %></td>
+  <% if idv == 0 %>
+    <td class="nodialog">
+      <%= link_to job.den_id,
+                  '#',
+                  onclick: "window.open('http://130.1.15.54:3000/jobs/show/#{job.id}', '_blank', 'width=880,height=690,resizable=yes,scrollbars=yes'); return false;" %><br>
+      <%# #job.present? ? link_to(job.den_id , job_path(id: job, i: (offset || 0) + (idx || 0) + 1, p: params[:page])) : '' %>
+      <%= info&.salesname %>
+    </td>
+    <td class="nodialog"><%= info&.textInfo05 %><br><%= info&.textInfo07 %></td>
+    <td class="nodialog">
+      <%= info&.textInfo11 %><br><%= info&.textInfo20 %> <%= size_helper(info.numInfo06, info.numInfo07) %>
+      <% if info.numInfo14.to_i > 0 || info.numInfo15.to_i > 0 %>
+        <br>展開: <%= size_helper(info.numInfo14, info.numInfo15) %>
+      <% end %>
+    </td>
+    <td class="num nodialog"><%= info.present? ? num_hepler2(info) : '' %></td>
+    <td class="mid nodialog"><%= info.present? ? hiduke3_helper(info.dateInfo03) : '' %><br><%= info.present? ? hiduke3_helper(info.dateInfo05) : '' %></td>
+    <td class="mid nodialog"><%= info.present? ? book_helper3(info.numInfo08, info.numInfo09) : '' %></td>
+    <td class="num nodialog"><%= info.present? ? numformat1(yousi_hepler(info)) : '' %></td>
+  <% else %>
+    <td colspan="7" class="nodialog"></td>
+  <% end %>
+
+  <% if value&.id.present? %>
+    <td class="editable" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="post_press" data-type="string"><%= value.post_press %></td>
+
+    <td class="editable" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="paper_name" data-type="string"><%= value.paper_name %></td>
+
+    <td class="editable mid" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="paper_route" data-type="string"><%= value.paper_route %>
+    </td>
+
+    <td class="editable num" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="ren" data-type="number"><%= value.ren %></td>
+
+    <td class="editable mid"
+        data-record-id="<%= value.id %>" data-field="ita" data-type="boolean">
+      <input type="checkbox" class="edit-toggle" <%= value.ita.to_i == 1 ? 'checked' : '' %> />
+    </td>
+
+    <%# Reflect sasi from Reportitem.sasikae when AddValue is not yet saved %>
+    <% if value.id.blank? && textInfo02_helper(info.textInfo02) == "オフ輪" %>
+      <% sasi_value = (Reportitem.where(job_id: job&.id).maximum(:sasikae) || 0) %>
+      <% jisu_value, web_sprit = web_jisu_value(info) %>
+      <% yobi_value = web_yobi_value(jisu_value, sasi_value) %>
+      <% press_num_value = jisu_value + yobi_value %>
+    <% else %>
+      <% sasi_value = value.sasi %>
+      <% jisu_value = value.jisu%>
+      <% yobi_value = value.yobi %>
+      <% press_num_value = value.press_num %>
+    <% end %>
+    <% web_sprit = web_sprit.present? ? web_sprit : @wari %>
+    <%= hidden_field_tag 'web_sprit', web_sprit.to_i %>
+    <td class="editable num" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="jisu" data-type="number"><%= jisu_value %></td>
+
+    <td class="editable num" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="sasi" data-type="number"><%= sasi_value %></td>
+
+    <td class="editable num" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="yobi" data-type="number"><%= yobi_value %></td>
+
+    <td class="editable num" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="ktanka" data-type="number"><%= value.ktanka %></td>
+
+    <td class="editable num" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="mtanka" data-type="number"><%= value.mtanka %></td>
+
+    <td class="editable num calc" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="press_num" data-type="number"><%= press_num_value %></td>
+
+    <td class="editable num calc" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="weight" data-type="number"><%= value.weight %></td>
+
+    <td class="editable num calc" contenteditable="true"
+        data-record-id="<%= value.id %>" data-field="paper_price" data-type="number"><%= value.paper_price %></td>
+  <% else %>
+    <td colspan="13" class="nodialog mid">未登録</td>
+  <% end %>
+  <td class="mid">
+    <% add_datum = AddDatum.find_by("job_id = ? AND parent_code IS NOT NULL", job&.id) %>
+    <% if idv == 0 %>
+      <div class="mb-1">
+        <button type="button" class="btn btn-sm btn-outline-primary js-paper-inquiry-btn"
+                data-job-id="<%= job&.id %>" data-den-id="<%= job&.den_id %>"
+                style="font-size: 78%; padding: 0.15em 0.5em; white-space: nowrap;">
+          🤖 問い合わせ
+        </button>
+      </div>
+    <% end %>
+
+      <% if value.id.present?%>
+        <% button_tag '参照候補', type: 'button', class: 'btn btn-sm btn-outline-primary js-archive-suggest-btn mb-1', data: { add_value_id: value&.id, den_id: job&.den_id, job_id: job&.id },style: "font-size: 80%; padding: 0.2em 0.5em; margin-top: 0.5em;" %>
+
+        <%= link_to '削除',
+                    add_value_path(value, format: :json),
+                    method: :delete,
+                    remote: true,
+                    data: { confirm: '削除してよろしいですか？' },
+                    class: 'text-danger delete-add-value' %>
+      <% end %>
+      <% if value_check_helper(value) %>
+          <%= link_to '追加',
+                      '#',
+                      data: { confirm: '追加してよろしいですか？' },
+                      class: 'text-success add-add-value' %>
+      <% end %>
+    <% if add_datum&.parent_code.blank? %>
+      <br><div class="nodialog"><%= link_to '親コードを登録', '#', class: 'js-open-parent-code-modal', data: { 'job-id': job.id } %></div>
+    <% else %>
+      <div class="nodialog">親コード<br>
+        <%= link_to add_datum&.parent_code, '#', class: 'js-open-parent-code-modal', data: { 'job-id': job.id } %>
+      </div>
+    <% end %>
+    <%= @answer %>
+  </td>
+</tr>

@@ -1,0 +1,268 @@
+<% info = @job.info %>
+<% @mentuke = 0 %>
+<% @print_num = 0 %>
+<% @print_kind = "" %>
+<table class="show">
+  <tr>
+    <th>受注No</th>
+    <td><%= link_to @job.den_id,"http://130.1.15.54:3000/jobs/show/#{@job.id}", target: "_blank" %>
+      <%= @job.name %><%= @job.change_no %> <%= @job.id %></td>
+    <th>担当営業</th><td><%= info.textInfo01 %></td>
+    <th width="200px">備考</th>
+  </tr>
+  <tr>
+    <th>印刷方法</th><td><%= info.textInfo02 %></td>
+    <% @print_kind = info.textInfo02 %>
+    <% kind = Kind.find_by("code = ?",info.textInfo03 ) %>
+    <th>種類</th><td><%= info.textInfo03 %> <%= kind.blank? ? "" : kind.name %></td>
+    <td rowspan="8" style="vertical-align: top; font-size: 0.7em"><%= info.textInfo28 %></td>
+  </tr>
+  <tr>
+    <th>顧客名</th><td colspan="3"><%= info.textInfo04 %> <%= info.textInfo05 %></td>
+  </tr>
+  <tr>
+    <th>品名</th><td colspan="3"><b><%= info.textInfo07 %></b></td>
+  </tr>
+  <tr>
+    <th>用紙</th><td colspan="3"><%= info.textInfo11 %></td>
+  </tr>
+  <tr>
+    <th>印刷枚数</th><td><%= num_hepler(info) %></td>
+    <th>色数</th><td><%= color_helper(info.numInfo16 , info.numInfo04 ,info.numInfo05, info.numInfo17, info.textInfo02) %></td>
+  </tr>
+
+  <tr>
+    <th>仕上りサイズ</th><td><%= info.textInfo20 %> <%= size_helper( info.numInfo06 , info.numInfo07) %></td>
+    <th>展開サイズ</th><td><%= size_helper( info.numInfo14 , info.numInfo15) %></td>
+  </tr>
+
+  <tr>
+    <% kakoArry = kako_list(@job) %>
+    <th>加工</th>
+    <td colspan="3">
+      <% kakoArry.each do |kako| %>
+        <%= "【#{kako[0]}】#{kako[1]}  " %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th>冊子</th><td><%= book_helper( info.numInfo08 , info.numInfo09 , info.textInfo41 ) %></td>
+    <th>配達方法</th><td><%= info.textInfo18 %>【納品日】<%= info.dateInfo05 %></td>
+  </tr>
+</table>
+
+<br>
+
+<table class="show">
+  <tr>
+    <th>積算内容</th><th>用紙</th><th>取数</th><th>台数</th><th>実数</th><th>予備込</th>
+  </tr>
+  <% @specs.each do |spec| %>
+    <tr>
+      <th>Spec</th><td><%= spec.t01 %></td><td><%= spec.n05 %></td><td><%= spec.n06 %></td>
+      <td><%= spec.n01 %></td><td><%= spec.n02 %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+
+<table class="show">
+  <tr>
+    <th>印刷積算内容</th><th>総部数</th><th>面付</th><th>通数</th><th>色数</th>
+    <th>台数</th><th>台単価</th><th>掛率</th><th>通単価</th><th>金額</th>
+  </tr>
+  <% @print_specs.each do |p_spec| %>
+    <tr>
+      <th>PrintSpec</th><td><%= p_spec.n01 %></td><td><%= p_spec.n02 %></td><td><%= p_spec.n03 %></td>
+      <td><%= "#{p_spec.n04} x #{p_spec.n05}" %></td><td><%= p_spec.n06 %></td><td><%= p_spec.dai_tanka %></td>
+      <td><%= p_spec.kakeritu %></td><td><%= p_spec.tosi_tanka %></td><td><%= p_spec.price %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+
+<table class="show">
+  <tr>
+    <th>印刷指示</th><th>作業予定日</th><th>機種</th><th>指示</th><th></th>
+  </tr>
+  <% @print_plans.each do |print_plan| %>
+    </tr>
+    <th>PlanItem</th><td><%= print_plan.work_date %></td><td><%= machine_name[print_plan.machine] %></td><td><%= print_plan.memo %></td><td></td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+
+<table class="show">
+  <tr>
+    <% time = Reporttime.find_by(job_id: @job ) %>
+    <th>印刷状況</th><th>印刷日</th><th>機種</th><th>差し替え</th><th>損紙</th><th>印刷時間</th><th><%= time.present? ? print_time_int(time.total_count.to_i) : 0 %></th>
+  </tr>
+  <% @print_reports.each do |print_report| %>
+    </tr>
+    <th>Reportitem</th><td><%= print_report.work_date %></td>
+    <% time2 = Reporttime.find_by(reportitem_id: print_report ) %>
+    <% time2 = time2.blank? ? Reporttime.new(total_count: 0) : time2 %>
+    <td><%= machine_name[print_report.machine] %></td><td><%= print_report.sasikae.to_i %></td><td><%= print_report.sonsi.to_i %></td><td><%= print_time_int(time2.total_count) %></td><td></td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+
+<table class="show">
+  <% @slips.each do |slip| %>
+    <tr>
+      <th>CTP</th><th>出力日</th><th>出力版</th><th>刷版枚数</th><th>合計ヤレ</th>
+      <% if slip.txtInfo04 == "プリント対応" %>
+        <th>4C</th><th>1C</th><th>SP</th>
+      <% end %>
+    </tr>
+    <tr>
+      <% yare = slip.numInfo04.to_i + slip.numInfo05.to_i + slip.numInfo06.to_i %>
+      <th>Slip</th><td><%= slip.dateInfo02 %></td><td><%= slip.txtInfo04 %></td><td><%= slip.numInfo03 %></td><td><%= yare %></td>
+      <% if slip.txtInfo04 == "プリント対応" %>
+        <td><%= slip.color_print %></td><td><%= slip.mono_print %></td><td><%= slip.sp_print %></td>
+      <% end %>
+    </tr>
+    <% imps = Imposition.where(slip_id: slip) %>
+
+    <% if imps.count > 0 %>
+      <tr>
+        <th>面付け情報</th><th>台数</th><th>面付数</th><th>中アキ</th><th>クワエ</th>
+      </tr>
+    <% end %>
+
+    <% imps.each do |imp| %>
+      <% mentuke = imp.num.blank? ? 1 : imp.num %>
+      <% if imp.machine == "XL106" || imp.machine == "SM74" %>
+        <% @mentuke = mentuke %>
+      <% elsif @job.info.textInfo02 == "プリント出力" && imp.machine == "プリント" then %>
+        <% if slip.color_print > 0 || slip.mono_print > 0 || slip.sp_print > 0 %>
+          <% @mentuke = mentuke %>
+        <% end %>
+      <% end %>
+      <tr>
+        <th>Imposition</th><td><%= imp.dai %></td><td><%= mentuke %>
+        </td><td><%= imp.machine %></td><td><%= imp.kuwae %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<br>
+
+<table class="show">
+  <tr>
+    <th>印刷実績</th><td>機種</td><td>品名</td><td>印刷時間</td><td>印刷枚数</td><td>損紙</td>
+    <% @press_datas.each do |press_data| %>
+      <tr>
+        <th>PressData</th><td><%= press_data.machine %></td><td><%= press_data.product_name %></td>
+        <td><%= print_time_int(press_data.work_time) %></td><td><%= press_data.n01 %></td><td><%= press_data.n02 %></td>
+      </tr>
+    <% end %>
+  </tr>
+</table>
+
+<br>
+
+<table class="show">
+
+  <% if @specs.count > 1 %>
+    <!-- 以下冊子パターン -->
+    <% @specs.each do |spec| %>
+      <% print_spec = PrintSpec.find_by("uploadfile_id = ? AND position = ? ", spec.uploadfile_id ,spec.positon - 1 ) %>
+      <% color = spec.n07.to_i + spec.n08.to_i %>
+      <% page = (info.numInfo08.blank? ? 0 :info.numInfo08) + (info.numInfo09.blank? ? 0 :info.numInfo09) %>
+      <% page = page == 0 ? 2 : page %>
+      <% tori = spec.n05 || 1 %>
+      <% dai = spec.n06 || 1 %>
+      <% @print_num = print_spec.blank? ? 0 : print_spec.n01 %>
+      <% yare = (@print_num * 0.05).to_i %>
+      <% sizes = size_cal(info) %>
+      <% size1 = (info.numInfo06.blank? ? 0 : info.numInfo06) * (info.numInfo07.blank? ? 0 : info.numInfo07) %>
+      <% size2 = (info.numInfo14.blank? ? 0 : info.numInfo14) * (info.numInfo15.blank? ? 0 : info.numInfo15) %>
+      <% size = size_helper2(sizes,size1,size2,@mentuke) %>
+      <% print_tanka = print_tanka(size,@unit_price,@job) %>
+      <% jisu = (( @print_num + yare)  * dai) / tori  %>
+      <% print_price = jisu  * print_tanka * color %>
+      <tr>
+        <% @mentuke = @mentuke == 0 ? mentuke(@job) : @mentuke %>
+        <th>印刷情報</th><th>色数</th><th></th><th></th>
+        <th>ヤレ</th><th>総枚数</th><th></th><th></th>
+      </tr>
+      <tr>
+        <td class="mid"><%= spec.positon %></td>
+        <td class="mid"><%= spec.n07 %> x <%= spec.n08 %></td>
+        <td class="mid"></td>
+        <td class="num"><%= @print_num %></td>
+        <td class="num"><%= numformat1( yare ) %></td>
+        <td class="num"><%= numformat1( @print_num + yare ) %></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>印刷面積</th><th>ページ数</th><th>面付数</th><th>取数</th><th>台数</th><th>実数</th><th>印刷単価</th><th>印刷費</th>
+      </tr>
+      <tr>
+        <td class="mid"><%= size %></td>
+        <td class="mid"><%= page %></td>
+        <td><%= @mentuke %></td>
+        <td class="mid"><%= tori %></td>
+        <td class="mid"><%= dai %></td>
+        <td class="num"><%= numformat1(jisu) %></td>
+        <td><%= print_tanka %></td>
+        <td class="num"><%= numformat1(print_price) %></td>
+      </tr>
+      <!-- 以下冊子パターン終了 -->
+    <% end %>
+  <% else %>
+    <!-- 以下通常パターン -->
+    <% puts 3 %>
+    <% side = (info.numInfo04.present? || info.numInfo04.to_i > 0)  ? 1 : 0 %>
+    <% side += (info.numInfo05.present? || info.numInfo05.to_i > 0) ? 1 : 0 %>
+    <% side = @print_kind.index("オフ輪") ? 1 : side %>
+    <% sizes = size_cal(info) %>
+    <% size1 = (info.numInfo06.blank? ? 0 : info.numInfo06) * (info.numInfo07.blank? ? 0 : info.numInfo07) %>
+    <% size2 = (info.numInfo14.blank? ? 0 : info.numInfo14) * (info.numInfo15.blank? ? 0 : info.numInfo15) %>
+    <% page = (info.numInfo08.blank? ? 0 :info.numInfo08) + (info.numInfo09.blank? ? 0 :info.numInfo09) %>
+    <% page = page == 0 ? 2 : page %>
+    <% color = info.numInfo04.to_i + info.numInfo05.to_i %>
+    <% yare = (@print_num * 0.05).to_i %>
+    <% side = side == 0 ? 1 : side  %>
+    <% @mentuke = @mentuke == 0 ? mentuke(@job) : @mentuke %>
+    <% size = size_helper2(sizes,size1,size2,@mentuke) %>
+    <% print_tanka = print_tanka(size,@unit_price,@job) %>
+    <% jisu = (( @print_num + yare) / @mentuke.to_i ) * (page / 2)  %>
+    <% print_price = jisu  * print_tanka * color %>
+    <tr>
+      <% @mentuke = @mentuke == 0 ? mentuke(@job) : @mentuke %>
+      <th>印刷情報</th><th></th><th>色数</th><th>面付数</th>
+      <th>ヤレ</th><th>総枚数</th><th></th><th></th>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td class="mid"><%= info.numInfo04 %> x <%= info.numInfo05 %></td>
+      <td class="mid"><%= @mentuke.to_i %></td>
+      <td class="num"><%= numformat1(yare) %></td>
+      <td class="num"><%= numformat1( @print_num + yare ) %></td>
+      <td></td><td></td>
+    </tr>
+    <tr>
+      <th></th><th></th><th></th><th>印刷面積</th><th>ページ数</th><th>実数</th><th>印刷単価</th><th>印刷費</th>
+    </tr>
+    <tr>
+      <td></td><td></td><td></td>
+      <td class="mid"><%= size %></td>
+      <td class="mid"><%= page %></td>
+      <td class="num"><%= numformat1(jisu)  %></td>
+      <td class="num"><%= print_tanka %></td>
+      <td class="num"><%= numformat1(print_price) %></td>
+    </tr>
+    <!-- 以下通常パターン終了 -->
+  <% end %>
+</table>

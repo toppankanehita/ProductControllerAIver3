@@ -1,0 +1,108 @@
+#welcomes,#press_data{
+  padding: 0  1em;
+  margin-left: 0;
+  table.show{
+    border: solid 1px #DDD;
+    width: 100%;
+    font-size: 110%;
+    tr{
+      th{
+        border: solid 1px #DDD;
+        font-size: 80%;
+        text-align: center;
+        padding: 0;
+      }
+      th.th20{
+        max-width: 20px;
+      }
+      td{
+        border: solid 1px #DDD;
+        font-size: 70%;
+        height: 2em;
+        padding: 0.5em;
+        line-height: 1.5em;
+      }
+      td.td20 {
+        max-width: 20px;
+        font-size: 110%;
+        text-align: center;
+        padding: 0;
+        line-height: 1em;
+      }
+      td.num {
+        text-align: right;
+      }
+      td.mid {
+        text-align: center;
+      }
+    }
+  }
+  .numvalue {
+    font-size: 110%;
+  }
+  .mainas {
+    color: red;
+  }
+  tr.target {
+    background-color: yellow;
+  }
+  span.sp {
+    font-size: 80%;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1em;
+    padding: 0.15em 0.5em;
+    background-color: red;
+    margin-left: 0.5em;
+  }
+  #modal.modal-dialog-fluid {
+    width: 1100px;
+    top:10vh;
+  }
+  .search-form-container {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    form {
+      white-space: nowrap;
+    }
+
+    .form-label {
+      font-size: 0.6rem; // inputより少しだけ大きく
+      font-weight: 500;
+      margin-bottom: 0.15rem;
+      display: block;
+    }
+
+    .form-control-sm {
+      font-size: 0.5rem !important; // 非常に小さいため注意
+      padding: 0.1rem 0.25rem;
+      height: auto;
+    }
+
+    // flexコンテナ内の各要素が縮まないように設定
+    .d-flex > div {
+      flex-shrink: 0;
+    }
+
+    .btn-sm {
+      font-size: 0.75rem; // ボタンの文字は少し大きめにして視認性を確保
+    }
+
+    .total-count {
+      font-size: 0.85rem;
+      color: #495057;
+      white-space: nowrap;
+    }
+  }
+
+}
+#paper_setup {
+
+}

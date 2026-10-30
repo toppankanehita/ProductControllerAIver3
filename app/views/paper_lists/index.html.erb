@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>用紙リスト</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>登録名称</th>
+      <th>名称</th>
+      <th>項目1</th>
+      <th>項目2</th>
+      <th>連量</th>
+      <th>判</th>
+      <th>タイプ</th>
+<!--      <th colspan="3"></th>-->
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @paper_lists.each do |paper_list| %>
+      <tr>
+        <td><%= paper_list.id %></td>
+        <td><%= paper_list.full_name %></td>
+        <td><%= paper_list.name %></td>
+        <td><%= paper_list.opt1 %></td>
+        <td><%= paper_list.opt2 %></td>
+        <td><%= paper_list.ren %></td>
+        <td><%= paper_list.han %></td>
+        <td></td>
+<!--        <td><%#= link_to 'Show', paper_list %></td>-->
+<!--        <td><%#= link_to 'Edit', edit_paper_list_path(paper_list) %></td>-->
+<!--        <td><%#= link_to 'Destroy', paper_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Paper List', new_paper_list_path %>

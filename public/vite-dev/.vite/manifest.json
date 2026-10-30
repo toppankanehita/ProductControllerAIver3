@@ -1,0 +1,111 @@
+{
+  "_add_values_calc-Q7YhAIx-.js": {
+    "file": "assets/add_values_calc-Q7YhAIx-.js",
+    "name": "add_values_calc"
+  },
+  "_bootstrap.esm-Dt1nQtr9.js": {
+    "file": "assets/bootstrap.esm-Dt1nQtr9.js",
+    "name": "bootstrap.esm"
+  },
+  "_jquery-C4HA88S7.js": {
+    "file": "assets/jquery-C4HA88S7.js",
+    "name": "jquery",
+    "imports": [
+      "_bootstrap.esm-Dt1nQtr9.js"
+    ]
+  },
+  "_paper_inquiry_chat-D4iUV7iz.js": {
+    "file": "assets/paper_inquiry_chat-D4iUV7iz.js",
+    "name": "paper_inquiry_chat"
+  },
+  "packs/addValues/addPapers.js": {
+    "file": "assets/addPapers-BoFlk_HR.js",
+    "name": "packs/addValues/addPapers.js",
+    "src": "packs/addValues/addPapers.js",
+    "isEntry": true,
+    "imports": [
+      "_paper_inquiry_chat-D4iUV7iz.js"
+    ]
+  },
+  "packs/addValues/index.js": {
+    "file": "assets/index-qSkc9Efa.js",
+    "name": "packs/addValues/index.js",
+    "src": "packs/addValues/index.js",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.esm-Dt1nQtr9.js",
+      "_paper_inquiry_chat-D4iUV7iz.js",
+      "_add_values_calc-Q7YhAIx-.js"
+    ]
+  },
+  "packs/add_value_suggestions.js": {
+    "file": "assets/add_value_suggestions-D41VN86I.js",
+    "name": "packs/add_value_suggestions.js",
+    "src": "packs/add_value_suggestions.js",
+    "isEntry": true
+  },
+  "packs/application.js": {
+    "file": "assets/application-BD8ulfbm.js",
+    "name": "packs/application.js",
+    "src": "packs/application.js",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.esm-Dt1nQtr9.js",
+      "_jquery-C4HA88S7.js"
+    ],
+    "css": [
+      "assets/application-BLkxtbIh.css"
+    ]
+  },
+  "packs/application.scss": {
+    "file": "assets/application-BLkxtbIh.css",
+    "name": "packs/application.scss",
+    "names": [
+      "application.css",
+      "packs/application.css"
+    ],
+    "src": "packs/application.js",
+    "isEntry": true
+  },
+  "packs/calendar/index.js": {
+    "file": "assets/index-Cqk0_oiT.js",
+    "name": "packs/calendar/index.js",
+    "src": "packs/calendar/index.js",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.esm-Dt1nQtr9.js"
+    ]
+  },
+  "packs/jobs/add_datum.js": {
+    "file": "assets/add_datum-DsfhJBAy.js",
+    "name": "packs/jobs/add_datum.js",
+    "src": "packs/jobs/add_datum.js",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.esm-Dt1nQtr9.js",
+      "_jquery-C4HA88S7.js"
+    ]
+  },
+  "packs/jobs/arrange.js": {
+    "file": "assets/arrange-B3jGNxGU.js",
+    "name": "packs/jobs/arrange.js",
+    "src": "packs/jobs/arrange.js",
+    "isEntry": true
+  },
+  "packs/jobs/index.js": {
+    "file": "assets/index-CS-1jUMI.js",
+    "name": "packs/jobs/index.js",
+    "src": "packs/jobs/index.js",
+    "isEntry": true,
+    "imports": [
+      "_paper_inquiry_chat-D4iUV7iz.js",
+      "_add_values_calc-Q7YhAIx-.js"
+    ]
+  },
+  "packs/jobs/show.js": {
+    "file": "assets/show-Bt1bwxkg.js",
+    "name": "packs/jobs/show.js",
+    "src": "packs/jobs/show.js",
+    "isEntry": true
+  }
+}

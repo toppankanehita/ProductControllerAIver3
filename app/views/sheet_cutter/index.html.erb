@@ -1,0 +1,87 @@
+<div class="card mb-3">
+  <div class="card-body">
+    <form id="calendar-search-form" action="<%= url_for(controller: :sheet_cutter, action: :index) %>" method="get" class="row g-2">
+      <input type="hidden" name="week_start" value="<%= @start_date %>">
+
+      <div class="col-12 col-md-2">
+        <div class="row g-2 align-items-center">
+          <label class="col-12 col-md-5 col-form-label mb-0 text-md-end">印刷方法</label>
+          <div class="col-12 col-md-7">
+            <input type="text" name="info_textInfo02" class="form-control form-control-sm" value="<%= params[:info_textInfo02].to_s %>" placeholder="例: オフセット">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="row g-2 align-items-center">
+          <label class="col-12 col-md-3 col-form-label mb-0 text-md-end">顧客名</label>
+          <div class="col-12 col-md-9">
+            <input type="text" name="info_textInfo05" class="form-control form-control-sm" value="<%= params[:info_textInfo05].to_s %>" placeholder="顧客名を入力">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="row g-2 align-items-center">
+          <label class="col-12 col-md-2 col-form-label mb-0 text-md-end">用紙</label>
+          <div class="col-12 col-md-10">
+            <input type="text" name="info_textInfo11" class="form-control form-control-sm" value="<%= params[:info_textInfo11].to_s %>" placeholder="用紙を入力">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3 text-md-center">
+        <button type="submit" class="btn btn-sm btn-primary">検索</button>
+        <a class="btn btn-sm btn-outline-secondary ms-2" href="<%= url_for(controller: :sheet_cutter, action: :index, week_start: @start_date) %>">リセット</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div class="table-responsive">
+  <table class="table table-bordered align-top">
+    <thead class="table-light">
+    <tr>
+      <% (@start_date..@end_date).each do |d| %>
+        <th style="min-width: 200px;">
+          <%= "#{l(d, format: :short)}(#{I18n.t('date.abbr_day_names')[d.wday]})" %>
+        </th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <% (@start_date..@end_date).each do |d| %>
+        <td>
+          <% values = @values_by_date[d] || [] %>
+          <% if values.blank? %>
+            <div class="text-muted">予定なし</div>
+          <% else %>
+
+            <ul class="list-unstyled mb-0">
+              <% values.each do |value| %>
+                <% job = value.job %>
+                <% if job.present? %>
+                  <% info = job.info %>
+                  <li class="mb-2 p-2 border rounded <%= cal_color_helper(info) %>">
+                    <div class="d-flex flex-wrap align-items-center" style="font-size: 80%">
+                      <span class="me-2"><%= job.den_id %></span>
+                      <span><%= textInfo02_helper(info&.textInfo02.to_s) %></span>
+                    </div>
+                    <div><%= info&.textInfo05.to_s %></div>
+                    <div><%= info&.textInfo07.to_s %></div>
+                    <div style="font-size: 80%"><%= info&.textInfo11.to_s %></div>
+                    <div style="font-size: 120%" ><%= touroku_helper(job) %></div>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

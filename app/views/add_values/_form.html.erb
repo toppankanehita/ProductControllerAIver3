@@ -1,0 +1,37 @@
+<%= form_with(model: add_value) do |form| %>
+
+
+  <div class="field">
+    <%= form.label :paper_name %>
+    <%= form.text_field :paper_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :me %>
+    <%= form.text_field :me %>
+  </div>
+
+  <div class="field">
+    <%= form.label :han %>
+    <%= form.text_field :han %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ren %>
+    <%= form.text_field :ren %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ktanka %>
+    <%= form.text_field :ktanka %>
+  </div>
+
+  <div class="field">
+    <%= form.label :mtanka %>
+    <%= form.text_field :mtanka %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

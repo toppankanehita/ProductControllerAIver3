@@ -1,0 +1,2 @@
+json.extract! twork, :id, :no, :delivery_number, :delivery_date, :tinfo05, :tinfo07, :quote_number, :quantity, :unit_price, :billing_amount, :cost1, :cost2, :cost3, :total_cost, :profit, :profit_margin, :contractor1, :contractor2, :contractor3, :customer_code, :remarks, :staff, :den_code, :outsourcing_cost, :purchase_cost, :work_time, :work_cost, :created_at, :updated_at
+json.url twork_url(twork, format: :json)

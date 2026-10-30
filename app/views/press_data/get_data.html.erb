@@ -1,0 +1,18 @@
+<% @elements.each do |tr| %>
+  <%= tr %>
+  <% tds = tr.find_elements(:tag_name,'td') %>
+  <% i = 1 %>
+  <% tds.each do |td| %>
+    <% nds = td.find_elements(:class_name,'ng-star-inserted') %>
+    <% spans = td.find_elements(:tag_name,'span') %>
+
+    <% spans.each do |span| %>
+      <%= i %>: <%= span.text %> <br>
+      <% i += 1 %>
+    <% end %>
+    <% nds.each do |nd| %>
+      <%= i %>: <%= nd.text %> <br>
+      <% i += 1 %>
+    <% end %>
+  <% end %>
+<% end %>

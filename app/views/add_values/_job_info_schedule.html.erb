@@ -1,0 +1,33 @@
+<% scheduleam = array_hash_by_position(cal,1) %>
+<% schedulepm = array_hash_by_position(cal,2) %>
+<% scheduleam.each_index{|idx| %>
+  <% r = scheduleam[idx] %>
+  <% q = schedulepm[idx] %>
+<% } %>
+<% k = 0 %>
+
+
+<table class="col-12 col-sm-12 schedule" id="schedule">
+  <tr>
+    <th>1週目</th><th>2週目</th><th>3週目</th><th>4週目</th><th>5週目</th><th>6週目</th>
+  </tr>
+  <tr>
+    <% 6.times do |i| %>
+      <td class="week">
+        <% 7.times do |j| %>
+
+          <div class="date<%= chk_holiday(scheduleam[k].work_date) %>">
+            <% if control.blank? %>
+              <div class="data1"><%= date_helper_short(scheduleam[k].work_date) %></div>
+            <% else %>
+              <div class="data1"> <a href="javascript:set_date('<%= scheduleam[k].work_date %>');"> </a></div>
+            <% end %>
+            <div class='data2'><%= scheduleam[k].name %></div>
+            <div class='data3'><%= schedulepm[k].name %></div>
+            <% k += 1 %>
+          </div>
+        <% end %>
+      </td>
+    <% end %>
+  </tr>
+</table>

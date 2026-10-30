@@ -1,0 +1,52 @@
+<%= form_with(model: debit) do |form| %>
+  <% if debit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(debit.errors.count, "error") %> prohibited this debit from being saved:</h2>
+
+      <ul>
+        <% debit.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :target_month %>
+    <%= form.text_field :target_month %>
+  </div>
+
+  <div class="field">
+    <%= form.label :den_code %>
+    <%= form.text_field :den_code %>
+  </div>
+
+  <div class="field">
+    <%= form.label :job_id %>
+    <%= form.number_field :job_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :siwake %>
+    <%= form.text_field :siwake %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :out_cost %>
+    <%= form.text_field :out_cost %>
+  </div>
+
+  <div class="field">
+    <%= form.label :in_cost %>
+    <%= form.text_field :in_cost %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

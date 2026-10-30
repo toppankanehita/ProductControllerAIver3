@@ -1,0 +1,2 @@
+module WorkDataHelper
+end

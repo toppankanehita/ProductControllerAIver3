@@ -1,0 +1,137 @@
+# MySQL. Versions 5.5.8 and up are supported.
+#
+# Install the MySQL driver
+#   gem install mysql2
+#
+# Ensure the MySQL gem is defined in your Gemfile
+#   gem 'mysql2'
+#
+# And be sure to use new-style password hashing:
+#   https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html
+#
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+
+development:
+  <<: *default
+  database: product_control
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: product_control
+
+production:
+  <<: *default
+  database: product_control
+  username: monty
+  password: 1975
+
+work_slip:
+  adapter: mysql2
+  encoding: utf8
+  database: WorkSlip
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+printplan:
+  adapter: mysql2
+  encoding: utf8
+  database: PrintingPlan
+  pool: 5
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+postplan:
+  adapter: mysql2
+  encoding: utf8
+  database: ProcessingPlan
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+
+cpr:
+  adapter: mysql2
+  encoding: utf8
+  database: CPR_Products
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+
+ctp:
+  adapter: mysql2
+  encoding: utf8
+  database: CtpRequest
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+visualize:
+  adapter: mysql2
+  encoding: utf8
+  database: visualize
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+assembly:
+  adapter: mysql2
+  encoding: utf8
+  database: AssemblyReport
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+delivery:
+  adapter: mysql2
+  encoding: utf8
+  database: delivery
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+cutting:
+  adapter: mysql2
+  encoding: utf8
+  database: CuttingReport
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+toppan:
+  adapter: mysql2
+  encoding: utf8
+  database: ToppanM
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+thumb:
+  adapter: mysql2
+  encoding: utf8
+  database: thumne
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+press_board:
+  adapter: mysql2
+  encoding: utf8mb4
+  database: press_board
+  username: monty
+  password: 1975
+  host: 127.0.0.1
+
+

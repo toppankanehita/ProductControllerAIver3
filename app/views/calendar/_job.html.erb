@@ -1,0 +1,58 @@
+<table class="show">
+  <tr>
+    <th>受注No</th>
+    <td><%= link_to job.den_id,"http://130.1.15.54:3000/jobs/show/#{job.id}", target: "_blank" %>
+      <%= job.name %><%= job.change_no %> <%= job.id %>
+      <button type="button" class="btn btn-sm btn-primary ms-2 js-paper-inquiry-btn"
+              data-job-id="<%= job.id %>" data-den-id="<%= job.den_id %>"
+              style="font-size: 80%; padding: 0.15em 0.6em;">
+        🤖 用紙AI問い合わせ
+      </button>
+    </td>
+    <th>担当営業</th><td><%= info.textInfo01 %>　[印刷日] <%= info.dateInfo03 %></td>
+    <th width="200px">備考</th>
+  </tr>
+  <tr>
+    <th>印刷方法</th><td><%= info.textInfo02 %></td>
+    <% print_kind = info.textInfo02 %>
+    <% kind = Kind.find_by("code = ?",info.textInfo03 ) %>
+    <th>種類</th><td><%= info.textInfo03 %> <%= kind.blank? ? "" : kind.name %></td>
+    <td rowspan="8" style="vertical-align: top; font-size: 0.7em"><%= info.textInfo28 %></td>
+  </tr>
+  <tr>
+    <th>顧客名</th><td colspan="3"><%= info.textInfo04 %> <%= info.textInfo05 %></td>
+  </tr>
+  <tr>
+    <th>品名</th><td colspan="3"><b><%= info.textInfo07 %></b></td>
+  </tr>
+  <tr>
+    <th>用紙</th><td colspan="3"><%= info.textInfo11 %></td>
+  </tr>
+  <tr>
+    <th>印刷枚数</th><td><%= num_hepler(info) %></td>
+    <th>色数</th><td><%= color_helper(info.numInfo16 , info.numInfo04 ,info.numInfo05, info.numInfo17, info.textInfo02) %></td>
+  </tr>
+
+  <tr>
+    <th>仕上りサイズ</th><td><%= info.textInfo20 %> <%= size_helper( info.numInfo06 , info.numInfo07) %></td>
+    <th>展開サイズ</th><td><%= size_helper( info.numInfo14 , info.numInfo15) %></td>
+  </tr>
+  <tr>
+    <% kakoArry = kako_list(job) %>
+    <th>加工</th>
+    <td colspan="3">
+      <% kakoArry.each do |kako| %>
+        <%= "【#{kako[0]}】#{kako[1]}  " %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th>冊子</th><td><%= book_helper( info.numInfo08 , info.numInfo09 , info.textInfo41 ) %></td>
+    <th>配達方法</th>
+    <td class="d-flex flex-wrap align-items-center under_l top">
+      <span><%= info.textInfo18 %></span>
+      <span>【印刷日】<%= info.dateInfo03 %></span>
+      <span>【納品日】<%= info.dateInfo05 %></span>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,29 @@
+対象は <%= @jobs.count %> 件 <br>
+<table class="show">
+  <tr>
+    <th>受注No</th><th>用紙</th><th>サイズ</th><th>色数</th>
+    <th>P数</th><th>面付</th><th>印刷枚数</th><th>通し枚数</th><th>印刷原価</th><th>積算</th>
+  </tr>
+  <% @jobs.each do |job| %>
+    <% arari_cal_wap(job) %>
+    <% info = job.info %>
+    <tr>
+      <td><%= job.den_id %></td>
+      <td><%= info.textInfo11 %></td>
+      <td><%= info.textInfo20 %> <%= "#{info.numInfo06} x #{info.numInfo07}" %>
+        <% if info.numInfo14.present? %>
+        <%= "展開: #{info.numInfo14} x #{info.numInfo15}"%>
+        <% end %></td>
+      <td><%= "#{info.numInfo04.to_i} x #{info.numInfo05.to_i}"  %></td>
+      <td><%= @page %></td>
+
+      <td><%= @mentuke %></td>
+
+      <td><%= numformat1(info.numInfo01)  %></td>
+      <td><%= numformat1(@jisu) %></td>
+
+      <td><%= numformat1(@pressArr[1]) %></td>
+      <td><%= numformat1(@pressArr[0]) %></td>
+    </tr>
+  <% end %>
+</table>

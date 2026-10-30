@@ -1,0 +1,68 @@
+<div class="card mb-3">
+  <div class="card-body">
+    <%= render partial:  'search' %>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered align-top job-table">
+    <thead class="table-light">
+    <tr>
+      <% (@start_date..@end_date).each do |d| %>
+        <th>
+          <%= "#{l(d, format: :short)}(#{I18n.t('date.abbr_day_names')[d.wday]})" %>
+        </th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <% (@start_date..@end_date).each do |d| %>
+        <td>
+          <% jobs = @jobs_by_date[d] || [] %>
+          <% if jobs.blank? %>
+            <div class="text-muted">予定なし</div>
+          <% else %>
+            <ul class="list-unstyled mb-0">
+              <% jobs.each do |job| %>
+                <% info = job.info %>
+                <li class="mb-2 p-2 border rounded <%= cal_color_helper(info) %>" id="<%= job.id %>">
+                  <%= render partial: 'job_item', locals: { job: job, info: info } %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AddValue rows modal -->
+<div class="modal fade" id="addValueModal" tabindex="-1" aria-labelledby="addValueModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <style>
+        <!--
+        .nodialog{
+            display: none;
+        }
+
+        -->
+      </style>
+      <div class="modal-header">
+        <h5 class="modal-title" id="addValueModalLabel">用紙明細</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-muted">読み込み中...</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_pack_tag 'calendar/index' %>

@@ -1,0 +1,402 @@
+// Place all the styles related to the AddValues controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+#search_value.search-form-container {
+  min-width: 1410px;
+  background-color: #f8f9fa;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+  margin: 0 1em 1em 1em ;
+  overflow-x: auto;
+  overflow-y: hidden;
+  font-size: 0.6rem;
+
+  form {
+    white-space: nowrap;
+  }
+
+  .form-label {
+    font-size: 0.7rem; // inputより少しだけ大きく
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+
+  .form-control-sm {
+    font-size: 0.6rem !important; // 非常に小さいため注意
+    padding: 0.1rem 0.25rem;
+    height: auto;
+  }
+}
+
+#add-values{
+
+  table.index{
+    border: solid 1px #DDD;
+    max-width: 1200px;
+    min-width: 700px;
+    font-size: 110%;
+    tr{
+      th{
+        border: solid 1px #DDD;
+        font-size: 80%;
+        text-align: center;
+        padding: 0.2em 0.5em;
+      }
+      td{
+        border: solid 1px #DDD;
+        padding: 0.3em 0.5em;
+        font-size: 70%;
+      }
+      td.num {
+        text-align: right;
+      }
+      td.mid {
+        text-align: center;
+      }
+      td.editable {
+        background: lightyellow;
+      }
+    }
+    tr:nth-child(odd) td {
+      background: #EEE;
+    }
+    tr:nth-child(odd) td.editable {
+      background: #FED;
+    }
+
+  }
+  table.a_index{
+    border: solid 1px #DDD;
+    max-width: 2000px;
+    min-width: 1500px;
+    font-size: 110%;
+    tr{
+
+      th{
+        border: solid 1px #DDD;
+        font-size: 80%;
+        text-align: center;
+        padding: 0.2em 0.5em;
+      }
+      td{
+        position: relative;
+        border: solid 1px #DDD;
+        padding: 0.3em 0.5em;
+        font-size: 70%;
+        line-height: 1.3em;
+        div.in_size {
+          position: relative;
+          text-align: right;
+        }
+        span {
+          position: absolute;
+          left:5px;
+        }
+      }
+      td.num {
+        text-align: right;
+      }
+      td.mid {
+        text-align: center;
+      }
+      td.editable {
+        background: lightyellow;
+      }
+    }
+    //tr:nth-child(odd) td {
+    //  background: #EEE;
+    //}
+    //tr:nth-child(odd) td.editable {
+    //  background: #FED;
+    //}
+  }
+
+  .search-form-container {
+    min-width: 1410px;
+    background-color: #f8f9fa;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-size: 0.6rem;
+    form {
+      white-space: nowrap;
+    }
+
+    .form-label {
+      font-size: 0.7rem; // inputより少しだけ大きく
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .form-control-sm {
+      font-size: 0.6rem !important; // 非常に小さいため注意
+      padding: 0.1rem 0.25rem;
+      height: auto;
+    }
+  }
+  table.show{
+    border: solid 1px #DDD;
+    width: 100%;
+    font-size: 110%;
+    tr{
+      th{
+        border: solid 1px #DDD;
+        font-size: 80%;
+        text-align: center;
+        padding: 0.2em 0;
+      }
+      td{
+        border: solid 1px #DDD;
+        padding: 0.3em 0.5em;
+        font-size: 70%;
+      }
+      td.num {
+        text-align: right;
+      }
+      td.mid {
+        text-align: center;
+      }
+    }
+  }
+
+}
+
+.container.jobIndex {
+  max-width: 1500px;
+}
+.container.maxWidth {
+  max-width: 1200px !important;
+}
+
+#job_info{
+  position: relative;
+  width: 100%;
+  min-width: 900px;
+  margin: 0;
+  div.info{
+    position: relative;
+    border: solid 1px #DDD;
+    padding: 0.75em 0.75em;
+
+    box-sizing: border-box;
+    p{
+      border-bottom: dotted 1px #666;
+    }
+
+    div.info_left{
+      padding-left: 0;
+      padding-right: 0.25em;
+      margin: 0 ;
+      table.show{
+        border: solid 1px #DDD;
+        width: 100%;
+        font-size: 100%;
+        tr{
+          th{
+            border: solid 1px #DDD;
+            font-size: 70%;
+            text-align: center;
+            padding: 0.2em 0;
+            background-color: #EEE;
+          }
+          td{
+            border: solid 1px #DDD;
+            padding: 0.2em 1em;
+            font-size: 75%;
+            span{
+              font-size: 90%;
+            }
+          }
+          td.remarks{
+            max-width: 200px;
+            font-size: 70%;
+            vertical-align: top;
+          }
+        }
+      }
+
+    }
+    .cal{
+      position: relative;
+      padding: 1em 0 0 0;
+      margin: 0;
+      line-height: 1em;
+      a{
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 70%
+      }
+    }
+    div.detail{
+      min-height: 250px;
+      //max-width: 200px;
+      background-color: #FFF;
+      padding: 0.25em;
+      border: solid 1px #DDD;
+      .plan_date{
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        font-weight: bold;
+        border: solid 1px #ddd;
+        margin: 0;
+        box-sizing: border-box;
+        .d01{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 60px;
+          height: 28px;
+          font-weight: bold;
+          font-size: 80%;
+          text-align: center;
+          border-right: solid 1px #DDD;
+          padding: 0.35em 0.5em;
+          background-color: #EEE;
+        }
+        .d02{
+          position: absolute;
+          top: 0;
+          left: 70px;
+          height: 28px;
+          font-weight: bold;
+          font-size: 110%;
+          padding: 0 0.5em;
+        }
+      }
+
+      .task_detail01{
+        width: 100%;
+        border-bottom: solid 1px #DDD;
+        font-weight: bold;
+      }
+      .task_detail02{
+        width: 100%;
+        font-size: 80%;
+        line-height: 1.5em;
+        padding-top: 0.2em;
+      }
+    }
+    table.schedule{
+
+      border: solid 1px #DDD;
+      min-width: 860px;
+      font-size: 80%;
+
+      tr{
+        th{
+          border: solid 1px #DDD;
+          font-size: 90%;
+          text-align: center;
+          padding: 0.2em 0;
+          background-color: #EEE;
+        }
+        td.week {
+          border: solid 1px #DDD;
+          padding: 0;
+          width: 16.6%;
+          div.date {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            height: 1.7em;
+            overflow: hidden;
+            border-bottom: solid 1px #DDD;
+            div {
+              display: inline-block;
+              padding: 0.2em 0 0 0.2em;
+              margin: 0;
+              height: 1.3em;
+              line-height: 1em;
+              overflow: hidden;
+              font-size: 80%;
+              vertical-align: middle;
+            }
+            .data1{
+              font-size: 80%;
+              width: 21%;
+            }
+            .data2{
+              width: 36%;
+            }
+            .data3{
+              width: 36%;
+            }
+          }
+
+          .holiday{
+            background-color: #DDD;
+          }
+          .today{
+            background-color: #FEF;
+          }
+          .date:last-child{
+            border: none;
+          }
+          .task{
+            background-color: #FBF;
+          }
+        }
+      }
+    }
+  }
+}
+#out_csv {
+  tr{
+    th{
+      text-align: center;
+    }
+    td{
+      span.sp{
+        font-size: 60%;
+        font-weight: bold;
+        color: #FFF;
+        background-color: red;
+        padding: 0.2em 0.5em;
+        margin-left: 0.5em;
+      }
+    }
+    td.mid{
+      text-align: center;
+    }
+    td.num{
+      text-align: right;
+    }
+  }
+}
+form.job_search {
+  font-size: 90%
+}
+#value_sum{
+  width: 100%;
+  div.flex-box{
+    display: flex;
+
+    div{
+      margin-right: 1em;
+      border: solid 1px #DDD;
+      height: 2.2em;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      font-size: 1em;
+      line-height: 1em;
+      span{
+        display: inline-block;
+        border: solid 1px #DDD;
+        font-size: 70%;
+        line-height: 1em;
+        margin-right: 0.5em;
+        padding: 0.2em 1em;
+      }
+    }
+  }
+}

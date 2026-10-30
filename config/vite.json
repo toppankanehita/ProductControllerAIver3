@@ -1,0 +1,20 @@
+{
+  "all": {
+    "sourceCodeDir": "app/javascript",
+    "entrypointsDir": "packs",
+    "skipCompatibilityCheck": true,
+    "watchAdditionalPaths": []
+  },
+  "development": {
+    "autoBuild": true,
+    "skipProxy": true,
+    "publicOutputDir": "vite-dev",
+    "port": 3038,
+    "host": "127.0.0.1"
+  },
+  "test": {
+    "autoBuild": true,
+    "publicOutputDir": "vite-test",
+    "port": 3039
+  }
+}

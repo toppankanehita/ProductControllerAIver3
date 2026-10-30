@@ -1,0 +1,54 @@
+
+<%= search_form_for @q, url: out_csv_add_values_path  do |f| %>
+  <div class="d-flex flex-row justify-content-start">
+    <div class="p-2 bd-highlight" style="width: 17%">
+      <%= f.label :name_cont, '受注番号' %><br>
+      <%= f.search_field :den_id_start ,style:"width: 7em"%>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 24%">
+      <%= f.label :info_textInfo05_cont, '顧客名'%><br>
+      <%= f.search_field :info_textInfo05_cont ,style:"width: 13em"%>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 24%">
+      <%= f.label :info_textInfo07_cont, '案件名' %><br>
+      <%= f.search_field :info_textInfo07_cont ,style:"width: 13em" %>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 17%">
+      <%= f.label :info_textInfo02_cont, '印刷方法' %><br>
+      <%= f.search_field :info_textInfo02_cont ,style:"width: 7em"%>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 17%">
+      <%= f.label :info_dateInfo05_gteq, '納品日（から）' %><br>
+      <%= f.search_field :info_dateInfo05_gteq ,style:"width: 7em"%>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 17%">
+      <%= f.label :info_dateInfo05_lteq, '納品日（まで）' %><br>
+      <%= f.search_field :info_dateInfo05_lteq ,style:"width: 7em"%>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 17%">
+      <%= f.label :info_dateInfo03_gteq, '印刷日（から）' %><br>
+      <%= f.search_field :info_dateInfo03_gteq ,style:"width: 7em"%>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 17%">
+      <%= f.label :info_dateInfo03_lteq, '印刷日（まで）' %><br>
+      <%= f.search_field :info_dateInfo03_lteq ,style:"width: 7em"%>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 12%">
+      <%= f.label :job_salesname_cont, '担当' %><br>
+      <%= f.search_field :info_salesname_cont ,style:"width: 5em" %>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 24%">
+      <%= f.label :info_textInfo28_cont, '備考' %><br>
+      <%= f.search_field :info_textInfo28_cont ,style:"width: 10em" %>
+    </div>
+
+    <%= f.hidden_field :info_cansel_eq ,value: "0"%>
+    <%= f.hidden_field :info_hold_eq ,value: "0"%>
+    <div class="p-2 bd-highlight" style="width: 7%">
+      <%= f.submit '検索' %>
+    </div>
+    <div class="p-2 bd-highlight" style="width: 10%">
+    <div class="nav_total"><%= @jobs.total_count %>件</div>
+    </div>
+  </div>
+<% end %>

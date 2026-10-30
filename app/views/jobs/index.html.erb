@@ -1,0 +1,42 @@
+<% page = (params[:page].presence || 1).to_i %>
+<% per  = @add_values.respond_to?(:limit_value) ? @add_values.limit_value : 15 %>
+<% offset = (page - 1) * per %>
+
+<!-- Parent Code Modal -->
+<div class="modal fade" id="parentCodeModal" tabindex="-1" aria-labelledby="parentCodeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="parentCodeModalLabel">親コード登録</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-muted">読み込み中...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<table class="index" id="add_papers">
+  <thead>
+    <%= render partial: 'add_values/row_head' %>
+  </thead>
+  <tbody>
+  <% @jobs.each_with_index do |job, idx| %>
+    <% info = job&.info %>
+
+    <% if job.add_values.count < 1 || job.add_values.nil? %>
+      <% value = AddValue.new(job_id: job.id) %>
+      <%= render partial: 'add_values/row', locals: { value: value, job: job, info: info, idx: idx, offset: offset, idv: 0, show_add_link: true } %>
+    <% else %>
+      <% job.add_values.each_with_index do |value, idv| %>
+        <%= render partial: 'add_values/row', locals: { value: value, job: job, info: info, idx: idx, offset: offset, idv: idv, show_add_link: true } %>
+      <% end %>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+
+<%= javascript_pack_tag 'jobs/add_datum' %>
+<%= javascript_pack_tag 'jobs/index' %>

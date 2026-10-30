@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>生産管理ツール</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+  </head>
+
+  <body>
+  <div class="d-flex flex-column flex-sm-row align-items-center ps-3 p-2 ps-lg-5 pe-lg-5 px-sm-6 mb-3 bg-white border-bottom shadow-sm">
+    <div class="d-flex flex-row flex-grow-2 ">
+      <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "生産管理ツール", root_path %></h6>
+    </div>
+
+<!--    <div class="d-flex flex-row flex-grow-2 ms-3">-->
+<!--      <h6 class="my-0 mr-md-auto font-weight-normal"><%#= link_to "用紙登録", add_papers_add_values_path %></h6>-->
+<!--    </div>-->
+
+    <div class="d-flex flex-row flex-grow-2 ms-3">
+      <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "用紙登録", jobs_path %></h6>
+    </div>
+
+    <div class="d-flex flex-row flex-grow-2 ms-3">
+      <h6 class="my-0 mr-md-auto font-weight-normal current"> 週間 </h6>
+    </div>
+
+    <!--    <div class="d-flex flex-row flex-grow-2 ms-3">-->
+<!--      <h6 class="my-0 mr-md-auto font-weight-normal"><%#= link_to "シートカッター", sheet_cutter_path %></h6>-->
+<!--    </div>-->
+    <div class="d-flex flex-row flex-grow-2 ms-3">
+      <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "集計済データ", archives_path %></h6>
+    </div>
+    <div class="d-flex flex-row flex-grow-2 ms-3">
+      <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "東京案件", tworks_path %></h6>
+    </div>
+
+    <div class="d-flex flex-row flex-grow-2 ms-3">
+      <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "集計済提出データ", mission_archives_path %></h6>
+    </div>
+
+    <div  class="d-flex flex-row flex-grow-1 justify-content-center">
+      <div class="d-flex align-items-center flex-wrap gap-2">
+        <strong class="me-2">週移動:</strong>
+        <% prev_week = @start_date - 7.days %>
+        <% next_week = @start_date + 7.days %>
+        <% this_week = Date.today.beginning_of_week(:sunday) %>
+        <a class="btn btn-sm btn-outline-primary me-2" href="<%= url_for(controller: :calendar, action: :index, week_start: prev_week, info_textInfo02: params[:info_textInfo02], info_textInfo05: params[:info_textInfo05], info_textInfo11: params[:info_textInfo11]) %>">先週</a>
+        <a class="btn btn-sm btn-outline-secondary me-2" href="<%= url_for(controller: :calendar, action: :index, week_start: this_week, info_textInfo02: params[:info_textInfo02], info_textInfo05: params[:info_textInfo05], info_textInfo11: params[:info_textInfo11]) %>">今週</a>
+        <a class="btn btn-sm btn-outline-primary" href="<%= url_for(controller: :calendar, action: :index, week_start: next_week, info_textInfo02: params[:info_textInfo02], info_textInfo05: params[:info_textInfo05], info_textInfo11: params[:info_textInfo11]) %>">来週</a>
+        <span class="ms-3">
+          表示期間: <strong><%= l(@start_date, format: :long) %></strong> 〜 <strong><%= l(@end_date, format: :long) %></strong>
+        </span>
+      </div>
+    </div>
+
+    <div  class="d-flex flex-row-reverse flex-grow-4 ">
+      <%= link_to "データ",press_data_path %>
+    </div>
+  </div>
+
+  <div class="container week_cal" style="margin-left: 0">
+    <p class="notice"><%= notice %></p>
+    <div id="week_cals" style="padding-top: 0">
+      <%= yield %>
+    </div>
+    </div>
+  </div>
+  </body>
+</html>

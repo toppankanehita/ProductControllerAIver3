@@ -1,0 +1,63 @@
+<div id="search_value" class="search-form-container" style="min-width: 1800px;">
+  <%= search_form_for @q, url: work_data_path, method: :get do |f| %>
+    <div class="d-flex flex-row justify-content-start">
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width:10%">
+        <%= label_tag 'q[target_month_start]', '売上月', class: 'form-label mb-0 me-2' %>
+        <%= f.search_field :target_month_start, style: "width:6em", class: 'form-control form-control-sm', placeholder: '202603' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width:10%">
+        <%= label_tag 'q[mission_archive_01_cont]', '所属', class: 'form-label mb-0 me-2' %>
+        <%= f.search_field :mission_archive_01_cont, list: 'div_method_list',style: "width:10em", class: 'form-control form-control-sm', placeholder: '選択または入力' %>
+        <%= tag.datalist id: 'div_method_list' do %>
+          <%= tag.option '本社' %>
+          <%= tag.option '青森' %>
+          <%= tag.option '八戸' %>
+          <%= tag.option '仙台' %>
+          <%= tag.option '東京' %>
+        <% end %>
+      </div>
+
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width:10%">
+        <%= label_tag 'q[mission_archive_03_start]', '受注番号', class: 'form-label mb-0 me-2' %>
+        <%= f.search_field :mission_archive_03_start, style: "width:8em", class: 'form-control form-control-sm', placeholder: '250000-000' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 20%">
+        <%= label_tag 'q[mission_archive_04_cont]', '顧客名', class: 'form-label mb-0 me-2' %>
+        <%= f.search_field :mission_archive_04_cont, style: "width:25em", class: 'form-control form-control-sm' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 20%">
+        <%= label_tag 'q[mission_archive_05_cont]', '案件名', class: 'form-label mb-0 me-2' %>
+        <%= f.search_field :mission_archive_05_cont, style: "width:25em", class: 'form-control form-control-sm' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 12.5%">
+        <%= label_tag 'q[mission_archive_06_cont]', '担当', class: 'form-label mb-0 me-2' %>
+        <%= f.search_field :mission_archive_06_cont, style: "width:13em", class: 'form-control form-control-sm' %>
+      </div>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 10%">
+        <%= label_tag 'q[mission_archive_02_cont]', '印刷方法', class: 'form-label mb-0 me-2' %>
+        <%= f.search_field :mission_archive_02_cont, list: 'print_method_list', style: "width:10em", class: 'form-control form-control-sm', placeholder: '選択または入力' %>
+        <%= tag.datalist id: 'print_method_list' do %>
+          <%= tag.option 'オフ輪' %>
+          <%= tag.option 'オフセット' %>
+          <%= tag.option 'プリント' %>
+          <%= tag.option '作業料' %>
+          <%= tag.option 'その他' %>
+        <% end %>
+      </div>
+
+      <%= f.hidden_field :info_cansel_eq, value: "0" %>
+      <%= f.hidden_field :info_hold_eq, value: "0" %>
+
+      <div class="p-2 bd-highlight d-flex align-items-center" style="width: 7%">
+        <%= f.submit '検索', class: 'btn btn-sm btn-primary me-2' %>
+        <div class="nav_total mb-0"><%= @mission_archives.total_count %>件</div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,69 @@
+<%= paginate @jobs %><%= "#{@jobs.total_pages}page / #{@jobs.total_count}件" %>
+<table class="show">
+  <tr>
+    <th class="th20">No</th>
+    <th class="th20">売上</th>
+    <th class="th20">積算</th>
+    <th class="th20">P物</th>
+    <th style="min-width: 100px;text-align: center">種類</th>
+    <th style="min-width: 100px;text-align: center">受注No</th>
+    <th style="max-width: 350px;text-align: center">得意先名</th>
+    <th style="max-width: 400px;text-align: center">品名</th>
+    <th style="min-width: 100px;text-align: center">印刷日</th>
+    <th style="min-width: 100px;text-align: center">納品日</th>
+    <th style="min-width: 100px;text-align: center">積算費用</th>
+    <th style="min-width: 100px;text-align: center">費用実績</th>
+    <th style="min-width: 100px;text-align: center">収支</th>
+    <th style="min-width: 100px;text-align: center">担当</th>
+    <!--    <th></th>-->
+  </tr>
+  <% i = 1 %>
+  <% @jobs.each do |job| %>
+
+    <% sale = Sale.find_by(job_id: job) %>
+    <% uploadfile = Uploadfile.find_by(job_id: job)  %>
+    <% puts "---------#{job.class}--------------" %>
+    <% unit_price = UnitPrice.order(date01: "desc").find_by("date01 <= ?",job.info.dateInfo05) %>
+    <% add_datum = AddDatum.find_by(job_id: job) || AddDatum.new(job_id: job) %>
+    <% @page = (job.info.numInfo08.blank? ? 0 :job.info.numInfo08) + (job.info.numInfo09.blank? ? 0 :job.info.numInfo09) %>
+    <% @page = @page == 0 ? 2 : @page %>
+    <% seisakuArr = search_seisaku(uploadfile,job,unit_price,add_datum) %>
+    <tr>
+      <% info = job.info %>
+      <td><%= i + (params[:page].to_i > 0 ? ((params[:page].to_i - 1) * 15) : 0) %></td>
+      <td class="td20"><%= sale.present? ? "○" : "●"  %></td>
+      <td class="td20"><%= uploadfile.present? ? "○" : "●" %></td>
+      <td class="td20"><%= info.numInfo08.to_i > 0 ? "○" : "●"  %></td>
+      <td><%= info.textInfo02.gsub(/002　|003　|005　/, "") %></td>
+      <td style="text-align: center"><%= link_to job.den_id,"http://130.1.15.54:3000/jobs/show/#{job.id}", target: "_blank" %><br>
+        <%= job.name %><%= job.change_no == 0 ? "" : job.change_no  %></td>
+      <td style="min-width: 250px"><%= job.info.textInfo05 %></td>
+      <td style="min-width: 300px"><%= link_to job.info.textInfo07 , job_path(id: job,i: i,p: params[:page]) %></td>
+      <td style="text-align: center"><%= job.info.dateInfo03 %></td>
+      <td style="text-align: center"><%= job.info.dateInfo05 %></td>
+      <td class="numvalue" style="text-align: center"><%= seisakuArr[0].to_i %></td>
+      <td class="numvalue" style="text-align: center"><%= seisakuArr[1].to_i %></td>
+      <td class="numvalue" style="text-align: center"><%= seisakuArr[2].to_i %></td>
+
+      <td style="text-align: center"><%= info.salesname %></td>
+
+    </tr>
+    <% i += 1 %>
+  <% end %>
+</table>
+
+<script type="text/javascript">
+    <!--
+    $(".numvalue").each(function(){
+        let value = $(this).text();
+        if( value < 0 ){
+            $(this).addClass("mainas");
+        } else {
+            $(this).removeClass("mainas");
+        }
+        if(! value == ""){
+            $(this).text(new Intl.NumberFormat('ja-JP').format(value));
+        }
+    });
+    -->
+</script>

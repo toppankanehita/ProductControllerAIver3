@@ -1,0 +1,41 @@
+<form id="calendar-search-form" action="<%= calendar_path %>" method="get" class="row g-2">
+  <input type="hidden" name="week_start" value="<%= @start_date %>">
+
+  <div class="col-12 col-md-2">
+    <div class="row g-2 align-items-center">
+      <label class="col-12 col-md-5 col-form-label mb-0 text-md-end">印刷方法</label>
+      <div class="col-12 col-md-7">
+        <input type="text" name="info_textInfo02" list="print_method_list" class="form-control form-control-sm" value="<%= params[:info_textInfo02].to_s %>" placeholder="例: オフセット">
+        <%= tag.datalist id: 'print_method_list' do %>
+          <%= tag.option 'オフ輪' %>
+          <%= tag.option 'オフセット' %>
+          <%= tag.option 'プリント' %>
+          <%= tag.option 'その他' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-3">
+    <div class="row g-2 align-items-center">
+      <label class="col-12 col-md-3 col-form-label mb-0 text-md-end">顧客名</label>
+      <div class="col-12 col-md-9">
+        <input type="text" name="info_textInfo05" class="form-control form-control-sm" value="<%= params[:info_textInfo05].to_s %>" placeholder="顧客名を入力">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <div class="row g-2 align-items-center">
+      <label class="col-12 col-md-2 col-form-label mb-0 text-md-end">用紙</label>
+      <div class="col-12 col-md-10">
+        <input type="text" name="info_textInfo11" class="form-control form-control-sm" value="<%= params[:info_textInfo11].to_s %>" placeholder="用紙を入力">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-3 text-md-center">
+    <button type="submit" class="btn btn-sm btn-primary">検索</button>
+    <a class="btn btn-sm btn-outline-secondary ms-2" href="<%= url_for(controller: :calendar, action: :index, week_start: @start_date) %>">リセット</a>
+  </div>
+</form>

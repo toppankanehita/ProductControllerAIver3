@@ -1,0 +1,237 @@
+<%= form_with(model: archive) do |form| %>
+  <% if archive.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(archive.errors.count, "error") %> prohibited this archive from being saved:</h2>
+
+      <ul>
+        <% archive.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :textInfo02 %>
+    <%= form.text_field :textInfo02 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :den_id %>
+    <%= form.number_field :den_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :textInfo05 %>
+    <%= form.text_field :textInfo05 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :textInfo07 %>
+    <%= form.text_field :textInfo07 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :numInfo01 %>
+    <%= form.number_field :numInfo01 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :numInfo02 %>
+    <%= form.number_field :numInfo02 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :numInfo03 %>
+    <%= form.number_field :numInfo03 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :press_date %>
+    <%= form.date_select :press_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :finish_date %>
+    <%= form.date_select :finish_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sale_date %>
+    <%= form.date_select :sale_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :press_size %>
+    <%= form.text_field :press_size %>
+  </div>
+
+  <div class="field">
+    <%= form.label :press_color %>
+    <%= form.text_field :press_color %>
+  </div>
+
+  <div class="field">
+    <%= form.label :press_special %>
+    <%= form.text_field :press_special %>
+  </div>
+
+  <div class="field">
+    <%= form.label :press_upo %>
+    <%= form.text_field :press_upo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :press_kaleido %>
+    <%= form.text_field :press_kaleido %>
+  </div>
+
+  <div class="field">
+    <%= form.label :textInfo11 %>
+    <%= form.text_field :textInfo11 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :press_num %>
+    <%= form.number_field :press_num %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paper_jisu %>
+    <%= form.number_field :paper_jisu %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paper_yobi %>
+    <%= form.number_field :paper_yobi %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paper_split %>
+    <%= form.number_field :paper_split %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paper_ren %>
+    <%= form.text_field :paper_ren %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paper_sasi %>
+    <%= form.number_field :paper_sasi %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ktanka %>
+    <%= form.text_field :ktanka %>
+  </div>
+
+  <div class="field">
+    <%= form.label :mtanka %>
+    <%= form.text_field :mtanka %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paper_weight %>
+    <%= form.text_field :paper_weight %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sale_paper %>
+    <%= form.text_field :sale_paper %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sale_press %>
+    <%= form.text_field :sale_press %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_paper %>
+    <%= form.text_field :cost_paper %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_ctp %>
+    <%= form.text_field :cost_ctp %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_press %>
+    <%= form.text_field :cost_press %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_pod %>
+    <%= form.text_field :cost_pod %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_kako %>
+    <%= form.text_field :cost_kako %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_seisaku %>
+    <%= form.text_field :cost_seisaku %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_gaicyu %>
+    <%= form.text_field :cost_gaicyu %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_assembly %>
+    <%= form.text_field :cost_assembly %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_haiso %>
+    <%= form.text_field :cost_haiso %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_keihi %>
+    <%= form.text_field :cost_keihi %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cost_sum %>
+    <%= form.text_field :cost_sum %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sale_sum %>
+    <%= form.text_field :sale_sum %>
+  </div>
+
+  <div class="field">
+    <%= form.label :arari %>
+    <%= form.text_field :arari %>
+  </div>
+
+  <div class="field">
+    <%= form.label :parent_job %>
+    <%= form.text_field :parent_job %>
+  </div>
+
+  <div class="field">
+    <%= form.label :child_job %>
+    <%= form.text_field :child_job %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sales_name %>
+    <%= form.text_field :sales_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :job_id %>
+    <%= form.number_field :job_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

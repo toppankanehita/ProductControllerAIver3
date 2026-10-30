@@ -1,0 +1,140 @@
+<%= render partial: 'search_index' %>
+<%= javascript_pack_tag 'addValues/index', 'data-turbolinks-track': 'reload' %>
+
+<style type="text/css">
+    <!--
+    div.search{
+        font-size: 80%;
+        .form-control {
+            font-size: 80%;
+        }
+    }
+    table.index {
+        tr {
+            height: 2.5em;
+            td{
+                max-height: 2.5em;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                overflow: hidden;
+            }
+        }
+    }
+    ul.pagination{
+        width: 100%;
+        border: none;
+        padding-bottom:1em;
+        padding-top:1em;
+        margin-top: 0;
+    }
+    .nodialog{
+        display: none;
+    }
+
+    -->
+</style>
+
+<% i = 1 %>
+<table class="a_index" id="add_values_index">
+  <thead>
+    <tr>
+      <th style="min-width: 30px" class="mid">No</th>
+      <th style="min-width: 85px">受注No<br>種類</th>
+      <th style="min-width: 170px">得意先名<br>品名</th>
+      <th style="min-width: 85px; font-size:70%;line-height: 1.2em">部数<br>見本<br>見本2</th>
+      <th style="min-width: 55px; font-size:70%;line-height: 1.2em">印刷日<br>納品日<br>売上日</th>
+      <th style="min-width: 30px">P物</th>
+      <th style="min-width: 120px">用紙<br>サイズ</th>
+      <th style="min-width: 120px; font-size:70%;line-height: 1.2em">納品枚数<br>実数<br>予備</th>
+      <th style="min-width: 60px; font-size:70%;line-height: 1.2em">特色<br>ユポ<br>カレイド</th>
+      <th style="min-width: 60px; font-size:70%;line-height: 1.2em">色数<br>面付<br>差替</th>
+      <th style="min-width: 90px; font-size:70%;line-height: 1.2em">通数<br>連量<br>総重量</th>
+
+      <th style="min-width: 40px; font-size:70%;line-height: 1.2em">k単価<br>枚単価</th>
+
+      <th style="min-width: 50px">用紙</th>
+      <th style="min-width: 50px">製版</th>
+      <th style="min-width: 50px">印刷</th>
+      <th style="min-width: 50px">POD</th>
+      <th style="min-width: 50px">加工</th>
+      <th style="min-width: 50px">制作</th>
+      <th style="min-width: 50px">外注</th>
+      <th style="min-width: 50px; font-size:70%;line-height: 1.2em">アセンブリ</th>
+      <th style="min-width: 50px">配送</th>
+      <th style="min-width: 50px; font-size:70%;line-height: 1.2em">営業管理費</th>
+      <th style="min-width: 50px; font-size:70%;line-height: 1.2em">営業<br>積算額</th>
+      <th style="min-width: 100px"></th>
+      <th style="min-width: 100px">担当<br>合算</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @jobs.each do |job| %>
+    <%= render partial: 'job', locals: {  job: job, i: i } %>
+    <% i += 1 %>
+  <% end %>
+  </tbody>
+</table>
+
+<div id="mask" class="hidden"></div>
+<div id="modal" class="hidden modal-dialog-fluid"></div>
+
+<!-- AddValue rows modal -->
+<div class="modal fade" id="addValueModal" tabindex="-1" aria-labelledby="addValueModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <style>
+          <!--
+          .nodialog{
+              display: none;
+          }
+
+          -->
+      </style>
+      <div class="modal-header">
+        <h5 class="modal-title" id="addValueModalLabel">用紙明細</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-muted">読み込み中...</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Parent Code Modal -->
+<div class="modal fade" id="parentCodeModal" tabindex="-1" aria-labelledby="parentCodeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="parentCodeModalLabel">親コード登録</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-muted">読み込み中...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_pack_tag 'addValues/index' %>
+<%= javascript_pack_tag 'jobs/add_datum' %>
+
+
+<script type="text/javascript">
+    <!--
+    $(".numvalue").each(function(){
+        let value = $(this).text();
+        if( value < 0 ){
+            $(this).addClass("mainas");
+        } else {
+            $(this).removeClass("mainas");
+        }
+        if(! value == ""){
+            $(this).text(new Intl.NumberFormat('ja-JP').format(value));
+        }
+    });
+    -->
+</script>

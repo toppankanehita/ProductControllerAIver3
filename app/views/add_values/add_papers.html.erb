@@ -1,0 +1,18 @@
+<% page = (params[:page].presence || 1).to_i %>
+<% per  = @add_values.respond_to?(:limit_value) ? @add_values.limit_value : 15 %>
+<% offset = (page - 1) * per %>
+
+<table class="index" id="add_papers">
+  <thead>
+    <%= render partial: 'row_head' %>
+  </thead>
+  <tbody>
+    <% @add_values.each_with_index do |value, idx| %>
+      <% job = value.job %>
+      <% next unless job.present? %>
+      <% info = job&.info %>
+      <%= render partial: 'add_values/row', locals: { value: value, job: job, info: info, idx: idx, offset: offset, idv: 0 } %>
+    <% end %>
+  </tbody>
+</table>
+<%= javascript_pack_tag 'addValues/addPapers' %>

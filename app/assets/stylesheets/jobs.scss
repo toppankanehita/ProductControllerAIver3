@@ -1,0 +1,299 @@
+// Place all the styles related to the jobs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+#jobs{
+  padding: 0 1em 1em 1em;
+  table.show{
+    border: solid 1px #DDD;
+    width: 100%;
+    font-size: 110%;
+    margin-top:0.3em;
+    tr{
+      th{
+        border: solid 1px #DDD;
+        font-size: 90%;
+        text-align: center;
+        padding: 0.1em 0;
+        background-color: lightcyan;
+      }
+      th.add{
+        background-color: lightsalmon;
+      }
+      th.sekisan{
+        background-color: lightseagreen;
+        color: #FFF
+      }
+      th.imp{
+        background-color: #EEE;
+      }
+      td{
+        border: solid 1px #DDD;
+        padding: 0.3em 0.7em;
+        font-size: 80%;
+        background-color: #FFF;
+        input {
+          text-align: center;
+          line-height: 1em;
+        }
+        span.sp_color {
+          font-size: 80%;
+          font-weight: bold;
+          color: #fff;
+          line-height: 1em;
+          padding: 0.15em 0.5em;
+          background-color: red;
+          margin-left: 0.5em
+        }
+      }
+      td.num {
+        text-align: right;
+      }
+      td.mid {
+        text-align: center;
+      }
+      td.iroy{
+        background-color: lightyellow;
+      }
+      td.actions{
+        vertical-align: top;
+        padding-top: 2em;
+        text-align: center;
+        input {
+          display: block;
+        }
+        a:nth-child(2) {
+          display: block;
+          border: solid 1px #DDD;
+          padding: 0.2em 1em;
+          margin-top: 1em;
+          text-decoration: none;
+          font-size:120%;
+        }
+      }
+    }
+  }
+  table.show:first-child{
+    margin-top:0;
+  }
+}
+
+
+
+.table_wrap{
+  overflow: hidden;
+}
+.container.jobIndex {
+  max-width: 1500px;
+}
+.container.maxWidth {
+  max-width: 1200px !important;
+}
+
+// Place all the styles related to the Budgets controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+#jobinfo {
+  width: 1000px;
+  margin-bottom: 3em;
+  div.infowrap{
+    width: 100%;
+    border: solid 2px #778ca3;
+    margin-top:0.3em;
+    padding: 0;
+    box-sizing: border-box;
+    div.data_wap{
+      display:inline-block;
+      font-size: 12px;
+      vertical-align: top;
+      border-right: solid 1px #778ca3;
+      div.midasi_inner{
+        height: 14px;
+        padding: 3px 3px 0 3px;
+        line-height: 1em;
+      }
+      div.data_innner{
+        font-size: 13px;
+        text-align: center;
+        line-height: 1.1em;
+        height: 34px;
+        overflow: hidden;
+        padding: 3px 3px 0 3px;
+      }
+      div.data_innner.sum{
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+    div.data_wap:last-child{border-right: none;}
+    div.data_wap.d0101 {width: 92px;}
+    div.data_wap.d0102 {width: 200px;}
+    div.data_wap.d0103 {width: 180px;}
+    div.data_wap.d0104 {width: 85px;}
+    div.data_wap.d0105 {width: 85px;}
+    div.data_wap.d0106 {width: 110px;}
+    div.data_wap.d0107 {width: 110px;}
+    div.data_wap.d0108 {width: 110px;}
+    div.data_wap.d0201 {width: 132px;}
+    div.data_wap.d0202 {width: 78px;}
+    div.data_wap.d0203 {width: 78px;}
+    div.data_wap.d0204 {width: 89px;}
+    div.data_wap.d0205 {width: 89px;}
+    div.data_wap.d0206 {width: 84px;}
+    div.data_wap.d0207 {width: 85px;}
+    div.data_wap.d0208 {width: 110px;}
+    div.data_wap.d0209 {width: 110px;}
+    div.data_wap.d0210 {width: 110px;}
+    div.data_wap.d0301 {width: 92px;}
+    div.data_wap.d0302 {width: 118px;}
+    div.data_wap.d0401 {
+      width: 567px;
+      div.data_innner{
+        text-align: left;
+        padding-left: 92px;
+      }
+    }
+  }
+  div.infowrap.summary{
+    float: right;
+    width: 571px;
+  }
+  div.infowrap.color0{background-color: #d8fbd8}
+  div.infowrap.colora{background-color: #fffaf0}
+  div.infowrap.colorb{background-color: #fff0f5}
+  div.infowrap.colorc{background-color: #e0ffff}
+  div.infowrap.colord{background-color: #ffffe0}
+  div.infowrap.colore{background-color: #edd0ed}
+  div.infowrap.colorf{background-color: #eeeeee}
+  div.infowrap.colorg{background-color: #ffe730}
+  div.infowrap.colorh{background-color: #ffcfa0}
+  div.infowrap.colori{background-color: #ccf3a1}
+  div.infowrap.summary{background-color: #ffff55}
+
+}
+
+#arrange{
+  body {
+    font-family: sans-serif;
+    display: flex; /* Flexboxで左右に配置 */
+    justify-content: center;
+    align-items: flex-start; /* 上端に揃える */
+    gap: 20px; /* Canvasとフォームの間のスペース */
+    margin: 20px;
+    min-height: 90vh; /* ビューポートの高さに合わせてフォームを伸ばすために必要 */
+  }
+  #main-container {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px; /* 最大幅を設定して全体の広がりを制限 */
+    align-items: flex-start; /* Canvasとフォームの開始位置を合わせる */
+  }
+
+  #canvas-container {
+    flex-grow: 1; /* 残りのスペースを埋める */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    max-width: 60vw;
+  }
+
+  canvas {
+    border: 1px solid black;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    background-color: #f0f0f0;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  #total-size-info {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    width: 100%;
+  }
+  #total-size-info .overflow-message {
+    color: red;
+    margin-left: 10px;
+  }
+
+  #controls {
+    flex-shrink: 0;
+    flex-basis: 350px; /* 8列に合わせてベースの幅を調整 */
+    max-width: 80vw;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); /* 8列に変更 */
+    gap: 8px 10px; /* 行間と列間を微調整 */
+    align-items: center;
+    height: fit-content;
+    box-sizing: border-box;
+    font-size: 0.7em; /* コントロール部分全体の文字サイズを70%に */
+  }
+
+  #controls label {
+    font-weight: bold;
+    grid-column: span 2; /* ラベルが5列分を占めるように変更 */
+    text-align: left; /* ラベルを左揃えに */
+    padding-right: 0px; /* ラベルと入力欄の間のスペースを削除 */
+  }
+  #controls input[type="number"] { /* Railsヘルパーで生成されるinputのスタイルも適用 */
+    width: 50px; /* 入力欄の幅を縮小 */
+    padding: 4px; /* パディングも微調整 */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em; /* 親要素の0.7emに対して1emなので、相対的に同じサイズ */
+  }
+  #controls button, #controls input[type="submit"] { /* submitボタンのスタイルも追加 */
+    grid-column: 1 / span 10; /* 8列分を占めるように変更 */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em; /* ボタンの文字サイズは少し大きく */
+    margin-top: 10px;
+  }
+  #controls button:hover, #controls input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 3px; /* 単位との間隔を狭める */
+    grid-column: span 3; /* 入力グループが3列分を占めるように変更 */
+  }
+  .input-group span {
+    font-size: 1em; /* 親要素の0.7emに対して1emなので、相対的に同じサイズ */
+    color: #555;
+    white-space: nowrap; /* "mm"が改行されないように */
+  }
+  .section-header {
+    grid-column: 1 / span 10; /* 8列分を占めるように変更 */
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 1.1em; /* セクションヘッダーの文字サイズも調整 */
+  }
+  .even-gap-settings {
+    grid-column: 1 / span 10; /* 8列分を占めるように変更 */
+    display: contents;
+  }
+  .even-gap-settings label, .even-gap-settings .input-group {
+    grid-column: span 3; /* 偶数アキのラベルと入力グループはそれぞれ4列分 */
+  }
+
+  .hidden {
+    display: none;
+  }
+}

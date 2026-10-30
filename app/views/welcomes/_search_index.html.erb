@@ -1,0 +1,67 @@
+
+<div class="search-form-container" style="min-width: 1410px;">
+  <%= search_form_for @q, url: root_path do |f| %>
+    <div class="d-flex align-items-end flex-nowrap gap-3">
+
+      <div>
+        <%= f.label :den_id_start, '受注番号', class: 'form-label' %>
+        <%= f.search_field :den_id_start, class: 'form-control form-control-sm' %>
+      </div>
+
+      <div style="min-width: 150px;">
+        <%= f.label :info_textInfo05_cont, '顧客名', class: 'form-label' %>
+        <%= f.search_field :info_textInfo05_cont, class: 'form-control form-control-sm' %>
+      </div>
+
+      <div style="min-width: 150px;">
+        <%= f.label :info_textInfo07_cont, '案件名', class: 'form-label' %>
+        <%= f.search_field :info_textInfo07_cont, class: 'form-control form-control-sm' %>
+      </div>
+
+      <div>
+        <%= f.label :info_textInfo02_cont, '印刷方法', class: 'form-label' %>
+        <%= f.search_field :info_textInfo02_cont, class: 'form-control form-control-sm' %>
+      </div>
+
+      <div>
+        <%= f.label :info_salesname_cont, '担当', class: 'form-label' %>
+        <%= f.search_field :info_salesname_cont, class: 'form-control form-control-sm' %>
+      </div>
+
+      <div>
+        <%= f.label :info_dateInfo05_gteq, '納品日(から)', class: 'form-label' %>
+        <%= f.search_field :info_dateInfo05_gteq, class: 'form-control form-control-sm', type: 'date' %>
+      </div>
+
+      <div>
+        <%= f.label :info_dateInfo05_lteq, '納品日(まで)', class: 'form-label' %>
+        <%= f.search_field :info_dateInfo05_lteq, class: 'form-control form-control-sm', type: 'date' %>
+      </div>
+
+      <div>
+        <%= f.label :info_dateInfo03_gteq, '印刷日(から)', class: 'form-label' %>
+        <%= f.search_field :info_dateInfo03_gteq, class: 'form-control form-control-sm', type: 'date' %>
+      </div>
+
+      <div>
+        <%= f.label :info_dateInfo03_lteq, '印刷日(まで)', class: 'form-label' %>
+        <%= f.search_field :info_dateInfo03_lteq, class: 'form-control form-control-sm', type: 'date' %>
+      </div>
+
+      <div style="min-width: 150px;">
+        <%= f.label :info_textInfo28_cont, '備考', class: 'form-label' %>
+        <%= f.search_field :info_textInfo28_cont, class: 'form-control form-control-sm' %>
+      </div>
+
+      <div class="d-flex align-items-center gap-2" style="padding-bottom: 0.1rem;">
+        <div class="total-count"><strong><%= @jobs.total_count %></strong>件</div>
+        <%= link_to 'リセット', root_path(reset: 1), class: 'btn btn-outline-secondary btn-sm' %>
+        <%= f.submit '検索', class: 'btn btn-primary btn-sm' %>
+      </div>
+
+      <%= f.hidden_field :info_cansel_eq, value: "0" %>
+      <%= f.hidden_field :info_hold_eq, value: "0" %>
+
+    </div>
+  <% end %>
+</div>

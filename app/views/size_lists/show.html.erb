@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Weight:</strong>
+  <%= @size_list.weight %>
+</p>
+
+<p>
+  <strong>Kind:</strong>
+  <%= @size_list.kind %>
+</p>
+
+<p>
+  <strong>Han:</strong>
+  <%= @size_list.han %>
+</p>
+
+<p>
+  <strong>Weight per m:</strong>
+  <%= @size_list.weight_per_m %>
+</p>
+
+<%= link_to 'Edit', edit_size_list_path(@size_list) %> |
+<%= link_to 'Back', size_lists_path %>

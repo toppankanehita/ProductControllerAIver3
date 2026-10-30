@@ -1,0 +1,6 @@
+(function() {
+  var row = document.getElementById('add_value_<%= @add_value.id %>');
+  if (row && row.parentNode) {
+    row.parentNode.removeChild(row);
+  }
+})();

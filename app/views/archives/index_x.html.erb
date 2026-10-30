@@ -1,0 +1,113 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Archives</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Textinfo02</th>
+      <th>Den</th>
+      <th>Textinfo05</th>
+      <th>Textinfo07</th>
+      <th>Numinfo01</th>
+      <th>Numinfo02</th>
+      <th>Numinfo03</th>
+      <th>Press date</th>
+      <th>Finish date</th>
+      <th>Sale date</th>
+      <th>Press size</th>
+      <th>Press color</th>
+      <th>Press special</th>
+      <th>Press upo</th>
+      <th>Press kaleido</th>
+      <th>Textinfo11</th>
+      <th>Press num</th>
+      <th>Paper jisu</th>
+      <th>Paper yobi</th>
+      <th>Paper split</th>
+      <th>Paper ren</th>
+      <th>Paper sasi</th>
+      <th>Ktanka</th>
+      <th>Mtanka</th>
+      <th>Paper weight</th>
+      <th>Sale paper</th>
+      <th>Sale press</th>
+      <th>Cost paper</th>
+      <th>Cost ctp</th>
+      <th>Cost press</th>
+      <th>Cost pod</th>
+      <th>Cost kako</th>
+      <th>Cost seisaku</th>
+      <th>Cost gaicyu</th>
+      <th>Cost assembly</th>
+      <th>Cost haiso</th>
+      <th>Cost keihi</th>
+      <th>Cost sum</th>
+      <th>Sale sum</th>
+      <th>Arari</th>
+      <th>Parent job</th>
+      <th>Child job</th>
+      <th>Sales name</th>
+      <th>Job</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @archives.each do |archive| %>
+      <tr>
+        <td><%= archive.textInfo02 %></td>
+        <td><%= archive.den_id %></td>
+        <td><%= archive.textInfo05 %></td>
+        <td><%= archive.textInfo07 %></td>
+        <td><%= archive.numInfo01 %></td>
+        <td><%= archive.numInfo02 %></td>
+        <td><%= archive.numInfo03 %></td>
+        <td><%= archive.press_date %></td>
+        <td><%= archive.finish_date %></td>
+        <td><%= archive.sale_date %></td>
+        <td><%= archive.press_size %></td>
+        <td><%= archive.press_color %></td>
+        <td><%= archive.press_special %></td>
+        <td><%= archive.press_upo %></td>
+        <td><%= archive.press_kaleido %></td>
+        <td><%= archive.textInfo11 %></td>
+        <td><%= archive.press_num %></td>
+        <td><%= archive.paper_jisu %></td>
+        <td><%= archive.paper_yobi %></td>
+        <td><%= archive.paper_split %></td>
+        <td><%= archive.paper_ren %></td>
+        <td><%= archive.paper_sasi %></td>
+        <td><%= archive.ktanka %></td>
+        <td><%= archive.mtanka %></td>
+        <td><%= archive.paper_weight %></td>
+        <td><%= archive.sale_paper %></td>
+        <td><%= archive.sale_press %></td>
+        <td><%= archive.cost_paper %></td>
+        <td><%= archive.cost_ctp %></td>
+        <td><%= archive.cost_press %></td>
+        <td><%= archive.cost_pod %></td>
+        <td><%= archive.cost_kako %></td>
+        <td><%= archive.cost_seisaku %></td>
+        <td><%= archive.cost_gaicyu %></td>
+        <td><%= archive.cost_assembly %></td>
+        <td><%= archive.cost_haiso %></td>
+        <td><%= archive.cost_keihi %></td>
+        <td><%= archive.cost_sum %></td>
+        <td><%= archive.sale_sum %></td>
+        <td><%= archive.arari %></td>
+        <td><%= archive.parent_job %></td>
+        <td><%= archive.child_job %></td>
+        <td><%= archive.sales_name %></td>
+        <td><%= archive.job_id %></td>
+        <td><%= link_to 'Show', archive %></td>
+        <td><%= link_to 'Edit', edit_archive_path(archive) %></td>
+        <td><%= link_to 'Destroy', archive, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Archive', new_archive_path %>

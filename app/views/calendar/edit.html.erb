@@ -1,0 +1,10 @@
+<% info = @job&.info %>
+
+<% if @job.add_values.count < 1 || @job.add_values.nil? %>
+  <% value = AddValue.new(job_id: @job.id) %>
+  <%= render partial: 'add_values/row', locals: { value: value, job: @job, info: info, idx: 0, offset: offset, idv: 0, show_add_link: true } %>
+<% else %>
+  <% @job.add_values.each_with_index do |value, idv| %>
+    <%= render partial: 'add_values/row', locals: { value: value, job: @job, info: info, idx: 0, offset: offset, idv: idv, show_add_link: true } %>
+  <% end %>
+<% end %>

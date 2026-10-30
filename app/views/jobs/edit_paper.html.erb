@@ -1,0 +1,48 @@
+<div class="edit_paper" id="paper_setup">
+  <div class="job">
+    <% job = @job %>
+    <% sale = Sale.find_by(job_id: job) %>
+    <% uploadfile = Uploadfile.find_by(job_id: job)  %>
+    <% print_report = Reportitem.find_by(job_id: job) %>
+    <% slips = Slip.where(job_id: job) %>
+    <% imps = ctp_helper(job) %>
+    <% specs = Spec.where(uploadfile_id: uploadfile) %>
+    <% add_values = AddValue.where(job_id: job) %>
+    <% papers = search_yousi( uploadfile , specs ,add_values ) %>
+    <% info = job.info %>
+    <table class="show">
+      <tr>
+        <th rowspan="2" style="text-align: center"><h2>用紙価格<br>記入</h2></th>
+        <th style="min-width: 100px;text-align: center">種類 / 担当</th>
+        <th style="min-width: 100px;text-align: center">受注No</th>
+        <th style="max-width: 350px;text-align: center">得意先名 / 品名</th>
+        <th style="min-width: 85px">用紙</th>
+      </tr>
+      <tr>
+        <td style="text-align: center"><%= info.textInfo02.gsub(/002　|003　|005　/, "") %><br><%= info.salesname %></td>
+        <td style="text-align: center"><%= job.den_id %><br><%= job.name %><%= job.change_no == 0 ? "" : job.change_no  %></td>
+        <td style="min-width: 300px"><%= job.info.textInfo05 %><br><%= job.info.textInfo07 %></td>
+        <td style="min-width: 200px"><%= job.info.textInfo11 %></td>
+      </tr>
+    </table>
+    <table class="show">
+      <tr>
+        <th style="min-width: 85px">部数 / 見本</th>
+        <th style="min-width: 120px">寸法 / 色数</th>
+        <th style="min-width: 85px">冊子</th>
+        <th style="min-width: 170px;text-align: center;line-height: 1em">刷版情報<br><span style="font-size:80%">刷版日 機種 面付 台数 出力数</span></th>
+        <th style="min-width: 100px;text-align: center">印刷日 / 納品日</th>
+      </tr>
+      <tr>
+        <td class="num"><%= num_hepler2(info) %></td>
+        <td style="text-align: center"><%= size_helper_wrap(job) %><br><%= color2_helper_wrap(job) %></td>
+        <td style="text-align: center"><%= book_helper_wrap(job) %></td>
+        <td><%= imps %></td>
+        <td style="text-align: center" ><%= job.info.dateInfo03 %><br><%= job.info.dateInfo05 %></td>
+      </tr>
+    </table>
+    <div id="paper_wrapper">
+      <%= render 'paper_form' %>
+    </div>
+  </div>
+</div>

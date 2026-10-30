@@ -1,0 +1,2 @@
+class Tom < ApplicationRecord
+end

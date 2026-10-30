@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>生産管理ツール</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_pack_tag 'application', media: 'all' %>
+  <%= javascript_pack_tag 'application' %>
+  <%= javascript_pack_tag 'add_value_suggestions', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<div class="d-flex flex-column flex-sm-row align-items-center ps-3 p-2 ps-lg-5 pe-lg-5 px-sm-6 mb-3 bg-white border-bottom shadow-sm">
+  <div class="d-flex flex-row flex-grow-2 ">
+    <h6 class="my-0 mr-md-auto font-weight-normal current">生産管理ツール</h6>
+  </div>
+
+  <div class="d-flex flex-row flex-grow-2 ms-3">
+    <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "用紙登録", jobs_path %></h6>
+  </div>
+
+  <div class="d-flex flex-row flex-grow-2 ms-3">
+    <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "週間", calendar_path %></h6>
+  </div>
+
+<!--  <div class="d-flex flex-row flex-grow-2 ms-3">-->
+<!--    <h6 class="my-0 mr-md-auto font-weight-normal"><%#= link_to "シートカッター", sheet_cutter_path %></h6>-->
+<!--  </div>-->
+  <div class="d-flex flex-row flex-grow-2 ms-3">
+    <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "集計済データ", archives_path %></h6>
+  </div>
+
+  <div class="d-flex flex-row flex-grow-2 ms-3">
+    <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "提出データ", list_mission_add_values_path %></h6>
+  </div>
+
+  <div class="d-flex flex-row flex-grow-2 ms-3">
+    <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "東京案件", tworks_path %></h6>
+  </div>
+
+  <div class="d-flex flex-row flex-grow-2 ms-3">
+    <h6 class="my-0 mr-md-auto font-weight-normal"><%= link_to "集計済提出データ", mission_archives_path %></h6>
+  </div>
+
+  <div  class="d-flex flex-row flex-grow-1 justify-content-center">
+    <nav class="pagination d-flex justify-content-center align-items-center" role="navigation" aria-label="pager" style="font-size: 90%;">
+      <% pagination_params = request.query_parameters.except("q", "page") %>
+      <%= paginate @jobs, params: pagination_params %>
+      <span style="margin-left:1em"><%= raw("#{@jobs.total_count}件 / #{@jobs.total_pages}page") %></span>
+    </nav>
+  </div>
+
+  <div  class="d-flex flex-row-reverse flex-grow-4 ">
+    <% if @jobs.total_count < 3001 %>
+      <%= link_to "Tabデータ",out_csv_add_values_path %>
+    <% end %>
+  </div>
+</div>
+<div class="container" style="margin-left: 0">
+  <div id="add-values" style="padding-top: 0">
+    <%= yield %>
+  </div>
+</div>
+
+</body>
+</html>

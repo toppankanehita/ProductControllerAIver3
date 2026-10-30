@@ -1,0 +1,96 @@
+
+  <tr>
+    <th><%= link_to "受注No", data_set_one_archive_path(job.id, page: params[:page]), method: :post, remote: true, data: { confirm: "更新しますか" } %></th>
+    <td><%= link_to archive.den_id, job_path(id: job,job_id: job), class: 'js-open-job-dialog', data: { url: job_path(id: job, i: i + ii , p: params[:page],job_id: job), job_id: job.id } %></td>
+    <th>得意先名</th>
+    <td><%= archive.textInfo05 %></td>
+    <td style="text-align: center"><%= archive.press_date %></td>
+    <td style="text-align: center"><%= archive.finish_date %></td>
+    <td style="text-align: center"><%= archive.sale_date %></td>
+    <!--        <td><%#= archive.press_size %></td>-->
+    <!--        <td><%#= archive.press_color %></td>-->
+    <!--        <td><%#= archive.press_special %></td>-->
+    <!--        <td><%#= archive.press_upo %></td>-->
+    <!--        <td><%#= archive.press_kaleido %></td>-->
+
+    <!--        <td><%#= archive.press_num %></td>-->
+    <!--        <td><%#= archive.paper_jisu %></td>-->
+    <!--        <td><%#= archive.paper_yobi %></td>-->
+    <!--        <td><%#= archive.paper_split %></td>-->
+    <!--        <td><%#= archive.paper_ren %></td>-->
+    <!--        <td><%#= archive.paper_sasi %></td>-->
+    <!--        <td><%#= archive.ktanka %></td>-->
+    <!--        <td><%#= archive.mtanka %></td>-->
+    <!--        <td><%#= archive.paper_weight %></td>-->
+    <th>見積額</th>
+    <td style="text-align: right"><%= numformat1(archive.sale_paper) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_press) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_ctp) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_pod) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_kako) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_seisaku) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_gaicyu) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_assembly) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_haiso) %></td>
+    <td style="text-align: right"><%= numformat1(archive.sale_keihi) %></td>
+    <th>売上金額</th>
+    <td style="text-align: right"><%= numformat1(archive.sale_sum) %></td>
+
+    <!--        <td><%#= archive.job_id %></td>-->
+    <!--        <td><%#= link_to 'Show', archive %></td>-->
+    <!--        <td><%#= link_to 'Edit', edit_archive_path(archive) %></td>-->
+    <!--        <td><%#= link_to 'Destroy', archive, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+  </tr>
+  <tr>
+    <th>種類</th>
+    <td><%= archive.textInfo02 %></td>
+    <th>品名</th>
+    <td><%= archive.textInfo07 %></td>
+    <th>部数/見本</th>
+    <th>サイズ/色数</th>
+    <th>差替/用紙総数/重量</th>
+    <th>実費用</th>
+    <td style="text-align: right"><%= numformat1(archive.cost_paper) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_press) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_ctp) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_pod) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_kako) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_seisaku) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_gaicyu) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_assembly) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_haiso) %></td>
+    <td style="text-align: right"><%= numformat1(archive.cost_keihi) %></td>
+    <th>費用合計</th>
+    <td style="text-align: right"><%= numformat1(archive.cost_sum) %></td>
+  </tr>
+  <tr style="border-bottom: 2px #999 solid">
+    <th>担当</th>
+    <td style="text-align: center"><%= archive.sales_name %></td>
+    <th>用紙</th>
+    <td>
+      <%= archive.textInfo11 %>
+      <% if archive.parent_job.present? %>
+        <span class="parent_job">合算:<%= archive.parent_job %></span>
+      <% elsif archive.child_job.present? %>
+        <span class="parent_job">親伝票:<%= archive.child_job %></span>
+      <% end %>
+
+    </td>
+    <td style="text-align: right"><%= numformat1(archive.numInfo01) %> / <%= numformat1(archive.numInfo02) %> / <%= numformat1(archive.numInfo03) %></td>
+    <td style="text-align: center"><%= archive.press_size.blank? ? archive.press_siage_size : archive.press_size %> / <%= archive.press_color %></td>
+    <td style="text-align: center"><%= archive.paper_sasi %> / <%= numformat1(archive.paper_jisu.to_i + archive.paper_yobi.to_i) %> / <%= archive.paper_weight %></td>
+    <th>消化率</th>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_paper) %>"><%= number_to_percentage(archive.cal_paper,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_press) %>"><%= number_to_percentage(archive.cal_press,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_ctp) %>"><%= number_to_percentage(archive.cal_ctp,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_pod) %>"><%= number_to_percentage(archive.cal_pod,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_kako) %>"><%= number_to_percentage(archive.cal_kako,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_seisaku) %>"><%= number_to_percentage(archive.cal_seisaku,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_gaicyu) %>"><%= number_to_percentage(archive.cal_gaicyu,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_assembly) %>"><%= number_to_percentage(archive.cal_assembly,  precision: 1) %></td>
+    <td style="text-align: right" class="<%= cost_over_helper(archive.cal_haiso) %>"><%= number_to_percentage(archive.cal_haiso,  precision: 1) %></td>
+    <td style="position:relative;text-align: right"><span style="position:absolute;left: 5px;font-size:80%;line-height: 1.2em;text-align: left;">営業<br>積算</span><%= numformat1(archive.sale_mitumori) %></td>
+    <th>粗利</th>
+    <td style="text-align: right" class="<%= cost_arari_helper(archive&.arari ) %>"><%= numformat1(archive.arari) %></td>
+  </tr>
+  <% i += 1 %>

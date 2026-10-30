@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Den code:</strong>
+  <%= @press_data.den_code %>
+</p>
+
+<p>
+  <strong>Product name:</strong>
+  <%= @press_data.product_name %>
+</p>
+
+<p>
+  <strong>Paper no:</strong>
+  <%= @press_data.paper_no %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @press_data.start_time %>
+</p>
+
+<p>
+  <strong>Work time:</strong>
+  <%= @press_data.work_time %>
+</p>
+
+<p>
+  <strong>N01:</strong>
+  <%= @press_data.n01 %>
+</p>
+
+<p>
+  <strong>N02:</strong>
+  <%= @press_data.n02 %>
+</p>
+
+<p>
+  <strong>Machine:</strong>
+  <%= @press_data.machine %>
+</p>
+
+<%= link_to 'Edit', edit_press_datum_path(@press_data) %> |
+<%= link_to 'Back', press_data_path %>

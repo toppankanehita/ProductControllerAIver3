@@ -1,0 +1,65 @@
+
+<% info = job.info %>
+<% add_datum = AddDatum.find_by(job_id: job.id) %>
+
+<% @mission = true %>
+<% mission_child_helper(job) %>
+<% mission_child_plus_helper(job) %>
+
+<%# value = AddValue.new(job_id: job.id) %>
+<% sales = Sale.find_by(job_id: job.id) %>
+<!--    <tr <%#= parent_helper(add_datum) %>>-->
+<tr id="job_<%= job&.id %>" data-job-id="<%= job&.id %>" data-den-code="<%= job&.den_id %>" style="border-top: solid 2px #999;">
+  <td class="num" style="text-align: center"><%= link_to i, job_path(id: job,job_id: job), class: 'js-open-job-dialog', data: { url: job_path(id: job, i: i, p: params[:page],job_id: job), job_id: job.id } %></td>
+  <td style="text-align: center"><%= @mission_array[40] %></td>
+  <td><%= textInfo02_helper(info.textInfo02) %></td>
+  <td><a href="#" class="me-2 js-open-addvalues" data-job-id="<%= job.id %>" data-den-id="<%= job.den_id %>"><%= job.den_id %></a></td>
+  <td><%= job.info.textInfo05 %></td>
+  <td><%= job.info.textInfo07 %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[0]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[1]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[0] + @tmp_array[1]) %></td>
+  <td style="text-align: right"><%= numformat1(@tmp_array[3]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[15]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[16]) %></td>
+  <td style="text-align: right"><%= number_with_precision(@mission_array[3], precision: 2)  %></td>
+  <td style="text-align: right"><%= numformat1(@unit_price.d27) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[4]) %></td>
+  <td style="text-align: right"><%= number_with_precision(@mission_array[5], precision: 2)  %></td>
+  <td style="text-align: right"><%= numformat1(@unit_price.d25) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[6]) %></td>
+  <td style="text-align: right"><%= number_with_precision(@mission_array[7], precision: 2)  %></td>
+  <td style="text-align: right"><%= numformat1(@unit_price.d26) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[8]) %></td>
+  <td style="text-align: right"><%= number_with_precision(@mission_array[3] + @mission_array[5] + @mission_array[7], precision: 2)  %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[4] + @mission_array[6] + @mission_array[8]) %></td>
+  <td style="text-align: right"><%= number_with_precision(@mission_array[9], precision: 2)  %></td>
+  <td style="text-align: right"><%= numformat1(@unit_price.d29) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[10]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[19]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[21]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[22]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[23]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[24]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[25]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[26]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[27]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[28]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[29]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[30]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[31]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[32]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[33]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[34]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[35]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[36]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[37]) %></td>
+  <td style="text-align: right"><%= numformat1(@mission_array[38]) %></td>
+  <td style="text-align: right"><%= number_to_percentage(@mission_array[39] * 100,  precision: 1) %></td>
+  <td>
+    <%= info.salesname %>
+    <div class="js-parent-code-cell" data-job-id="<%= job.id %>">
+      <%= render partial: 'add_values/parent_code_cell', locals: { job: job, add_datum: add_datum } %>
+    </div>
+  </td>
+</tr>

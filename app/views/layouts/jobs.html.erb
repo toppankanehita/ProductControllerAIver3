@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>生産管理ツール</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+  </head>
+
+  <body style="background-color: #DDD">
+<!--  <div class="d-flex flex-column flex-sm-row align-items-center ps-3 p-2 ps-lg-4 pe-lg-4 px-sm-6 mb-1 bg-white border-bottom shadow-sm">-->
+<!--    <div  class="d-flex flex-row flex-grow-1 ">-->
+<!--      <h5 class="my-0 mr-md-auto font-weight-normal"><%#= link_to "生産管理ツール", root_path(:i => params[:i],:p => params[:p],:show => "show") %></h5>-->
+<!--    </div>-->
+<!--    <div  class="d-flex flex-row flex-grow-1 ">-->
+<!--      <h5 class="my-0 mr-md-auto font-weight-normal"><%#= link_to "用紙一覧", paper_lists_url %></h5>-->
+<!--    </div>-->
+
+<!--    <div  class="d-flex flex-row flex-grow-1 ">-->
+<!--      <h5 class="my-0 mr-md-auto font-weight-normal"><%#= link_to "用紙情報追記", add_values_path(page: session[:page], show: "show") %></h5>-->
+<!--    </div>-->
+<!--    <div  class="d-flex flex-row flex-grow-1 ">-->
+<!--      <h5 class="my-0 mr-md-auto font-weight-normal"><%#= link_to "費用書出フォーム", out_csv_add_values_path() %></h5>-->
+<!--    </div>-->
+<!--    <style>-->
+<!--      nav.pagination {-->
+<!--        width: 600px;-->
+<!--        margin: 0;-->
+<!--          span{-->
+<!--            font-size: 90%;-->
+<!--          }-->
+<!--      }-->
+<!--    </style>-->
+<!--    <div  class="d-flex flex-row flex-grow-1 " >-->
+      <%#= paginate @jobs %>
+<!--      <nav class="pagination" role="navigation" aria-label="pager" style="width: 170px;">-->
+<!--        <span style="width: 160px"><%#= @ii %> / <%#= @jobs.total_pages %> 件</span>-->
+<!--      </nav>-->
+<!--    </div>-->
+
+<!--    <div  class="d-flex flex-row-reverse flex-grow-1 ">-->
+      <%#= link_to "データ",press_data_path %>
+<!--    </div>-->
+<!--  </div>-->
+  <div class="container maxWidth" style="max-width: 2000px;margin: 0; padding: 1em">
+    <div id="jobs" style="max-width: 2000px;margin: 0;display: flex">
+      <%= yield %>
+    </div>
+  </div>
+  </body>
+</html>

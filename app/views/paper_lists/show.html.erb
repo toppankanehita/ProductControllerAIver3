@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @paper_list.name %>
+</p>
+
+<p>
+  <strong>Full name:</strong>
+  <%= @paper_list.full_name %>
+</p>
+
+<p>
+  <strong>Ren:</strong>
+  <%= @paper_list.ren %>
+</p>
+
+<p>
+  <strong>Han:</strong>
+  <%= @paper_list.han %>
+</p>
+
+<p>
+  <strong>Paper type:</strong>
+  <%= @paper_list.paper_type_id %>
+</p>
+
+<%= link_to 'Edit', edit_paper_list_path(@paper_list) %> |
+<%= link_to 'Back', paper_lists_path %>

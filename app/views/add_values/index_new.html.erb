@@ -1,0 +1,135 @@
+<%= render partial: 'search_index' %>
+<%= javascript_pack_tag 'addValues/index', 'data-turbolinks-track': 'reload' %>
+
+<% i = 1 %>
+<table class="a_index">
+  <tr>
+    <th style="min-width: 30px">No</th>
+    <th style="min-width: 70px">種類</th>
+    <th style="min-width: 90px">受注No</th>
+    <th style="min-width: 150px">得意先名</th>
+    <th style="min-width: 150px">品名</th>
+    <th style="min-width: 85px">部数 / 見本</th>
+    <th style="min-width: 50px">印刷日</th>
+    <th style="min-width: 50px">納品日</th>
+    <th style="min-width: 50px">売上日</th>
+    <th style="min-width: 35px">サイズ</th>
+    <th style="min-width: 75px">用紙</th>
+    <th style="min-width: 30px">印刷枚数</th>
+    <th style="min-width: 30px">実数</th>
+    <th style="min-width: 30px">予備</th>
+    <th style="min-width: 30px">色数</th>
+    <th style="min-width: 30px">特色</th>
+    <th style="min-width: 30px">ユポ</th>
+    <th style="min-width: 30px">カレイド</th>
+    <th style="min-width: 30px">サイズ</th>
+    <th style="min-width: 30px">連量</th>
+    <th style="min-width: 30px">差替数</th>
+    <th style="min-width: 30px">k単価</th>
+    <th style="min-width: 30px">枚単価</th>
+    <th style="min-width: 30px">総重量</th>
+    <th style="min-width: 30px">用紙見積</th>
+    <th style="min-width: 30px">印刷見積</th>
+    <th style="min-width: 30px">積算原価</th>
+    <th style="min-width: 80px">製版</th>
+    <th style="min-width: 30px">印刷</th>
+    <th style="min-width: 30px">POD</th>
+    <th style="min-width: 30px">加工</th>
+    <th style="min-width: 30px">制作</th>
+    <th style="min-width: 30px">外注</th>
+    <th style="min-width: 30px">アセンブリ</th>
+    <th style="min-width: 30px">配送</th>
+    <th style="min-width: 30px">営業管理費</th>
+    <th>合計原価</th>
+    <th>売上金額</th>
+    <th>粗利</th>
+    <th>合算</th>
+    <th>担当</th>
+  </tr>
+  <% childs_counter = 0 %>
+  <% @jobs.each do |job| %>
+    <% archive = Archive.find_by(job_id: job.id) %>
+    <% archive = archive.present? ? archive : Archive.new(job_id: job.id) %>
+    <% info = job.info %>
+    <% #add_datum = AddDatum.find_by(job_id: job.id) %>
+
+    <% #child_helper(job) %>
+    <% #child_plus_helper(job) %>
+    <% #childs_counter = childs_counter + @child_count.to_i %>
+    <% #value_total_sale = value_cal_price_helper(job,add_datum) %>
+
+    <% #sales = Sale.find_by(job_id: job.id) %>
+    <tr <%= parent_index_helper(archive.child_job) %>>
+      <td><%= link_to i - childs_counter, job_path(id: job,i: i,p: params[:page]) %></td>
+      <td><%= textInfo02_helper(info.textInfo02) %></td>
+      <td><a href="#" class="me-2 js-open-addvalues" data-job-id="<%= job.id %>" data-den-id="<%= job.den_id %>"><%= job.den_id %></a></td>
+      <td><%= job.info.textInfo05 %></td>
+      <td><%= job.info.textInfo07 %></td>
+      <td class="num"><%= num_hepler2(info) %></td>
+      <td class="mid"><%= hiduke3_helper(job.info.dateInfo03) %></td>
+      <td class="mid"><%= hiduke3_helper(job.info.dateInfo05) %></td>
+      <td class="mid"><%= hiduke3_helper(archive.sale_date) %></td>
+      <td class="mid"><%= info.textInfo20 %><%= book_helper3( info.numInfo08 , info.numInfo09 ) %></td>
+      <td><%= info.textInfo11 %></td>
+      <td style="text-align: right"><%= numformat1(archive.press_num) %></td>
+      <td style="text-align: right"><%= numformat1(archive.paper_jisu) %></td>
+      <td style="text-align: right"><%= numformat1(archive.paper_yobi) %></td>
+      <td style="text-align: right"><%= archive.press_color %></td>
+      <td style="text-align: right"><%= archive.press_special %></td>
+      <td style="text-align: right"><%= archive.press_upo %></td>
+      <td style="text-align: right"><%= archive.press_kaleido %></td>
+      <td style="text-align: right"><%= archive.paper_split %></td>
+      <td style="text-align: right"><%= archive.paper_ren %></td>
+      <td style="text-align: right"><%= numformat1(archive.paper_sasi) %></td>
+      <td style="text-align: right"><%= numformat1(archive.ktanka) %></td>
+      <td style="text-align: right"><%= numformat1(archive.mtanka) %></td>
+      <td style="text-align: right"><%= numformat1(archive.paper_weight) %></td>
+      <td style="text-align: right"><%= numformat1(archive.sale_paper) %></td>
+      <td style="text-align: right"><%= numformat1(archive.sale_press) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_paper) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_press) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_ctp) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_pod) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_kako) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_seisaku) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_gaicyu) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_assembly) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_haiso) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_keihi) %></td>
+      <td style="text-align: right"><%= numformat1(archive.cost_sum) %></td>
+      <td style="text-align: right"><%= numformat1(archive.sale_sum) %></td>
+      <td style="text-align: right"><%= numformat1(archive.arari) %></td>
+      <td><%= archive.parent_job %></td>
+      <td><%= info.salesname %></td>
+    </tr>
+    <% i += 1 %>
+  <% end %>
+</table>
+
+<!-- AddValue rows modal -->
+<div class="modal fade" id="addValueModal" tabindex="-1" aria-labelledby="addValueModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <style>
+          <!--
+          .nodialog{
+              display: none;
+          }
+
+          -->
+      </style>
+      <div class="modal-header">
+        <h5 class="modal-title" id="addValueModalLabel">用紙明細</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-muted">読み込み中...</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_pack_tag 'addValues/index' %>

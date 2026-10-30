@@ -1,0 +1,47 @@
+<%= form_with(model: add_press) do |form| %>
+
+
+  <div class="field">
+    <%= form.label :machine %>
+    <%= form.text_field :machine %>
+  </div>
+
+  <div class="field">
+    <%= form.label :han %>
+    <%= form.text_field :han %>
+  </div>
+
+  <div class="field">
+    <%= form.label :iro %>
+    <%= form.text_field :iro %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dai %>
+    <%= form.number_field :dai %>
+  </div>
+
+  <div class="field">
+    <%= form.label :kake %>
+    <%= form.text_field :kake %>
+  </div>
+
+  <div class="field">
+    <%= form.label :daitanka %>
+    <%= form.number_field :daitanka %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tanka %>
+    <%= form.text_field :tanka %>
+  </div>
+  <%= form.text_field :job_id %>
+  <div class="field">
+    <%= form.label :dai_price %>
+    <%= form.text_field :dai_price %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

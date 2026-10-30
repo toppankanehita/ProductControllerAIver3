@@ -1,0 +1,804 @@
+<% arari_cal_wap(@job) %>
+<% info = @job.info %>
+<style type="text/css">
+    <!--
+    #jobinfo {
+        .job {
+            margin: -5.8em 0 -8em -8.5em;
+            transform: scale(0.8);
+            width: 1010px;
+        }
+    }
+    -->
+</style>
+<div id="jobinfo" style="  display:flex;flex-flow: column;max-width: 800px;margin: 0 1em 0 0 ;">
+
+  <%= render partial: "jobc" %>
+  <% thumbs = Thumb.where(den_code: @job.den_id ) %>
+  <style type="text/css">
+      <!--
+      div.thumbs{
+          display: flex;
+          flex-flow: wrap;
+          border: solid 1px #DDD;
+          margin-top:0.5em;
+          background-color: #FFF;
+        div.thumb{
+            display: flex;
+            flex-flow: column;
+            padding: 0.2em;
+            img{
+                border: solid 1px #DDD;
+            }
+        }
+        span{
+            font-size: 80%
+        }
+      }
+      -->
+  </style>
+  <div class="thumbs">
+    <%= puts thumbs.count %>
+    <% thumbs.each do |thumb| %>
+      <div class="thumb">
+        <span><%= thumb.work_date %>　<%= thumb.thumb_name %></span>
+        <img src="<%= thumb.url %>" alt="">
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+<div id="jobinfo" style="min-width: 800px;font-size:80%; display: inline-block">
+<%#= link_to "元", show_org_job_path(@job) %>
+  <table class="show">
+    <tr>
+      <th>受注No</th>
+      <td><%= link_to @job.den_id,"http://130.1.15.54:3000/jobs/show/#{@job.id}", target: "_blank" %>
+        <%= @job.name %><%= @job.change_no %> <%= @job.id %></td>
+      <th>担当営業</th><td><%= info.textInfo01 %>　[印刷日] <%= info.dateInfo03 %></td>
+      <th width="200px">備考</th>
+    </tr>
+    <tr>
+      <th>印刷方法</th><td><%= info.textInfo02 %></td>
+      <% @print_kind = info.textInfo02 %>
+      <% kind = Kind.find_by("code = ?",info.textInfo03 ) %>
+      <th>種類</th><td><%= info.textInfo03 %> <%= kind.blank? ? "" : kind.name %></td>
+      <td rowspan="8" style="vertical-align: top; font-size: 0.7em"><%= info.textInfo28 %></td>
+    </tr>
+    <tr>
+      <th>顧客名</th><td colspan="3"><%= info.textInfo04 %> <%= info.textInfo05 %></td>
+    </tr>
+    <tr>
+      <th>品名</th><td colspan="3"><b><%= info.textInfo07 %></b></td>
+    </tr>
+    <tr>
+      <th>用紙</th><td colspan="3"><%= info.textInfo11 %></td>
+    </tr>
+    <tr>
+      <th>印刷枚数</th><td><%= num_hepler(info) %></td>
+      <th>色数</th><td><%= color_helper(info.numInfo16 , info.numInfo04 ,info.numInfo05, info.numInfo17, info.textInfo02) %></td>
+    </tr>
+
+    <tr>
+      <th>仕上りサイズ</th><td><%= info.textInfo20 %> <%= size_helper( info.numInfo06 , info.numInfo07) %></td>
+      <th>展開サイズ</th><td><%= size_helper( info.numInfo14 , info.numInfo15) %></td>
+    </tr>
+    <tr>
+      <% kakoArry = kako_list(@job) %>
+      <th>加工</th>
+      <td colspan="3">
+        <% kakoArry.each do |kako| %>
+          <%= "【#{kako[0]}】#{kako[1]}  " %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th>冊子</th><td><%= book_helper( info.numInfo08 , info.numInfo09 , info.textInfo41 ) %></td>
+      <th>配達方法</th><td><%= info.textInfo18 %>【納品日】<%= info.dateInfo05 %></td>
+    </tr>
+  </table>
+  <table class="show" style="font-size: 80%; margin-bottom: 0.5em">
+      <%= form_with(model: @add_datum, id: "add_datum_form") do |form| %>
+        <%= form.hidden_field :job_id ,value: @job.id %>
+
+      <input type="hidden" name="i" value="<%= params[:i] %>" >
+      <input type="hidden" name="ii" value="<%= @ii %>" >
+      <input type="hidden" name="p" value="<%= params[:p] %>" >
+      <tr>
+        <th class="add">売上</th>
+        <th class="add">製版</th>
+        <th class="add">POD</th>
+        <th class="add">加工費</th>
+        <th class="add">制作費</th>
+        <th class="add">外注費</th>
+        <th class="add">発送費</th>
+        <th class="add">アセンブリ</th>
+        <th class="add">色校枚数</th>
+        <th class="add">合算する「親」受注No</th>
+        <td rowspan="2" class="actions" style="padding-top: 0.5em">
+          <%= form.submit id: "add_datum_submit" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field mid"><%= form.text_field :sales_price ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :ctp ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :pod ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :kako ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :dtp ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :out_cost ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :delivery ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :assembly ,size: 7 %></td>
+        <td class="field mid"><%= form.text_field :iroko_num ,size: 3 %></td>
+        <td class="mid"><%= form.text_field :parent_code ,size: 12 %></td>
+      </tr>
+      <% end %>
+  </table>
+  <script>
+
+  </script>
+  <div id="paper_wrap" class="table_wrap" style="height: 88px; overflow: hidden;margin-bottom: 0.5em ">
+    <table class="show" style="font-size: 80%">
+      <%= form_with(model: @value_form ,url: add_values_path, method: :post) do |f| %>
+        <input type="hidden" name="id" value="<%= @job.id %>" >
+        <input type="hidden" name="i" value="<%= @i %>" >
+        <input type="hidden" name="ii" value="<%= @ii %>" >
+        <input type="hidden" name="p" value="<%= params[:p] %>" >
+        <input type="hidden" name="value_numInfo01" value="<%= @info.numInfo01 %>" id="value_numInfo01" >
+        <input type="hidden" name="value_mihon" value="<%= mihon(@info) %>" id="value_mihon" >
+        <input type="hidden" name="value_textInfo02" value="<%= @info.textInfo02 %>" id="value_textInfo02" >
+        <input type="hidden" name="value_size" value="<%= @size %>" id="value_size" >
+        <input type="hidden" name="value_size" value="<%= @info.numInfo04.blank? ? 0 : @info.numInfo04 %>" id="value_iroa" >
+        <input type="hidden" name="value_size" value="<%= @info.numInfo05.blank? ? 0 : @info.numInfo05 %>" id="value_irob" >
+        <input type="hidden" name="value_paper" value="<%= @info.textInfo11 %>" id="value_paper" >
+        <% i = 1 %>
+        <%= f.fields_for :add_values do |form| %>
+          <% if i == 1 %>
+            <tr>
+              <th class="add" colspan="4">用紙名</th>
+              <th class="add">連量</th>
+              <th class="add">板紙</th>
+              <th class="add">部数</th><th class="add">取数</th><th class="add">台</th>
+              <th class="add">差替</th><th class="add">面</th>
+              <th class="add">k単価</th><th class="add">枚単価</th>
+              <th class="add">実数</th><th class="add">予備</th>
+              <th class="add">用紙価格</th>
+              <td colspan="2" rowspan="6" class="actions">
+                <%= form.submit %>
+                <%= link_to('更新', 'javascript:void(0);',onclick: "formchkd()") %>
+                <%= link_to('伸ばす', 'javascript:void(0);',onclick: "$('#paper_wrap').height('136px');") %>
+              </td>
+            </tr>
+          <% end %>
+          <tr>
+            <%= form.hidden_field :position %>
+            <%= form.hidden_field :job_id ,value: @job.id %>
+            <td><%= i %></td>
+            <td class="field mid" colspan="3"><%= form.text_field :paper_name %></td>
+            <td class="field mid"><%= form.text_field :ren,size: 5 %></td>
+            <td class="field mid"><%= form.check_box :ita ,{}, checked_value='1', unchecked_value='0' %></td>
+            <td class="field mid"><%= form.text_field :press_num,size: 5 %></td>
+            <td class="field mid"><%= form.text_field :tori,size: 3 %></td>
+            <td class="field mid"><%= form.text_field :dai,size: 3 %></td>
+            <td class="field mid"><%= form.text_field :sasi,size: 3 %></td>
+            <td class="field mid"><%= form.text_field :men,size: 3 %></td>
+            <td class="field mid"><%= form.text_field :ktanka,size: 3 %></td>
+            <td class="field mid"><%= form.text_field :mtanka,size: 3 %></td>
+            <td class="field mid iroy"><%= form.text_field :jisu,size: 5 %></td>
+            <td class="field mid iroy"><%= form.text_field :yobi,size: 3 %></td>
+            <td class="field mid iroy"><%= form.text_field :paper_price,size: 7 %></td>
+          </tr>
+          <script>
+              function formchkd<%= escape_javascript i %>(f){
+                  var posi = parseInt(<%= escape_javascript i %>) - 1;
+                  var paper_name = $("#form_add_value_collection_add_values_attributes_" + posi + "_paper_name");
+                  var ren = $("#form_add_value_collection_add_values_attributes_" + posi + "_ren").val();
+                  var ita = $("#form_add_value_collection_add_values_attributes_" + posi + "_ita:checked").val();
+                  var jisu = $("#form_add_value_collection_add_values_attributes_" + posi + "_jisu");
+                  var yobi = $("#form_add_value_collection_add_values_attributes_" + posi + "_yobi");
+                  var ktanka = $("#form_add_value_collection_add_values_attributes_" + posi + "_ktanka").val();
+                  var mtanka = $("#form_add_value_collection_add_values_attributes_" + posi + "_mtanka").val();
+                  var paper_price = $("#form_add_value_collection_add_values_attributes_" + posi + "_paper_price");
+                  var press_num = $("#form_add_value_collection_add_values_attributes_" + posi + "_press_num").val();
+                  var tori = $("#form_add_value_collection_add_values_attributes_" + posi + "_tori").val();
+                  var dai = $("#form_add_value_collection_add_values_attributes_" + posi + "_dai").val();
+                  var men = $("#form_add_value_collection_add_values_attributes_" + posi + "_men").val();
+                  var sasi = $("#form_add_value_collection_add_values_attributes_" + posi + "_sasi").val();
+                  var textInfo02 = $("#value_textInfo02").val();
+                  var size = $("#value_size").val();
+                  var jisu_num = 0;
+                  var yobi_num = 0;
+                  var dai_num = parseInt(dai);
+                  var tori_num = parseInt(tori);
+                  var paper = $("#value_paper").val();
+
+                  press_num = parseInt(press_num);
+                  if(f == 0){
+                      if(dai_num > 0 && tori_num > 0 && press_num > 0){
+                          jisu_num = Math.ceil((press_num / tori_num) * dai_num);
+
+                          if(textInfo02 == "003　オフ輪"){
+                              if( jisu_num < 30000 ){
+                                  yobi_num = (8000 / jisu_num) * jisu_num ;
+
+                              } else if ( jisu_num > 130000){
+                                  yobi_num = (((0.069 - 0.04) * Math.exp(-0.00001 * (jisu_num-150000))) + 0.04)* jisu_num ;
+                              } else {
+                                  yobi_num = (((0.26 - 0.07) * Math.exp(-0.000035 * (jisu_num-30000))) + 0.07)* jisu_num  ;
+                              }
+
+                              yobi_num = Math.ceil(yobi_num + ((sasi - 1) * 2000));
+                              yobi_num = yobi_num / 2;
+
+                          } else if(textInfo02 == "002　オフセット"){
+                              if( jisu_num < 1500 ){
+                                  yobi_num = (300 / jisu_num) * jisu_num;
+                              } else if (jisu_num < 20000){
+                                  yobi_num = ((0.22 - 0.075) * Math.exp(-0.0007 * (jisu_num-1500)) + 0.075) * jisu_num;
+                              } else {
+                                  yobi_num = ((0.075 - 0.045) * Math.exp(-0.0001 * (jisu_num-20000)) + 0.045) * jisu_num;
+                              }
+                              yobi_num = Math.ceil(yobi_num/ men );
+                          }else if(textInfo02 == "プリント出力"){
+                              if( jisu_num < 1500){
+                                  yobi_num = (jisu_num) * 0.1;
+                              } else if (jisu_num < 5000){
+                                  yobi_num = (jisu_num) * 0.05;
+                              } else {
+                                  yobi_num = (jisu_num) * 0.02;
+                              }
+                              yobi_num = Math.ceil(yobi_num );
+                          }
+                      }
+                  } else {
+                      if(dai_num > 0 && tori_num > 0 && press_num > 0){
+                          jisu_num = Math.ceil(jisu.val());
+                          yobi_num = Math.ceil(yobi.val());
+                      }
+                  }
+
+                  weight = 0.0;
+                  price = parseInt(paper_price.val());
+
+                  mai = parseInt(jisu_num) + parseInt(yobi_num);
+
+                  if(ren !== ""){
+                      weight = (mai / 1000 ) * parseFloat(ren);
+                  }
+
+                  if( ita == 1 ){
+                      weight = weight * 10;
+                  }
+
+                  if(parseFloat(mtanka) > 0 ){
+                      price = Math.round(mai * parseFloat(mtanka));
+                  } else if(parseFloat(ktanka) > 0 ) {
+                      price = Math.round(parseFloat(ktanka) * weight);
+                  }
+                  if(textInfo02 == "003　オフ輪" && paper_name.val() == ""){
+                      paper_name.val(paper);
+                      console.log(paper);
+                  }
+                  yobi.val(yobi_num);
+                  jisu.val(jisu_num);
+                  paper_price.val(price);
+
+              };
+              var posi = parseInt(<%= escape_javascript i %>) - 1;
+              var press_num01 = $("#value_numInfo01").val();
+              var press_mihon = $("#value_mihon").val();
+              var press_num = $("#form_add_value_collection_add_values_attributes_" + posi + "_press_num");
+              if( press_num.val() == ""){
+                  press_num.val(parseInt(press_num01) + parseInt(press_mihon));
+              }
+              function vavaluechk<%= escape_javascript i %>(){
+
+              }
+              formchkd<%= escape_javascript i %>();
+              var posi = parseInt(<%= escape_javascript i %>) - 1;
+              var tt = "#form_add_value_collection_add_values_attributes_" + posi
+              $(tt + "_ren , " + tt + "_jisu , " + tt + "_yobi , " + tt + "_ktanka , " + tt + "_mtanka , " + tt + "_ita , " + tt + "_tori , " + tt + "_dai , " + tt + "_press_num").bind('input', function () {
+                  formchkd<%= escape_javascript i %>(1);
+              });
+
+          </script>
+          <% i = i + 1 %>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+  <script>
+    function formchkd(){
+        formchkd1(0);
+        formchkd2(0);
+        formchkd3(0);
+        formchkd4(0);
+        formchkd5(0);
+    }
+  </script>
+
+  <div id="press_wrap" class="table_wrap " style="height: 88px; overflow: hidden;margin-bottom: 0.5em ">
+  <table class="show" style="font-size: 80%">
+    <%= form_with( model: @form ,url: add_presses_path, method: :post) do |f| %>
+      <input type="hidden" name="id" value="<%= @job.id %>" >
+      <input type="hidden" name="i" value="<%= @i %>" >
+      <input type="hidden" name="ii" value="<%= @ii %>" >
+      <input type="hidden" name="p" value="<%= params[:p] %>" >
+      <% i = 1 %>
+      <%= f.fields_for :add_presses do |form2| %>
+        <% if i == 1 %>
+          <tr>
+            <th class="add" colspan="2">印刷費</th>
+            <th class="add">部数</th>
+            <th class="add">面付</th>
+            <th class="add">台数</th>
+            <th class="add">差替</th>
+            <th class="add">色数</th>
+            <th class="add">通数</th>
+
+            <th class="add">更</th>
+            <th class="add">特</th>
+            <th class="add">金</th>
+            <th class="add">ユポ</th>
+
+            <th class="add">単価</th>
+            <th class="add">掛率</th>
+            <th class="add">台単価</th>
+            <th class="add">掛率</th>
+            <th class="add">印刷価格</th>
+            <td colspan="2" rowspan="6" class="actions">
+              <%= f.submit %>
+              <%= link_to('更新', 'javascript:void(0);',onclick: "formpress()") %>
+              <%= link_to('伸ばす', 'javascript:void(0);',onclick: "$('#press_wrap').height('136px');") %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <%= form2.hidden_field :position %>
+          <%= form2.hidden_field :job_id ,value: @job.id %>
+          <td><%= i %></td>
+          <td class="field mid"><%= form2.select :han ,%w(B全 菊全 菊半 B2 D2) ,include_blank: true  %></td>
+          <td class="field mid"><%= form2.text_field :press_num,size: 6  %></td>
+          <td class="field mid"><%= form2.text_field :men,size: 2  %></td>
+          <td class="field mid"><%= form2.text_field :dai,size: 2  %></td>
+          <td class="field mid"><%= form2.text_field :sasi,size: 2  %></td>
+          <td class="field mid">
+            <%= form2.text_field :iroa,size: 1  %>-
+            <%= form2.text_field :irob,size: 1  %>
+          </td>
+
+          <td class="field mid iroy"><%= form2.text_field :jisu,size: 6  %></td>
+          <td class="field mid iroy"><%= form2.check_box :zara ,{}, checked_value='1', unchecked_value='0' %></td>
+          <td class="field mid iroy"><%= form2.check_box :toku ,{}, checked_value='1', unchecked_value='0' %></td>
+          <td class="field mid iroy"><%= form2.check_box :kin ,{}, checked_value='1', unchecked_value='0' %></td>
+          <td class="field mid iroy"><%= form2.check_box :upo ,{}, checked_value='1', unchecked_value='0' %></td>
+          <td class="field mid iroy"><%= form2.text_field :tanka,size: 6  %></td>
+          <td class="field mid iroy"><%= form2.text_field :kake,size: 3  %></td>
+          <td class="field mid iroy"><%= form2.text_field :daitanka,size: 6  %></td>
+          <td class="field mid iroy"><%= form2.text_field :kake2,size: 3  %></td>
+          <td class="field mid iroy"><%= form2.text_field :dai_price,size: 6  %></td>
+        </tr>
+
+        <script>
+            function formpress<%= escape_javascript i %>(){
+                var posi = parseInt(<%= escape_javascript i %>) - 1;
+                var han = $("#form_add_press_collection_add_presses_attributes_" + posi + "_han").val();
+                var press_num = $("#form_add_press_collection_add_presses_attributes_" + posi + "_press_num").val();
+
+                var men = $("#form_add_press_collection_add_presses_attributes_" + posi + "_men").val();
+                var dai = $("#form_add_press_collection_add_presses_attributes_" + posi + "_dai").val();
+                var iroa = $("#form_add_press_collection_add_presses_attributes_" + posi + "_iroa").val();
+                var irob = $("#form_add_press_collection_add_presses_attributes_" + posi + "_irob").val();
+                var sasi = $("#form_add_press_collection_add_presses_attributes_" + posi + "_sasi").val();
+                var jisu = $("#form_add_press_collection_add_presses_attributes_" + posi + "_jisu");
+                var zara = $("#form_add_press_collection_add_presses_attributes_" + posi + "_zara:checked").val();
+                var toku = $("#form_add_press_collection_add_presses_attributes_" + posi + "_toku:checked").val();
+                var kin = $("#form_add_press_collection_add_presses_attributes_" + posi + "_kin:checked").val();
+                var upo = $("#form_add_press_collection_add_presses_attributes_" + posi + "_upo:checked").val();
+                var tanka = $("#form_add_press_collection_add_presses_attributes_" + posi + "_tanka");
+                var daitanka = $("#form_add_press_collection_add_presses_attributes_" + posi + "_daitanka");
+                var kake = $("#form_add_press_collection_add_presses_attributes_" + posi + "_kake");
+                var kake2 = $("#form_add_press_collection_add_presses_attributes_" + posi + "_kake2");
+                var dai_price = $("#form_add_press_collection_add_presses_attributes_" + posi + "_dai_price");
+                var jisu_num = 0;
+                var yobi_num = 0;
+                var kake_num = 0.00;
+                var kake2_num = 0.00;
+                var tanka_num = 0.00;
+                dai = parseInt(dai);
+                var textInfo02 = $("#value_textInfo02").val();
+                var dai_price_num = 0;
+                var iro_num = 0;
+                var dtanka_num = 0.0;
+                var sheet_limit = 0;
+                if(iroa !==""){
+                    iro_num = iro_num + parseInt(iroa);
+                }
+                if(irob !==""){
+                    iro_num = iro_num + parseInt(irob);
+                }
+                press_num = parseInt(press_num);
+                men = parseInt(men);
+
+                if(dai > 0 && men > 0 && press_num > 0){
+                    jisu_num = parseInt((press_num / men) * dai);
+                    if(han !== "" ){
+                        if(textInfo02 == "003　オフ輪"){
+                            if((1.5 * Math.exp(-0.000015 * (jisu_num - 10000)) + 0.7 ) > 4){
+                                kake_num =  4 ;
+                            } else if(jisu_num < 200000) {
+                                kake_num = (1.5 * Math.exp( -0.000015 * (jisu_num - 10000)) + 0.7 );
+                                tanka_num = <%= @unit_price.d11 %> ;
+                            } else {
+                                kake_num = (0.186 * Math.exp( -0.000008 * (jisu_num - 200000)) + 0.6 );
+                                tanka_num = <%= @unit_price.d11 %> ;
+                            }
+                        } else if(textInfo02 == "002　オフセット"){
+                            if(han == "菊半"){
+                                kake_num = ((4.2 - 1.1) * Math.exp(-0.0003 * (jisu_num - 1000)) + 1.1);
+                                tanka_num = <%= @unit_price.d15 %> ;
+                                if(jisu_num < 1000){
+                                    sheet_limit = 3500;
+                                }
+                            } else if (han == "菊全"){
+                                kake_num = ((2.4 - 0.88) * Math.exp(-0.00015 * (jisu_num - 2000)) + 0.88);
+                                tanka_num = <%= @unit_price.d14 %> ;
+                                if(jisu_num < 2000){
+                                    sheet_limit = 5000;
+                                }
+                            } else {
+                                kake_num = ((2.06 - 0.8) * Math.exp(-0.00013 * (jisu_num - 3000)) +.8);
+                                tanka_num = <%= @unit_price.d13 %> ;
+                                if(jisu_num < 3000){
+                                    sheet_limit = 9000;
+                                }
+                            }
+                        }
+
+                    }
+                }
+                kake2_num = 1;
+                if(toku == "1"){
+                    kake2_num = kake2_num + 0.2;
+                }
+                if(kin == "1"){
+                    kake2_num = kake2_num + 0.5;
+                }
+                if(zara == "1"){
+                    kake2_num = kake2_num + 0.2;
+                }
+                if(upo == "1"){
+                    kake2_num = kake2_num + 1;
+                }
+                if(textInfo02 == "003　オフ輪"){
+                    if(iroa == "1"){
+                        kake2_num = kake2_num - 0.1;
+                    }
+                    if(irob == "1"){
+                        kake2_num = kake2_num - 0.1;
+                    }
+                    if(irob == "0" || irob == "" ){
+                        kake2_num = kake2_num - 0.2;
+                    }
+                }
+                if(textInfo02 == "002　オフセット"){
+                    if(iroa == "1"){
+                        kake2_num = kake2_num + 0.2;
+                    }
+                    if(irob == "1"){
+                        kake2_num = kake2_num + 0.2;
+                    }
+                    if(irob == "0" || irob == "" ){
+                        kake2_num = kake2_num + 0.5;
+                    }
+                }
+                if(textInfo02 == "003　オフ輪" && jisu_num > 0){
+                    kake2_num = kake2_num + ((sasi - 1 ) * (1500/ jisu_num) * iro_num)
+                }
+                console.log(kake2_num);
+                var kake_num22 = parseInt((kake_num * kake2_num)*100)/100
+                if(kake_num > 0 && jisu_num > 0 && iro_num > 0 && dai > 0){
+                    console.log("jisu_num" + jisu_num + "tanka_num" + tanka_num + "kake_num" + kake_num + "iro_num" + iro_num);
+                    dai_price_num = parseInt( (jisu_num * (tanka_num * kake_num)) * iro_num);
+                }
+                if(dai > 0 && men > 0 && press_num > 0){
+                    if(textInfo02 == "003　オフ輪"){
+                        if(dai_price_num < 60000){
+                            tanka_num = 0;
+                            dai_price_num = 60000;
+                            dtanka_num = parseInt(60000 / iro_num)
+                        }
+                    } else if(textInfo02 == "002　オフセット"){
+                        if(sheet_limit > 0 && jisu_num * tanka_num < sheet_limit ){
+                            tanka_num = 0;
+                            dtanka_num = sheet_limit;
+                            dai_price_num = (sheet_limit * iro_num);
+                        }
+                    }
+                }
+                dai_price_num = parseInt(dai_price_num * kake2_num);
+                tanka.val(tanka_num);
+                kake.val(kake_num);
+                kake2.val(kake2_num);
+                jisu.val(jisu_num);
+                daitanka.val(dtanka_num);
+                dai_price.val(dai_price_num);
+            }
+            var posi = parseInt(<%= escape_javascript i %>) - 1;
+            var press_num01 = $("#value_numInfo01").val();
+            var press_mihon = $("#value_mihon").val();
+            var press_num = $("#form_add_press_collection_add_presses_attributes_" + posi + "_press_num");
+            if( press_num.val() == ""){
+                press_num.val(parseInt(press_num01) + parseInt(press_mihon));
+            }
+            var iroa = $("#form_add_press_collection_add_presses_attributes_" + posi + "_iroa");
+            var irob = $("#form_add_press_collection_add_presses_attributes_" + posi + "_irob");
+            iroa.val($("#value_iroa").val());
+            irob.val($("#value_irob").val());
+        </script>
+        <% i = i + 1 %>
+      <% end %>
+    <% end %>
+  </table>
+  </div>
+  <script>
+      function formpress(){
+          formpress1();
+          formpress2();
+          formpress3();
+          formpress4();
+          formpress5();
+      }
+  </script>
+
+  <table class="show">
+  <tr>
+    <th class="sekisan">用紙（積算）</th><th class="sekisan">連量</th>
+    <th class="sekisan">取数</th><th class="sekisan">台数</th><th class="sekisan">k単価</th>
+    <th class="sekisan">枚単価</th><th class="sekisan">実数</th><th class="sekisan">予備込</th>
+    <th class="sekisan">用紙価格</th><th class="sekisan">用紙原価</th>
+  </tr>
+  <% @specs.each do |spec| %>
+    <tr>
+      <td class="mid"><%= spec.t01 %></td>
+      <td class="num"><%= spec.f01 %></td>
+      <td class="num"><%= spec.n05 %></td>
+      <td class="num"><%= spec.n06 %></td>
+      <td class="num"><%= spec.f03 %></td>
+      <td class="num"><%= spec.f04 %></td>
+      <td class="num"><%= numformat1( spec.n01 ) %></td>
+      <td class="num"><%= numformat1( spec.n02 ) %></td>
+      <td class="num"><%= numformat1( spec.n03 ) %></td>
+      <td class="num"><%= numformat1( spec.n04 ) %>
+    </tr>
+  <% end %>
+</table>
+
+<table class="show">
+  <tr>
+    <th class="sekisan">印刷積算内容</th><th class="sekisan">総部数</th><th class="sekisan">面付</th><th class="sekisan">通数</th><th class="sekisan">色数</th>
+    <th class="sekisan">台数</th><th class="sekisan">台単価</th><th class="sekisan">掛率</th><th class="sekisan">通単価</th><th class="sekisan">金額</th>
+  </tr>
+  <% @print_specs.each do |p_spec| %>
+    <tr>
+      <th>PrintSpec</th>
+      <td class="num"><%= numformat1(p_spec.n01) %></td>
+      <td class="num"><%= p_spec.n02 %></td>
+      <td class="num"><%= numformat1(p_spec.n03) %></td>
+      <td class="mid"><%= "#{p_spec.n04} x #{p_spec.n05}" %></td>
+      <td class="num"><%= p_spec.n06 %></td>
+      <td class="num"><%= p_spec.dai_tanka %></td>
+      <td class="num"><%= p_spec.kakeritu %></td>
+      <td class="num"><%= p_spec.tosi_tanka %></td>
+      <td class="num"><%= numformat1(p_spec.price) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<table class="show">
+  <% @print_plans.each do |print_plan| %>
+    </tr>
+    <th>選択印刷機</th><td class="mid"><%= machine_name[print_plan.machine] %></td>
+    <th>作業予定日</th><td class="mid"><%= print_plan.work_date %></td>
+    <th>印刷指示</th><td class="mid"><%= print_plan.memo %></td>
+    </tr>
+  <% end %>
+</table>
+
+<table class="show">
+  <% @print_reports.each do |print_report| %>
+    </tr>
+    <% time2 = Reporttime.find_by(reportitem_id: print_report ) %>
+    <% time2 = time2.blank? ? Reporttime.new(total_count: 0) : time2 %>
+    <th>印刷日報より</th><td class="mid"><%= machine_name[print_report.machine] %></td>
+    <th>印刷日</th><td class="mid"><%= print_report.work_date %></td>
+    <th>差し替え</th><td class="mid"><%= print_report.sasikae.to_i %></td>
+    <th>損紙</th><td class="mid"><%= print_report.sonsi.to_i %></td>
+    <th>印刷時間</th><td class="mid"><%= print_time_int(time2.total_count) %></td>
+    </tr>
+  <% end %>
+</table>
+
+  <div style="display: flex; flex-flow: row;margin-top: 0.3em; box-sizing: border-box">
+    <% fname_fag = 0 %>
+    <table class="show" style="max-width: 500px; box-sizing: border-box">
+      <% fname = "" %>
+      <% @slips.each do |slip| %>
+        <tr>
+          <th>刷版情報</th><th>出力日</th><th>刷版数</th><th>ヤレ数</th>
+          <%# if slip.txtInfo04 == "プリント対応" %>
+            <th style="width: 60px">4C</th><th style="width: 60px">1C</th><th style="width: 40px">SP</th>
+          <%# end %>
+        </tr>
+        <tr>
+          <% yare = slip.numInfo04.to_i + slip.numInfo05.to_i + slip.numInfo06.to_i %>
+          <td class="mid"><%= slip.txtInfo04 %></td>
+          <td class="mid"><%= hiduke3_helper(slip.dateInfo02) %></td>
+
+          <td class="mid"><%= slip.numInfo03 %></td>
+          <td class="mid"><%= yare %></td>
+          <%# if slip.txtInfo04 == "プリント対応" %>
+            <td class="mid"><%= slip.color_print %></td>
+            <td class="mid"><%= slip.mono_print %></td>
+            <td class="mid"><%= slip.sp_print %></td>
+          <%# end %>
+        </tr>
+        <% imps = Imposition.where(slip_id: slip) %>
+
+        <% if imps.count > 0 %>
+          <tr>
+            <th class="imp">機種</th><th class="imp">台数</th><th class="imp">面付数</th><th class="imp">クワエ</th>
+            <%# if slip.txtInfo04 == "プリント対応" %>
+              <th class="imp"></th><th class="imp"></th><th class="imp"></th>
+            <%# end %>
+          </tr>
+        <% end %>
+
+        <% imps.each do |imp| %>
+          <% mentuke = imp.num.blank? ? 1 : imp.num %>
+          <% if imp.machine == "XL106" || imp.machine == "SM74" %>
+            <% @mentuke = mentuke %>
+          <% elsif @job.info.textInfo02 == "プリント出力" && imp.machine == "プリント" then %>
+            <% if slip.color_print > 0 || slip.mono_print > 0 || slip.sp_print > 0 %>
+              <% @mentuke = mentuke %>
+            <% end %>
+          <% end %>
+          <tr>
+            <td class="mid"><%= imp.machine %></td>
+            <td class="mid"><%= imp.dai %></td>
+            <td class="mid"><%= mentuke %></td>
+            <td class="mid"><%= imp.kuwae %></td>
+            <%# if slip.txtInfo04 == "プリント対応" %>
+              <td></td> <td></td> <td></td>
+            <%# end %>
+          </tr>
+        <% end %>
+        <% fnames = slip.fnames %>
+        <% fnames.each do |f_name| %>
+          <% fname_fag = 1 %>
+          <% if fname.blank? %>
+            <% fname = "#{f_name.name}<br>" %>
+          <% else %>
+            <% fname = fname + "#{f_name.name}<br>" %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </table>
+    <% if fname_fag == 1 %>
+    <table class="show" style="max-width: 295px; margin-top: 0; margin-left: 0.2em; box-sizing: border-box">
+      <tr>
+        <th style="height: 1.8em">下版ファイル</th>
+      </tr>
+      <tr>
+        <td>
+          <%= raw(fname) %>
+        </td>
+      </tr>
+    </table>
+    <% end %>
+  </div>
+
+<table class="show">
+  <tr>
+    <th>印刷実績</th><th>品名 （HeidelBelgサーバより）</th>
+    <th></th><th>印刷時間</th><th>印刷枚数</th><th>損紙</th>
+    <% @press_datas.each do |press_data| %>
+      <tr>
+        <td class="mid"><%= press_data.machine %></td>
+        <td><%= press_data.product_name %></td>
+        <td><%= press_data.paper_no %></td>
+        <td class="mid"><%= time_int(press_data.work_time) %></td>
+        <td class="num"><%= numformat1(press_data.n01) %></td>
+        <td class="num"><%= numformat1(press_data.n02) %></td>
+      </tr>
+    <% end %>
+  </tr>
+</table>
+
+<table class="show">
+  <% @cuttings.each do |cut| %>
+  <tr>
+    <th>断裁</th><th>機種</th><td class="mid"><%= cut.kind %></td>
+    <th>担当者</th><td class="mid"><%= cut.worker_name %></td>
+    <th>作業時間</th><td class="mid"><%= time_int(cut.work_time) %></td>
+  </tr>
+  <% end %>
+</table>
+<table class="show">
+
+  <% if @specs.count > 1 %>
+    <!-- 以下冊子パターン -->
+    <% @specs.each do |spec| %>
+      <% print_spec = PrintSpec.find_by("uploadfile_id = ? AND position = ? ", spec.uploadfile_id ,spec.positon - 1 ) %>
+      <% color = spec.n07.to_i + spec.n08.to_i %>
+      <% page = (info.numInfo08.blank? ? 0 :info.numInfo08) + (info.numInfo09.blank? ? 0 :info.numInfo09) %>
+      <% page = page == 0 ? 2 : page %>
+      <% tori = spec.n05 || 1 %>
+      <% dai = spec.n06 || 1 %>
+      <% @print_num = print_spec.blank? ? 0 : print_spec.n01 %>
+      <% yare = (@print_num * 0.05).to_i %>
+      <% sizes = size_cal(info) %>
+      <% size1 = (info.numInfo06.blank? ? 0 : info.numInfo06) * (info.numInfo07.blank? ? 0 : info.numInfo07) %>
+      <% size2 = (info.numInfo14.blank? ? 0 : info.numInfo14) * (info.numInfo15.blank? ? 0 : info.numInfo15) %>
+      <% size = size_helper2(sizes,size1,size2,@mentuke) %>
+      <% print_tanka = print_tanka(size,@unit_price,@job) %>
+      <% jisu = (( @print_num + yare)  * dai) / tori  %>
+      <% print_price = jisu  * print_tanka * color %>
+      <tr>
+        <% @mentuke = @mentuke == 0 ? mentuke(@job) : @mentuke %>
+        <th>印刷情報</th><th>色数</th><th></th><th></th>
+        <th>ヤレ</th><th>総枚数</th><th></th><th></th>
+      </tr>
+      <tr>
+        <td class="mid"><%= spec.positon %></td>
+        <td class="mid"><%= spec.n07 %> x <%= spec.n08 %></td>
+        <td class="mid"></td>
+        <td class="num"><%= @print_num %></td>
+        <td class="num"><%= numformat1( yare ) %></td>
+        <td class="num"><%= numformat1( @print_num + yare ) %></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>印刷面積</th><th>ページ数</th><th>面付数</th><th>取数</th><th>台数</th><th>実数</th><th>印刷単価</th><th>印刷費</th>
+      </tr>
+      <tr>
+        <td class="mid"><%= size %></td>
+        <td class="mid"><%= page %></td>
+        <td><%= @mentuke %></td>
+        <td class="mid"><%= tori %></td>
+        <td class="mid"><%= dai %></td>
+        <td class="num"><%= numformat1(jisu) %></td>
+        <td><%= print_tanka %></td>
+        <td class="num"><%= numformat1(print_price) %></td>
+      </tr>
+      <!-- 以下冊子パターン終了 -->
+    <% end %>
+  <% else %>
+    <!-- 以下通常パターン -->
+    <tr>
+      <% @mentuke = @mentuke == 0 ? mentuke(@job) : @mentuke %>
+      <th class="add">印刷情報</th><th class="add"h>色数</th><th class="add">面付数</th>
+      <th class="add">見本他</th><th class="add">総枚数</th>
+      <th class="add">印刷面積</th><th class="add">ページ数</th><th class="add">実数</th>
+      <th class="add">印刷単価</th><th class="add">印刷費</th>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="mid"><%= info.numInfo04 %> x <%= info.numInfo05 %></td>
+      <td class="mid"><%= @mentuke.to_i %></td>
+      <td class="num"><%= numformat1(@yare) %></td>
+      <td class="num"><%= numformat1( @print_num + @yare ) %></td>
+      <td class="mid"><%= @size %></td>
+      <td class="mid"><%= @page %></td>
+      <td class="num"><%= numformat1(@jisu)  %></td>
+      <td class="num"><%= @print_tanka %></td>
+      <td class="num"><%= numformat1(@print_price) %></td>
+    </tr>
+    <!-- 以下通常パターン終了 -->
+  <% end %>
+</table>
+
+ </div>
+
+<%= javascript_pack_tag 'jobs/show' %>

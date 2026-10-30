@@ -1,0 +1,117 @@
+<%= render partial: 'search' %>
+<style>
+  ul.pagination {
+      border: none;
+      margin-top:0;
+  }
+</style>
+<%= paginate @jobs, theme: 'twitter-bootstrap-4' %>
+
+<table class="table" style="font-size: 86%; width: 3000px;" id="out_csv">
+  <thead>
+  <tr>
+    <th style="min-width: 100px">受注No.</th>
+    <th style="min-width: 120px">印刷方法</th>
+    <th>種別</th>
+    <th>顧客名</th>
+    <th>品名</th>
+    <th style="min-width: 100px">印刷日</th>
+    <th style="min-width: 100px">納品日</th>
+    <th style="min-width: 100px">売上日</th>
+    <th>数量1</th>
+    <th>数量2</th>
+    <th>数量3</th>
+    <th>印刷用紙</th>
+    <th>サイズ</th>
+    <th style="min-width: 100px">仕上</th>
+    <th style="min-width: 100px">展開</th>
+    <th style="min-width: 100px">印刷色</th>
+    <th>表紙</th><th>本文</th>
+    <th>差替</th>
+    <th style="text-align: right">用紙枚数</th>
+    <th style="text-align: right">用紙代</th>
+    <th style="text-align: right">印刷通数</th>
+    <th style="text-align: right">印刷料金</th>
+    <th style="text-align: right">積算<br>印刷料金</th>
+    <th>売上額</th>
+    <th>費用</th>
+    <th>積算<br>見積額</th>
+    <th>提出<br>見積額</th>
+    <th>担当</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% paper = 0 %>
+  <% press = 0 %>
+  <% sale_press = 0 %>
+  <% all_costs = 0 %>
+  <% sale_prices = 0 %>
+  <% i = 1 %>
+  <% @jobs.each do |job| %>
+    <% info = job.info %>
+    <% totals = AddDatum.where(parent_code: job.den_id) %>
+    <% total_helper() %>
+    <% totals.each do |total| %>
+      <% arari_cal_wap(total.job) %>
+      <% total_sum_helper() %>
+    <% end %>
+    <% arari_cal_wap(job) %>
+    <% total_sum_helper() %>
+    <% add_values = job.add_values %>
+    <% add_presses = job.add_presses %>
+    <% out_csv_press(add_values,add_presses) %>
+    <% add_datum = job.add_datum.present? ? job.add_datum : AddDatum.new %>
+    <% # sale = Sale.where(job_id: job).sum(:d02) %>
+    <% # upInfo = UpInfo.find_by(job_id: job, category: 3 , position: 2, life: 1) %>
+    <% upInfo_press = UpInfo.find_by(job_id: job, category: 1 , position: 3, life: 1)  %>
+    <% sales = Sale.find_by(job_id: job.id) %>
+    <tr<%= parent_helper(add_datum) %>>
+      <td><%= link_to job.den_id,"http://130.1.15.54:3000/jobs/show/#{job.id}", target: "_blank" %><%= info.cansel == 1 ? "【中止】" : "" %><%= info.hold == 1 ? "保留" : ""  %></td>
+      <td><%= info.textInfo02 %></td>
+      <td><%= info.textInfo03 %></td>
+      <td><%= info.textInfo05 %></td>
+      <td><%= link_to info.textInfo07 , job_path(id: job,i: i,p: params[:page].blank? ? 1 : params[:page] ) %></td>
+      <td><%= info.dateInfo03 %></td>
+      <td><%= info.dateInfo05 %></td>
+      <td><%= sales.present? ? date_helper_sale(sales.t03) : "" %></td>
+      <td class="num"><%= info.numInfo01.present? ? numformat1(info.numInfo01) : "" %></td>
+      <td class="num"><%= info.numInfo02.present? ? numformat1(info.numInfo02) : "" %></td>
+      <td class="num"><%= info.numInfo03.present? ? numformat1(info.numInfo03) : "" %></td>
+      <td><%= info.textInfo11 %></td>
+      <td class="mid"><%= info.textInfo20 %></td>
+      <td class="mid"><%= size_helper3(info.numInfo06,info.numInfo07 ) %></td>
+      <td class="mid"><%= size_helper3(info.numInfo14,info.numInfo15 ) %></td>
+      <td class="mid"><%= color2_helper(info.numInfo16, info.numInfo17, info.numInfo04, info.numInfo05,info.textInfo02 ) %></td>
+      <td class="mid"><%= info.numInfo08 %></td><td class="mid"><%= info.numInfo09 %></td>
+      <td class="mid"><%= @value_press_sasi %></td>
+      <td class="num"><%= numformat1(@value_paper_num) %></td>
+      <td class="num"><%= numformat1(@total_paper) %></td>
+      <td class="num"><%= numformat1(@value_press_num) %></td>
+      <td class="num"><%= numformat1(@total_press) %></td>
+      <td class="sekisan num"><%= numformat1(upInfo_press.present? ? upInfo_press.infoItem.to_i : 0 ) %></td>
+      <td class="num"><%= numformat1(@cal_sums[0].to_i) %></td>
+      <td class="num"><%= numformat1(@total_sum ) %></td>
+      <td class="sekisan" style="text-align: right"><%= numformat1(@cal_sums[2].to_i) %></td>
+      <td class="sekisan" style="text-align: right"><%= numformat1(@cal_sums[1].to_i) %></td>
+      <td><%= info.salesname %></td>
+      <% if add_datum.parent_code.blank? %>
+        <% paper = paper + @total_paper %>
+        <% press = press + @total_press %>
+        <% sale_press = sale_press + (upInfo_press.present? ? upInfo_press.infoItem.to_i : 0) %>
+        <% sale_prices = sale_prices + @cal_sums[0].to_i %>
+        <% all_costs = all_costs + @total_sum %>
+      <% end %>
+    </tr>
+  <% i = i + 1 %>
+  <% end %>
+  </tbody>
+</table>
+<div id="value_sum">
+  <div class="flex-box">
+    <div><span>用紙合計</span><%= numformat1(paper) %></div>
+    <div><span>印刷費合計</span><%= numformat1(press) %></div>
+    <div><span>積算印刷費合計</span><%= numformat1(sale_press) %></div>
+    <div><span>費用合計</span><%= numformat1(all_costs) %></div>
+    <div><span>売上合計</span><%= numformat1(sale_prices) %></div>
+  </div>
+</div>

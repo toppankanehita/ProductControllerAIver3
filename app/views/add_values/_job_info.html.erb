@@ -1,0 +1,85 @@
+
+<div class="container" id="job_info">
+  <div class="row info">
+    <% job = @job %>
+    <% info = job.info %>
+    <% cal = info.calendar %>
+
+    <div class="col-9 col-sm-9 mb-1 info_left">
+      <table class="show">
+        <tr>
+          <th>受注No</th>
+          <td style="position: relative"><%= link_to job.den_id,"http://130.1.15.54:3000/jobs/show/#{job.id}", target: "_blank" %>
+            <%= denpyo_no(job) %>
+
+          <th>担当営業</th><td><%= info.textInfo01 %></td>
+          <th>納品日</th><td><%= info.dateInfo05 %></td>
+        </tr>
+        <tr>
+          <th>印刷方法</th><td><%= info.textInfo02 %></td>
+          <% kind = Kind.find_by("code = ?",info.textInfo03 ) %>
+          <th>種類</th><td colspan="3"><span><%= info.textInfo03 %></span> <%= kind.blank? ? "" : kind.name %></td>
+        </tr>
+        <tr>
+          <th>顧客名</th><td><span><%= info.textInfo04 %></span> <%= info.textInfo05 %></td>
+          <th colspan="4">備考</th>
+        </tr>
+        <tr>
+          <th>品名</th><td><%= info.textInfo07 %></td>
+          <td colspan="4" rowspan="8" class="remarks"><%= linebreaksbr(info.textInfo28) %></td>
+        </tr>
+        <tr>
+          <th>用紙</th><td><%= info.textInfo11 %></td>
+        </tr>
+        <tr>
+          <th>印刷枚数</th><td><%= num_hepler(info) %></td>
+        </tr>
+        <tr>
+          <th>色数</th><td><%= color_helper(info.numInfo16 , info.numInfo04 ,info.numInfo05, info.numInfo17) %></td>
+        </tr>
+        <tr>
+          <th>サイズ</th>
+          <td>
+            <span>【仕上】</span><%= info.textInfo20 %> <%= size_helper( info.numInfo06 , info.numInfo07) %>
+            <% if info.numInfo14.present? %>
+              <br><span>【展開】</span><%= size_helper( info.numInfo14 , info.numInfo15) %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <th>冊子</th><td><%= book_helper( info.numInfo08 , info.numInfo09 , info.textInfo41 ) %></td>
+        </tr>
+        <tr>
+          <% kakoArry = kako_list(job) %>
+          <th>加工</th>
+          <td>
+            <% kakoArry.each do |kako| %>
+              <%= "【#{kako[0]}】#{kako[1]}  " %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <th>配達方法</th><td><%= info.textInfo18 %></td>
+        </tr>
+
+      </table>
+
+    </div>
+    <div class="col-3 col-sm-3 mb-1 detail">
+      <div class="plan_date">
+        <div class="d01">印刷日</div><div class="d02"><%= info.dateInfo03 %></div>
+      </div>
+      <div>
+        <div class="task_detail01">印刷情報</div>
+        <div class="task_detail02"></div>
+      </div>
+
+    </div>
+
+
+
+    <div id="schedulewrap" style="padding: 0;">
+    <%= render partial: 'job_info_schedule', locals: {job: job, cal: cal,control: control} %>
+    </div>
+  </div>
+</div>

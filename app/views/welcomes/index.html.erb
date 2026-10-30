@@ -1,0 +1,87 @@
+<%= render partial: 'search_index' %>
+
+<table class="show">
+  <tr>
+    <th class="th20" style="text-align: center">No</th>
+    <th class="th20">売上</th>
+    <th class="th20">積算</th>
+    <th class="th20">印刷</th>
+    <th class="th20">刷版</th>
+    <th class="th20">P物</th>
+    <th style="min-width: 100px;text-align: center">種類 / 担当</th>
+    <th style="min-width: 100px;text-align: center">受注No</th>
+    <th style="min-width: 250px;text-align: center">得意先名 / 品名</th>
+    <th style="min-width: 85px">用紙</th>
+    <th style="min-width: 85px">部数 / 見本</th>
+    <th style="min-width: 120px">寸法 / 色数</th>
+    <th style="min-width: 85px">冊子</th>
+    <th style="min-width: 100px;text-align: center">印刷日 / 納品日</th>
+    <th style="min-width: 100px;text-align: center">用紙積算額</th>
+    <th style="min-width: 100px;text-align: center">用紙金額</th>
+    <th style="min-width: 100px;text-align: center">予備紙</th>
+    <th style="min-width: 100px;text-align: center">面付け</th>
+  </tr>
+  <% i = 1 %>
+  <% @jobs.each do |job| %>
+    <% sale = job.sales.first || Sale.new(job: job) %>
+    <% uploadfile = job.uploadfile  %>
+    <% print_report = job.reportitems.first %>
+    <% slips = job.slips %>
+    <% #imps = ctp_helper(job) %>
+    <% #specs = Spec.where(uploadfile_id: uploadfile) %>
+    <% #specs = Spec.where(uploadfile_id: uploadfile) %>
+    <% specs = uploadfile.present? ? uploadfile.specs : Spec.none %>
+    <% #add_values = AddValue.where(job_id: job) %>
+    <% add_values = job.add_values %>
+    <% paper_genka = add_values.sum(:paper_price) %>
+    <% paper_yobi = add_values.sum(:yobi) %>
+    <% papers = uploadfile.present? ? search_yousi(uploadfile, specs, add_values) : [""] %>
+
+    <tr id="<%= job.id %>">
+      <% info = job.info %>
+      <td style="text-align: center"><%= i + (params[:page].to_i > 0 ? ((params[:page].to_i - 1) * 15) : 0) %></td>
+      <td class="td20"><%= sale.present? ? "○" : "●"  %></td>
+      <td class="td20"><%= uploadfile.present? ? "○" : "●" %></td>
+      <td class="td20"><%= print_report.present? ? "○" : "●" %></td>
+      <td class="td20"><%= slips.present? ? "○" : "●" %></td>
+      <td class="td20"><%= info.numInfo08.to_i > 0 ? "○" : "●"  %></td>
+      <td style="text-align: center"><%= info.textInfo02.gsub(/002　|003　|005　/, "") %><br><%= info.salesname %></td>
+      <td style="text-align: center"><%= link_to job.den_id,"http://130.1.15.54:3000/jobs/show/#{job.id}", target: "_blank" %><br>
+        <%= job.name %><%= job.change_no == 0 ? "" : job.change_no  %></td>
+      <td><%= job.info.textInfo05 %><br><%= link_to job.info.textInfo07 , job_path(id: job,i: i,p: params[:page]) %></td>
+
+      <td><%= job.info.textInfo11 %></td>
+      <td class="num"><%= num_hepler2(info) %></td>
+      <td style="text-align: center"><%= size_helper_wrap(job) %><br><%= color2_helper_wrap(job) %></td>
+      <td style="text-align: center"><%= book_helper_wrap(job) %></td>
+      <td style="text-align: center" ><%= job.info.dateInfo03 %><br><%= job.info.dateInfo05 %></td>
+      <td class="numvalue" style="text-align: center;font-size: 100%;"><%= papers[0] %></td>
+      <td class="" style="text-align: center;font-size: 100%;"><a href="javascript:openModal('<%= job.id %>','<%= i %>','<%= params[:page] %>');"><%= paper_genka %></a></td>
+      <td class="" style="text-align: center;font-size: 100%;"><%= link_to paper_yobi,edit_paper_job_path(job.id) %></td>
+      <td class="" style="text-align: center;font-size: 100%;"><a href="javascript:arrangeModal('<%= job.id %>');">面付け</a></td>
+    </tr>
+
+    <% i += 1 %>
+  <% end %>
+</table>
+<div id="mask" class="hidden"></div>
+<div id="modal" class="hidden modal-dialog-fluid"></div>
+
+
+<script type="text/javascript">
+    <!--
+    $(".numvalue").each(function(){
+        let value = $(this).text();
+        if( value < 0 ){
+            $(this).addClass("mainas");
+        } else {
+            $(this).removeClass("mainas");
+        }
+        if(value !== ""){
+            $(this).text(new Intl.NumberFormat('ja-JP').format(value));
+        }
+    });
+    -->
+</script>
+
+<%= javascript_pack_tag 'jobs/index' %>
