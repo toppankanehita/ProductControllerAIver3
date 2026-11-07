@@ -49,6 +49,30 @@ class Job < WorkModel
 
 
 
+  def self.ransack(params = nil, options = {})
+    if params.present?
+      raw = params.respond_to?(:to_unsafe_h) ? params.to_unsafe_h.dup : params.to_h.dup
+      sale_gteq = raw["sales_sale_day_gteq"].presence || raw[:sales_sale_day_gteq].presence
+      sale_lteq = raw["sales_sale_day_lteq"].presence || raw[:sales_sale_day_lteq].presence
+
+      if (sale_gteq.present? || sale_lteq.present?) && !raw.key?("id_in") && !raw.key?(:id_in)
+        sales_params = {}
+        sales_params[:sale_day_gteq] = sale_gteq if sale_gteq.present?
+        sales_params[:sale_day_lteq] = sale_lteq if sale_lteq.present?
+        job_ids = Sale.ransack(sales_params).result.pluck(:job_id).compact.uniq
+        raw["id_in"] = job_ids.present? ? job_ids : [0]
+      end
+
+      raw.delete("sales_sale_day_gteq")
+      raw.delete("sales_sale_day_lteq")
+      raw.delete(:sales_sale_day_gteq)
+      raw.delete(:sales_sale_day_lteq)
+      super(raw, options)
+    else
+      super(params, options)
+    end
+  end
+
   def self.ransackable_associations(auth_object = nil)
     reflect_on_all_associations.map { |a| a.name.to_s }
   end

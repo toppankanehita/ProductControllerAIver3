@@ -37,10 +37,16 @@
 #  sale_day   :date
 #
 class Sale < VisualizeModel
+  self.table_name = "visualize.sales"
+
   has_many :sale_items, dependent: :destroy
   belongs_to :job, optional: true
   belongs_to :info, optional: true
   belongs_to :div, optional: true
+
+  def self.table_name_prefix
+    "visualize."
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "d01", "d02", "d03", "d04", "denid", "div_id", "i01", "i02", "i03", "i04", "id", "info_id", "job_id", "sale_day", "sale_id", "salescode", "sum_frag", "t01", "t02", "t03", "t04", "t05", "t06", "t07", "t08", "t09", "t10", "t11", "t12", "textInfo02", "textInfo03", "updated_at"]
