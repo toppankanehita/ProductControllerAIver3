@@ -442,8 +442,8 @@ class AddValuesController < ApplicationController
       '用紙','刷版','直接材料費','POD','直接外注費','直接仕入高',
       '製造労務時間','賃率','製造労務費','制作労務時間','賃率','制作労務費','デザイン労務時間','賃率','デザイン労務費',
       '直接作業時間合計','直接労務費計','アセンブリ労務時間','賃率','雑給計','材料費','労務費',
-      '賞与','雑給','法定福利','福利厚生費','水道光熱費','修繕費','租税公課',
-      '賃借料','保険料','消耗品費','減価償却費','雑費','間接費合計','運賃','合計原価','売上','粗利','粗利率' , '加工労務費' ,'顧客code','種類' , 'CTP労務費' ,
+      '賞与','法定福利','水道光熱費','修繕費','租税公課',
+      '保険料','消耗品費','車両費','通信費','減価償却費','雑費','間接費合計','運賃','合計原価','売上','粗利','粗利率' , '加工労務費' ,'顧客code','種類' , 'CTP労務費' ,
       'ロールカット労務費' , '自社配送労務費','印刷労務費' , 'POD労務費'
     ]
 
@@ -455,6 +455,8 @@ class AddValuesController < ApplicationController
   end
 
   def list_mission_sub(jobs,flag)
+    # flag == 1 (mission_data_set) の場合は MissionArchive の mission_archive_41(間接費合計)〜54 の列位置互換性を維持
+    archive_mode = (flag == 1)
     # 5) 本文行の生成（index と同じヘルパ計算を使用）
     lines = []
     i = 1
@@ -471,6 +473,23 @@ class AddValuesController < ApplicationController
       sales = Sale.find_by(job_id: job.id)
 
       if parent_csv_helper(add_datum)
+        indirect_cols = [
+          numformat1(@mission_array[19]),
+          numformat1(@mission_array[21]),
+          numformat1(@mission_array[22]),
+          numformat1(@mission_array[24]),
+          numformat1(@mission_array[26]),
+          numformat1(@mission_array[27]),
+          numformat1(@mission_array[28]),
+          numformat1(@mission_array[30]),
+          numformat1(@mission_array[31]),
+          numformat1(@mission_array[49]),
+          numformat1(@mission_array[50]),
+          numformat1(@mission_array[32]),
+          numformat1(@mission_array[33])
+        ]
+        indirect_cols << "0" if archive_mode
+
         # index と同じ表示値を作る
         row = [
           i - childs_counter,
@@ -500,20 +519,7 @@ class AddValuesController < ApplicationController
           number_with_precision(@mission_array[9], precision: 2) ,
           numformat1(@unit_price.d29),
           numformat1(@mission_array[10]),
-          numformat1(@mission_array[19]),
-          numformat1(@mission_array[21]),
-          numformat1(@mission_array[22]),
-          numformat1(@mission_array[23]),
-          numformat1(@mission_array[24]),
-          numformat1(@mission_array[25]),
-          numformat1(@mission_array[26]),
-          numformat1(@mission_array[27]),
-          numformat1(@mission_array[28]),
-          numformat1(@mission_array[29]),
-          numformat1(@mission_array[30]),
-          numformat1(@mission_array[31]),
-          numformat1(@mission_array[32]),
-          numformat1(@mission_array[33]),
+          *indirect_cols,
           numformat1(@mission_array[34]),
           numformat1(@mission_array[35]),
           numformat1(@mission_array[36]),
@@ -547,6 +553,23 @@ class AddValuesController < ApplicationController
           info02 = "外注"
         end
         mission_twork_plus_helper(twork)
+        twork_indirect_cols = [
+          numformat1(@mission_array[19]),
+          numformat1(@mission_array[21]),
+          numformat1(@mission_array[22]),
+          numformat1(@mission_array[24]),
+          numformat1(@mission_array[26]),
+          numformat1(@mission_array[27]),
+          numformat1(@mission_array[28]),
+          numformat1(@mission_array[30]),
+          numformat1(@mission_array[31]),
+          numformat1(@mission_array[49]),
+          numformat1(@mission_array[50]),
+          numformat1(@mission_array[32]),
+          numformat1(@mission_array[33])
+        ]
+        twork_indirect_cols << "0" if archive_mode
+
         row = [
           i - childs_counter,
           "東京",
@@ -575,20 +598,7 @@ class AddValuesController < ApplicationController
           number_with_precision(@mission_array[9], precision: 2) ,
           numformat1(@unit_price.d29),
           numformat1(@mission_array[10]),
-          numformat1(@mission_array[19]),
-          numformat1(@mission_array[21]),
-          numformat1(@mission_array[22]),
-          numformat1(@mission_array[23]),
-          numformat1(@mission_array[24]),
-          numformat1(@mission_array[25]),
-          numformat1(@mission_array[26]),
-          numformat1(@mission_array[27]),
-          numformat1(@mission_array[28]),
-          numformat1(@mission_array[29]),
-          numformat1(@mission_array[30]),
-          numformat1(@mission_array[31]),
-          numformat1(@mission_array[32]),
-          numformat1(@mission_array[33]),
+          *twork_indirect_cols,
           numformat1(@mission_array[34]),
           numformat1(@mission_array[35]),
           numformat1(@mission_array[36]),

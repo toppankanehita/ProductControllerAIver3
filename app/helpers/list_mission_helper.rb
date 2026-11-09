@@ -1,5 +1,21 @@
 require 'nkf'
 module ListMissionHelper
+    # 単価情報/間接費標準原価割合.xlsx に基づく標準原価配賦率（調整後対象売上1円あたり）
+    STANDARD_INDIRECT_RATES = {
+        roumu:         0.099, # 労務費（賃金手当）
+        bonus:         0.016, # 賞与（賞与手当）
+        legal_welfare: 0.023, # 法定福利（法定福利費）
+        utilities:     0.144, # 水道光熱費
+        repair:        0.023, # 修繕費
+        taxes:         0.036, # 租税公課
+        insurance:     0.041, # 保険料
+        supplies:      0.016, # 消耗品費
+        vehicle:       0.011, # 車両費
+        communication: 0.007, # 通信費
+        depreciation:  0.132, # 減価償却費
+        misc:          0.008  # 雑費
+    }.freeze
+
     def mission_cal_wap
         @roumu_array = Array.new(11)
 
@@ -13,7 +29,7 @@ module ListMissionHelper
         @mitumori_array = Array.new(11)
         @tmp_array = Array.new(11)
         @roumu_array = Array.new(11)
-        @mission_array = Array.new(48)
+        @mission_array = Array.new(52, 0)
         @tmp_hiyou_sum = 0
         @mitumori_sum = 0
         @sale_sum = 0
@@ -296,68 +312,58 @@ module ListMissionHelper
         @mission_array[15] = @mission_array[15].to_i + safe_i(@gaicyuArr[1])
         @mission_array[35] = @mission_array[35].to_i + safe_i(@hassoArr[9])
         @mission_array[37] = @mission_array[37].to_i + safe_i(@mission_array[18]) #売上
-        #間接費
-        if job.info.textInfo02&.include?("外注") && ((@mission_array[4]).to_i + (@mission_array[6]).to_i + (@mission_array[8]).to_i + (@mission_array[10]).to_i) == 0
-            #何も
+        #間接費（標準原価計算: 単価情報/間接費標準原価割合.xlsx に準拠）
+        direct_labor_total = @mission_array[4].to_i + @mission_array[6].to_i + @mission_array[8].to_i + @mission_array[10].to_i
+        if job.info&.textInfo02&.include?("外注") && direct_labor_total == 0
+            # info.textInfo02 が外注かつ労務費が 0 の案件には間接費を賦課しない
         else
-            tmp = (@mission_array[37] - @mission_array[48].to_i - @mission_array[15].to_i - @mission_array[16].to_i - @mission_array[35].to_i ).to_f
-            puts "missionn @sale_sum.to_i #{@sale_sum.to_i}　@mission_array[37].to_i #{ @mission_array[37].to_i}   @mission_array[48].to_i #{ @mission_array[48].to_i} @mission_array[16].to_i #{@mission_array[16].to_i } @mission_array[35].to_i #{@mission_array[35].to_i }"
-            all_tmp = (@cost.all_slip_sales.to_i + @cost.cost23.to_i - @cost.all_paper.to_i - @cost.all_outsourcing.to_i - @cost.all_out_cost.to_i - @cost.all_in_cost.to_i - @cost.all_delivery_cost.to_i - @cost.all_web_minus.to_i).to_f
-            puts "@mission_array[10] #{@mission_array[10]}"
-            if job.info.textInfo02&.include?("オフ輪")
+            # 間接費の対象額 = 売上 - 全用紙費用 - 外注費 - 仕入高 - 運賃
+            tmp = (@mission_array[37].to_i - @mission_array[48].to_i - @mission_array[15].to_i - @mission_array[16].to_i - @mission_array[35].to_i).to_f
+
+            if job.info&.textInfo02&.include?("オフ輪")
                 web_minus = tmp * 0.2
-                @mission_array[47] = @mission_array[47].to_i + web_minus.to_i  #オフ輪を減額
-                kansetu_wari = (tmp - web_minus).to_f .to_f / all_tmp
-            elsif @mission_array[10] > 0 && @tmp_array[1] == 0
-                puts "アセンブリのみの案件"
+                @mission_array[47] = @mission_array[47].to_i + web_minus.to_i # オフ輪を減額（20%）
+                target_base = tmp - web_minus
+            elsif @mission_array[10].to_i > 0 && @tmp_array[1].to_i == 0
                 web_minus = tmp * 0.4
-                @mission_array[47] = @mission_array[47].to_i + web_minus.to_i  #アセンブリのみの案件を減額
-                kansetu_wari = (tmp - web_minus).to_f .to_f / all_tmp
+                @mission_array[47] = @mission_array[47].to_i + web_minus.to_i # アセンブリのみの案件を減額（40%）
+                target_base = tmp - web_minus
             else
-                kansetu_wari = (tmp).to_f / all_tmp
+                target_base = tmp
             end
-            kansetu_wari = kansetu_wari.to_f < 0 ? 0 : kansetu_wari.to_f
-            target_roumu = @cost.cost02.to_i - (@cost.all_roumu_product.to_i + @cost.all_roumu_create.to_i + @cost.all_roumu_design.to_i + @cost.cost20.to_i) #対象労務費
-            target_roumu = target_roumu.to_i < 0 ? 0 : target_roumu.to_i
-            #puts "kansetu_wari #{kansetu_wari} / #{(@cost.all_slip_sales.to_i + @cost.cost23.to_i - @cost.all_outsourcing.to_i - @cost.all_out_cost.to_i - @cost.all_in_cost.to_i)} target_roumu #{target_roumu}"
+            target_base = 0.0 if target_base < 0.0
 
-            syu_web = @cost.cost21
-            syu_sheet = @cost.cost22
-            syu_other = @cost.cost08 - (syu_web.to_i + syu_sheet.to_i)
+            # 材料費（インク代）は直課で計算方法を後で検討するため現在は 0 を設定
+            @mission_array[19] = 0
+            # 雑給 [23]・福利厚生費 [25]・賃借料 [29] は間接費から削除（0 固定）
+            @mission_array[23] = 0
+            @mission_array[25] = 0
+            @mission_array[29] = 0
 
-            if job.info.textInfo02&.include?("オフ輪")
-                wari = @mission_array[1] / @cost.all_press_web
-                @mission_array[19] = @mission_array[19].to_i + safe_i(@cost.cost18 * wari) #間接費オフ輪材料費
-                @mission_array[27] = @mission_array[27].to_i + safe_i(syu_web * wari) #間接修繕費
-            elsif job.info.textInfo02&.include?("オフセット")
-                wari = @mission_array[2] / @cost.all_press_sheet
-                @mission_array[19] = @mission_array[19].to_i + safe_i(@cost.cost19 * wari) #間接費枚葉材料費
-                @mission_array[27] = @mission_array[27].to_i + safe_i(syu_sheet * wari) #間接修繕費
-            else
+            # 標準原価割合による各間接費の算出
+            @mission_array[21] = safe_i(target_base * STANDARD_INDIRECT_RATES[:roumu])         # 間接労務費（賃金手当 0.099）
+            @mission_array[22] = safe_i(target_base * STANDARD_INDIRECT_RATES[:bonus])         # 間接賞与（0.016）
+            @mission_array[24] = safe_i(target_base * STANDARD_INDIRECT_RATES[:legal_welfare]) # 間接法定福利（0.023）
+            @mission_array[26] = safe_i(target_base * STANDARD_INDIRECT_RATES[:utilities])     # 間接水道光熱費（0.144）
+            @mission_array[27] = safe_i(target_base * STANDARD_INDIRECT_RATES[:repair])        # 間接修繕費（0.023）
+            @mission_array[28] = safe_i(target_base * STANDARD_INDIRECT_RATES[:taxes])         # 間接租税公課（0.036）
+            @mission_array[30] = safe_i(target_base * STANDARD_INDIRECT_RATES[:insurance])     # 間接保険料（0.041）
+            @mission_array[31] = safe_i(target_base * STANDARD_INDIRECT_RATES[:supplies])      # 間接消耗品費（0.016）
+            @mission_array[49] = safe_i(target_base * STANDARD_INDIRECT_RATES[:vehicle])       # 間接車両費（0.011）
+            @mission_array[50] = safe_i(target_base * STANDARD_INDIRECT_RATES[:communication]) # 間接通信費（0.007）
+            @mission_array[32] = safe_i(target_base * STANDARD_INDIRECT_RATES[:depreciation])  # 間接減価償却費（0.132）
+            @mission_array[33] = safe_i(target_base * STANDARD_INDIRECT_RATES[:misc])          # 間接雑費（0.008）
 
-            end
-            @mission_array[27] = @mission_array[27].to_i + safe_i(syu_other * kansetu_wari) #間接修繕費
-            @mission_array[21] = @mission_array[21].to_i + safe_i(target_roumu * kansetu_wari) #間接労務費
-            @mission_array[22] = @mission_array[22].to_i + safe_i(@cost.cost03.to_i * kansetu_wari) #間接費賞与
-            zakkyu = @cost.cost04 - @cost.all_assembly
-            if zakkyu > 0
-                @mission_array[23] = @mission_array[23].to_i + safe_i(zakkyu * kansetu_wari) #間接費雑給
-                #puts "#zakkyu2 #{zakkyu} kansetu_wari #{kansetu_wari} @mission_array[23]#{@mission_array[23]}"
-            end
-            @mission_array[24] = @mission_array[24].to_i + safe_i(@cost.cost05.to_i * kansetu_wari) #間接法定福利
-            @mission_array[25] = @mission_array[25].to_i + safe_i(@cost.cost06.to_i * kansetu_wari) #間接福利厚生費
-            @mission_array[26] = @mission_array[26].to_i + safe_i(@cost.cost07.to_i * kansetu_wari) #間接水道光熱費
+            # 間接費合計（13項目合計）
+            indirect_indices = [19, 21, 22, 24, 26, 27, 28, 30, 31, 49, 50, 32, 33]
+            @mission_array[34] = indirect_indices.sum { |idx| safe_i(@mission_array[idx]) }
 
-            @mission_array[28] = @mission_array[28].to_i + safe_i(@cost.cost09.to_i * kansetu_wari) #間接租税公課
-            @mission_array[29] = @mission_array[29].to_i + safe_i(@cost.cost10.to_i * kansetu_wari) #間接賃借料
-            @mission_array[30] = @mission_array[30].to_i + safe_i(@cost.cost11.to_i * kansetu_wari) #間接保険料
-            @mission_array[31] = @mission_array[31].to_i + safe_i(@cost.cost12.to_i * kansetu_wari) #間接消耗品費
-            #puts "#{job.den_id} plus @sale_sum #{@sale_sum} @mission_array[31] #{@mission_array[31]} @cost.cost12.to_i #{@cost.cost12.to_i } * kansetu_wari #{kansetu_wari} "
-            @mission_array[32] = @mission_array[32].to_i + safe_i(@cost.cost13.to_i * kansetu_wari) #間接減価償却
-            @mission_array[33] = @mission_array[33].to_i + safe_i((@cost.cost14.to_i + @cost.cost16.to_i + @cost.cost17.to_i) * kansetu_wari) #間接雑費
-            15.times do |i|
-                @mission_array[34] = @mission_array[34].to_i + safe_i(@mission_array[19 + i])
-            end
+            # --- 旧・月次会計実績（costsテーブル）按分計算ロジック（参考保存） ---
+            # all_tmp = (@cost.all_slip_sales.to_i + @cost.cost23.to_i - @cost.all_paper.to_i - @cost.all_outsourcing.to_i - @cost.all_out_cost.to_i - @cost.all_in_cost.to_i - @cost.all_delivery_cost.to_i - @cost.all_web_minus.to_i).to_f
+            # kansetu_wari = target_base / all_tmp
+            # kansetu_wari = kansetu_wari.to_f < 0 ? 0 : kansetu_wari.to_f
+            # target_roumu = @cost.cost02.to_i - (@cost.all_roumu_product.to_i + @cost.all_roumu_create.to_i + @cost.all_roumu_design.to_i + @cost.cost20.to_i)
+            # syu_web = @cost.cost21; syu_sheet = @cost.cost22; syu_other = @cost.cost08 - (syu_web.to_i + syu_sheet.to_i)
         end
 
 
@@ -365,7 +371,7 @@ module ListMissionHelper
 
         #puts "@mission_array[37] #{@mission_array[37]} "
         @mission_array[38] = (@mission_array[37].to_i - @mission_array[36].to_i) #粗利
-        @mission_array[39] = (@mission_array[38].to_f / @mission_array[37].to_f)
+        @mission_array[39] = @mission_array[37].to_f.zero? ? 0.0 : (@mission_array[38].to_f / @mission_array[37].to_f)
         @mission_array[40] = sales_code_helper(job.sale_id)
 
         10.times do |i|
@@ -379,7 +385,7 @@ module ListMissionHelper
     end
     def mission_twork_plus_helper(twork)
         @cost = Cost.find_by(target_month: session[:target_month])
-        @mission_array = Array.new(41) { 0 }
+        @mission_array = Array.new(52, 0)
 
         @mission_array[7] = twork.work_time.to_f#デザイン労務時間
         @mission_array[8] = twork.work_cost.to_i
@@ -389,44 +395,18 @@ module ListMissionHelper
 
         @sale_sum = twork.billing_amount.to_i
         @mission_array[18] = twork.billing_amount.to_i
-        syu_web = @cost.cost21
-        syu_sheet = @cost.cost22
-        syu_other = @cost.cost08 - (syu_web.to_i + syu_sheet.to_i)
-        if twork.work_time.to_f > 0.0
-            kansetu_wari = (@sale_sum.to_i - @mission_array[15].to_i - @mission_array[16].to_i - @mission_array[35].to_i).to_f / (@cost.all_slip_sales.to_i + @cost.cost23.to_i - @cost.all_outsourcing.to_i - @cost.all_out_cost.to_i - @cost.all_in_cost.to_i).to_f
-            if kansetu_wari > 0.0
-                kansetu_wari = 0.0
-            end
-            target_roumu = @cost.cost02.to_i - (@cost.all_roumu_product.to_i + @cost.all_roumu_create.to_i + @cost.all_roumu_design.to_i + @cost.cost20.to_i) #対象労務費
-            target_roumu = target_roumu.to_i < 0 ? 0 : target_roumu.to_i
-            @mission_array[27] = @mission_array[27].to_i + safe_i(syu_other * kansetu_wari) #間接修繕費
-
-            @mission_array[21] = @mission_array[21].to_i + safe_i(target_roumu * kansetu_wari) #間接費枚葉材料費
-            @mission_array[22] = @mission_array[22].to_i + safe_i(@cost.cost03.to_i * kansetu_wari) #間接費賞与
-            zakkyu = @cost.cost04 - @cost.all_assembly
-            if zakkyu > 0
-                @mission_array[23] = @mission_array[23].to_i + safe_i(zakkyu * kansetu_wari)
-            end
-            @mission_array[24] = @mission_array[24].to_i + safe_i(@cost.cost05.to_i * kansetu_wari) #間接法定福利
-            @mission_array[25] = @mission_array[25].to_i + safe_i(@cost.cost06.to_i * kansetu_wari) #間接福利厚生費
-            @mission_array[26] = @mission_array[26].to_i + safe_i(@cost.cost07.to_i * kansetu_wari) #間接水道光熱費
-
-            @mission_array[28] = @mission_array[28].to_i + safe_i(@cost.cost09.to_i * kansetu_wari) #間接租税公課
-            @mission_array[29] = @mission_array[29].to_i + safe_i(@cost.cost10.to_i * kansetu_wari) #間接賃借料
-            @mission_array[30] = @mission_array[30].to_i + safe_i(@cost.cost11.to_i * kansetu_wari) #間接保険料
-            @mission_array[31] = @mission_array[31].to_i + safe_i(@cost.cost12.to_i * kansetu_wari) #間接消耗品費
-
-            @mission_array[32] = @mission_array[32].to_i + safe_i(@cost.cost13.to_i * kansetu_wari) #間接減価償却
-            @mission_array[33] = @mission_array[33].to_i + safe_i((@cost.cost14.to_i + @cost.cost16.to_i + @cost.cost17.to_i) * kansetu_wari) #間接雑費
-            15.times do |i|
-                @mission_array[34] = @mission_array[34].to_i + safe_i(@mission_array[19 + i])
-            end
-        end
+        # 東京案件（Twork）は既存仕様通り間接費を賦課しない（costsテーブル未登録月でもエラーにならないよう旧式は参考コメントとして保持）
+        # syu_web = @cost.cost21
+        # syu_sheet = @cost.cost22
+        # syu_other = @cost.cost08 - (syu_web.to_i + syu_sheet.to_i)
+        # if twork.work_time.to_f > 0.0
+        #     kansetu_wari = 0.0
+        # end
         @mission_array[36] = (@mission_array[15].to_i + @mission_array[16].to_i + @mission_array[4].to_i + @mission_array[6].to_i + @mission_array[8].to_i + @mission_array[10].to_i + @mission_array[34].to_i)
 
         @mission_array[37] = safe_i(@mission_array[18]) #売上
         @mission_array[38] = (@mission_array[37].to_i - @mission_array[36].to_i) #粗利
-        denominator = @mission_array[38].to_f
+        denominator = @mission_array[37].to_f
         @mission_array[39] = denominator.zero? ? 0.0 : (@mission_array[38].to_f / denominator)
         @mission_array[40] = ""
         @mission_array[41] = ""
@@ -437,7 +417,7 @@ module ListMissionHelper
         @tmp_hiyou_sum = @tmp_hiyou_sum.to_i + @mission_array[4].to_i + @mission_array[6].to_i + @mission_array[8].to_i + @mission_array[10].to_i
 
         10.times do |i|
-            @mitumori_sum = @mitumori_sum + @mitumori_array[i].to_i
+            @mitumori_sum = @mitumori_sum + (@mitumori_array ? @mitumori_array[i].to_i : 0)
         end
     end
 end
